@@ -2,7 +2,7 @@
 
 ### About
 
-The School App project is a combination of 4 programs,2 Desktop application and other 2 being android application.The goal of the project is to create an software solution where school teachers can upload progress status of a student and parents and students should be able to access their report using mobile application.Teachers should be able to upload score of each student in an exam and then parents should be able to see the score from their phones.
+The aim is to make use of technology for efficient functioning in a School.The goal of the project is to create an software solution where school teachers can upload progress status of a student and parents and students should be able to access their report using mobile application.Teachers should be able to upload score of each student in an exam and then parents should be able to see the score from their phones.The School App project is a combination of 4 programs,2 Desktop application and other 2 being android application.
 
 
 ### Architecture
@@ -10,3 +10,13 @@ The School App project is a combination of 4 programs,2 Desktop application and 
 To Develop this Program we will use a 3 tier architecture for Database.Clients willl interact with a program on server side which in turn will interact with database and provide the requested data.Sockets will be used for communication between server and client program.Server program will also maintain a log of all events happenning during execution of program
 
 ![](Images/Architecture.png)
+
+### Database
+
+To efficiently store data this project uses RDBMS.The ER Diagram and Relational Schema for Database are given below
+* [ER Diagram](./Database/School%20App%20ER%20Diagram.pdf)
+* [Relational Schema](./Database/School%20App%20Relational%20Model.pdf) 
+
+### Technologies
+
+To store the vast amount of data that this project has to handle we have used MySQl Database. The steps required to setup MySQl on Server side are provided in [MySQl Queries Setup](./Database/MySQL%20Setup%20Queries.md)
