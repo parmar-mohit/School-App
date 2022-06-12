@@ -1,0 +1,6 @@
+# IntelliJ files
+.idea/*
+TeacherDesktop.iml
+
+# Output Files
+out/*

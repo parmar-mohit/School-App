@@ -11,6 +11,14 @@ To Develop this Program we will use a 3 tier architecture for Database.Clients w
 
 ![](Images/Architecture.png)
 
+### Directory
+
+[Server Program](./ServerProgram/) contains Source code for Server Program that interacts with database and client program
+
+[Teacher Desktop](./TeacherDesktop/) contains Source code for Desktop Application for Teachers. This is a client program.
+
+[Doucmentation](./Documentation/) contains additional documentation for this project.
+
 ### Database
 
 To efficiently store data this project uses RDBMS.The ER Diagram and Relational Schema for Database are given below
@@ -19,4 +27,14 @@ To efficiently store data this project uses RDBMS.The ER Diagram and Relational 
 
 ### Technologies
 
+* MySQl
+
 To store the vast amount of data that this project has to handle we have used MySQl Database. The steps required to setup MySQl on Server side are provided in [MySQl Queries Setup](./Database/MySQL%20Setup%20Queries.md)
+
+* IntelliJ IDE ( Community Version )
+
+To Develop this Project efficiently IntelliJ Community Version IDE is Used.
+
+* Java Swing
+
+To develop GUI interface so that application is interactive Java Swing API is used.
