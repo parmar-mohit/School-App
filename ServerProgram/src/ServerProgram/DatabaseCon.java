@@ -2,6 +2,7 @@ package ServerProgram;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -36,5 +37,16 @@ public class DatabaseCon {
         }else {
             return resultSet.getString("password");
         }
+    }
+
+    public void createTeacherId(String phone,String firstname, String lastname, String email, String gender, String password) throws  Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO teacher VALUES(?,?,?,?,?,?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.setString(2,firstname.toLowerCase());
+        preparedStatement.setString(3,lastname.toLowerCase());
+        preparedStatement.setString(4,email);
+        preparedStatement.setString(5,gender);
+        preparedStatement.setString(6,password);
+        preparedStatement.executeUpdate();
     }
 }

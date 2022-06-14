@@ -1,6 +1,7 @@
 package TeacherDesktop.Server;
 
 import TeacherDesktop.Frames.NoConnectionInterface;
+import TeacherDesktop.Static.Constraint;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -48,15 +49,33 @@ public class ServerConnection {
         }
 
         //Waiting till message is received
+        JSONObject recvMessage = checkMessge(id);
+        String password = recvMessage.getJSONObject("info").getString("password");
+        return password;
+    }
+
+    public void addTeacherId(String firstname,String lastname,String phone,String email, String password, String gender){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",2);
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("firstname",firstname);
+        infoJsonObject.put("lastname",lastname);
+        infoJsonObject.put("phone",phone);
+        infoJsonObject.put("email",email);
+        infoJsonObject.put("password", Constraint.hashPassword(password));
+        infoJsonObject.put("gender",gender);
+        jsonObject.put("info",infoJsonObject);
+        sendMessage(jsonObject);
+    }
+
+    private JSONObject checkMessge(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){
-                jsonObject = new JSONObject(messagePool.get(i));
-                long messageId = jsonObject.getLong("id");
-                System.out.println("id : "+messageId);
+                JSONObject jsonObject = new JSONObject(messagePool.get(i));
+                long id = jsonObject.getLong("id");
                 if( messageId == id ){
-                    String password = jsonObject.getJSONObject("info").getString("password");
                     messagePool.remove(i);
-                    return password;
+                    return jsonObject;
                 }
             }
         }

@@ -49,14 +49,14 @@ CREATE TABLE parent_child(
 CREATE TABLE grade (
 	standard INT,
 	division VARCHAR(1),
-	t_phone INT,
+	t_phone BIGINT,
 	PRIMARY KEY(standard,division)
 	);
 
 CREATE TABLE subject (
 	sub_id INT PRIMARY KEY AUTO_INCREMENT,
 	subject_name VARCHAR(50),
-	t_phone INT
+	t_phone BIGINT
 );
 
 CREATE TABLE subject_grade (
@@ -72,7 +72,7 @@ CREATE TABLE exam (
 	exam_id INT PRIMARY KEY AUTO_INCREMENT,
 	exam_name VARCHAR(50),
 	sub_id INT,
-	t_phone INT,
+	t_phone BIGINT,
 	total_marks INT,
 	FOREIGN KEY(sub_id) REFERENCES subject(sub_id) ON DELETE CASCADE
 	);
@@ -87,7 +87,7 @@ CREATE TABLE score (
 	);
 
 CREATE TABLE teacher (
-	t_phone INT PRIMARY KEY,
+	t_phone BIGINT PRIMARY KEY,
 	firstname VARCHAR(50),
 	lastname VARCHAR(50),
 	email VARCHAR(50),
@@ -100,6 +100,9 @@ ALTER TABLE grade
 ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
 
 ALTER TABLE exam
+ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
+
+ALTER TABLE subject
 ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
 ```
 

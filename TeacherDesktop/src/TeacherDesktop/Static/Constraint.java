@@ -4,6 +4,8 @@ import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Constraint {
     /* This Class provides static function that can be used to
@@ -67,6 +69,13 @@ public class Constraint {
         }
 
         return null;
+    }
+
+    public static boolean emailCheck(String email){
+        String regex = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }
 

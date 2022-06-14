@@ -1,5 +1,6 @@
 package ServerProgram.Client;
 
+import ServerProgram.ActionCode.CreateTeacherId;
 import ServerProgram.ActionCode.GetCredentials;
 import ServerProgram.Log;
 import org.json.JSONObject;
@@ -7,6 +8,7 @@ import org.json.JSONObject;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class Client extends Thread{
@@ -30,13 +32,20 @@ public class Client extends Thread{
                         new GetCredentials(jsonObject,this).start();
                         break;
 
+                    case 2:
+                        new CreateTeacherId(jsonObject,this).start();
+                        break;
+
                     case 99:
                         Log.info("Closing Connection with Client at "+socket.getInetAddress().getHostAddress());
-                        socket .close();
+                        socket.close();
                         clientList.remove(this);
                         break exit;
                 }
             }
+        }catch(SocketException e){
+            Log.info("Connection Closed with Client at "+socket.getInetAddress().getHostAddress());
+            clientList.remove(this);
         }catch(Exception e){
             Log.error(e.toString());
         }

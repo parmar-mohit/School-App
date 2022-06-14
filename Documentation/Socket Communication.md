@@ -33,6 +33,10 @@ The action needed to perform when a message with certain action code is recived.
 
 The Client is asking server to check crendential of teacher user.Info attribute contains phone of teacher. Response Info contains  password which is set "null" (String) if user does not exist and contains password if user exists.
 
+* Action Code 2
+
+The Client is asking server to add the details of New teacher id to Database.Info attribute contains an JSON object with all the attributes of teacher id.
+
 * Action Code 99
 
 The Client is informing the server to close the socket.Info contains nothing

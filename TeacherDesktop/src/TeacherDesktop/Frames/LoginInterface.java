@@ -37,6 +37,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         usernameTextField.setHorizontalAlignment(SwingConstants.CENTER);
         passwordField.setHorizontalAlignment(SwingConstants.CENTER);
         passwordField.setEchoChar('*');
+        showPasswordCheckBox.setBackground(Constant.FRAME_BACKGROUND);
 
         //Adding Listeners
         usernameTextField.addKeyListener(this);
@@ -50,6 +51,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         setLayout(new GridBagLayout());
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setBackground(Constant.FRAME_BACKGROUND);
 
         //Adding Components to Frame
         add(schoolImageLabel,Constraint.setPosition(0,0));
@@ -80,8 +82,9 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         if( !Constraint.hashPassword(password).equals(savedPassword) ){
             messageLabel.setText("Invalid Credentials");
             return;
-        }else{
-            //New Interface
+        }else if( phone == Constant.PRINCIPAL_USERNAME ){
+            new Principalnterface(serverConnection);
+            dispose();
         }
     }
 
