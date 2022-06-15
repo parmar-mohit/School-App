@@ -43,6 +43,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         usernameTextField.addKeyListener(this);
         loginButton.addActionListener(this);
         showPasswordCheckBox.addItemListener(this);
+        loginButton.setBackground(Constant.BUTTON_BACKGROUND);
 
         //Frame Details
         setTitle(Constant.SCHOOL_NAME);

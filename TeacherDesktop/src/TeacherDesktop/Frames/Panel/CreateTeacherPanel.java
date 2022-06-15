@@ -1,6 +1,7 @@
 package TeacherDesktop.Frames.Panel;
 
 import TeacherDesktop.Server.ServerConnection;
+import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
 
 import javax.swing.*;
@@ -39,6 +40,7 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
 
         //Editing Components
         passwordField.setEchoChar('*');
+        addTeacherButton.setBackground(Constant.BUTTON_BACKGROUND);
 
         //Adding Listener
         phoneTextField.addKeyListener(this);

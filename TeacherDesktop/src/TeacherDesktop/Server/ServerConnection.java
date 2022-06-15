@@ -98,6 +98,13 @@ public class ServerConnection {
                     return jsonObject;
                 }
             }
+
+            try{
+                //Sleeping Before checking for message again
+                sleep(100);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -132,8 +139,8 @@ public class ServerConnection {
                     }
                 }catch(Exception e){
                     e.printStackTrace();
-                    new NoConnectionInterface();
                     currentFrame.dispose();
+                    new NoConnectionInterface();
                 }
             }
         };

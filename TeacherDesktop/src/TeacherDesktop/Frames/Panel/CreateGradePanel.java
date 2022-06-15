@@ -29,9 +29,13 @@ public class CreateGradePanel extends JPanel implements KeyListener {
         teacherInchargeLabel = new JLabel("Teacher Incharge : ");
         teacherInchargeComboBox = new JComboBox();
         messageLabel = new JLabel();
+        createGradeButton = new JButton("Create Grade");
 
         //Filling TeacherInchargeComboBox
         fillTeacherInchargeComboBox();
+
+        //Editing Components
+        createGradeButton.setBackground(Constant.BUTTON_BACKGROUND);
 
         //Adding Listeners
         standardTextField.addKeyListener(this);
@@ -47,6 +51,8 @@ public class CreateGradePanel extends JPanel implements KeyListener {
         add(divisionTextField,Constraint.setPosition(3,0));
         add(teacherInchargeLabel,Constraint.setPosition(0,1,2,1));
         add(teacherInchargeComboBox,Constraint.setPosition(2,1,2,1));
+        add(messageLabel,Constraint.setPosition(0,2,4,1));
+        add(createGradeButton,Constraint.setPosition(0,3,4,1));
     }
 
     private void fillTeacherInchargeComboBox(){
