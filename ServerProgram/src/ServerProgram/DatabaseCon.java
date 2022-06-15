@@ -55,4 +55,13 @@ public class DatabaseCon {
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet;
     }
+
+    public Boolean checkPhone(String column,String table,String entry) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS (SELECT "+column+" FROM "+table+" WHERE "+column+"=?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(entry));
+        ResultSet result = preparedStatement.executeQuery();
+        result.next();
+
+        return result.getBoolean(1);
+    }
 }

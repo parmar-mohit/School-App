@@ -35,7 +35,7 @@ The Client is asking server to check crendential of teacher user.Info attribute 
 
 * Action Code 2
 
-The Client is asking server to add the details of New teacher id to Database.Info attribute contains an JSON object with all the attributes of teacher id.
+The Client is asking server to add the details of New teacher id to Database.Info attribute contains an JSON object with all the attributes of teacher id.Response attribute contains response code which is 0 if teacher id was added to database successfully. Response code is 1 if teacher id was not added to because a teacher with same phone exist in database.
 
 * Action Code 3
 

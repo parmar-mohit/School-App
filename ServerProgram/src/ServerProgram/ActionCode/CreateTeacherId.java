@@ -30,7 +30,21 @@ public class CreateTeacherId extends Thread{
 
         try{
             db = new DatabaseCon();
-            db.createTeacherId(phone,firstname,lastname,email,gender,password);
+
+            //Creating response object
+            JSONObject responseJsonObject = new JSONObject();
+            responseJsonObject.put("id",jsonObject.getLong("id"));
+            JSONObject responseInfoObject = new JSONObject();
+
+            //Checking if a teacher with same phone exist
+            if( db.checkPhone("t_phone","teacher",phone) ){
+                responseInfoObject.put("response_code",1);
+            }else{
+                db.createTeacherId(phone,firstname,lastname,email,gender,password);
+                responseInfoObject.put("response_code",0);
+            }
+            responseJsonObject.put("info",responseInfoObject);
+            client.sendMessage(responseJsonObject);
         }catch( Exception e ){
             Log.error(e.toString());
         }finally {

@@ -55,7 +55,7 @@ public class ServerConnection {
         return password;
     }
 
-    public void addTeacherId(String firstname,String lastname,String phone,String email, String password, String gender){
+    public int addTeacherId(String firstname,String lastname,String phone,String email, String password, String gender){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",2);
         JSONObject infoJsonObject = new JSONObject();
@@ -66,7 +66,13 @@ public class ServerConnection {
         infoJsonObject.put("password", Constraint.hashPassword(password));
         infoJsonObject.put("gender",gender);
         jsonObject.put("info",infoJsonObject);
-        sendMessage(jsonObject);
+        long id = sendMessage(jsonObject);
+
+        //Getting Message
+        JSONObject responseJsonObject = checkMessage(id);
+
+        //returning response code
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
     public JSONArray getTeacherList(){

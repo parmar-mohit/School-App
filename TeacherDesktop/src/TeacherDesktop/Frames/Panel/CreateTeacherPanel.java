@@ -109,8 +109,12 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
 
         String gender = (String)genderComboBox.getSelectedItem();
 
-        serverConnection.addTeacherId(firstname,lastname,phone,email,password,gender);
-        messageLabel.setText("Teacher Id Created");
+        int response = serverConnection.addTeacherId(firstname,lastname,phone,email,password,gender);
+        if( response == 1 ){
+            messageLabel.setText("Teacher with same phone already exist in Database");
+        }else {
+            messageLabel.setText("Teacher Id Created");
+        }
     }
 
     @Override
