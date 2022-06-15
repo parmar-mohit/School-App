@@ -2,6 +2,7 @@ package ServerProgram.Client;
 
 import ServerProgram.ActionCode.CreateTeacherId;
 import ServerProgram.ActionCode.GetCredentials;
+import ServerProgram.ActionCode.GetTeacherList;
 import ServerProgram.Log;
 import org.json.JSONObject;
 
@@ -34,6 +35,10 @@ public class Client extends Thread{
 
                     case 2:
                         new CreateTeacherId(jsonObject,this).start();
+                        break;
+
+                    case 3:
+                        new GetTeacherList(jsonObject,this).start();
                         break;
 
                     case 99:

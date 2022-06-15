@@ -2,6 +2,7 @@ package TeacherDesktop.Server;
 
 import TeacherDesktop.Frames.NoConnectionInterface;
 import TeacherDesktop.Static.Constraint;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -49,7 +50,7 @@ public class ServerConnection {
         }
 
         //Waiting till message is received
-        JSONObject recvMessage = checkMessge(id);
+        JSONObject recvMessage = checkMessage(id);
         String password = recvMessage.getJSONObject("info").getString("password");
         return password;
     }
@@ -68,7 +69,26 @@ public class ServerConnection {
         sendMessage(jsonObject);
     }
 
-    private JSONObject checkMessge(long messageId){
+    public JSONArray getTeacherList(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",3);
+
+        //sending message;
+        long id = sendMessage(jsonObject);
+
+        //waiting before checking for response
+        try {
+            sleep(300);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        jsonObject = checkMessage(id);
+        JSONArray infoJsonArray = jsonObject.getJSONArray("info");
+        return infoJsonArray;
+    }
+
+    private JSONObject checkMessage(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){
                 JSONObject jsonObject = new JSONObject(messagePool.get(i));

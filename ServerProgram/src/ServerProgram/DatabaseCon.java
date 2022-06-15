@@ -49,4 +49,10 @@ public class DatabaseCon {
         preparedStatement.setString(6,password);
         preparedStatement.executeUpdate();
     }
+
+    public ResultSet getTeacherList() throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT t_phone,firstname,lastname FROM teacher;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
 }

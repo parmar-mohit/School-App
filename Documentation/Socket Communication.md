@@ -37,6 +37,10 @@ The Client is asking server to check crendential of teacher user.Info attribute 
 
 The Client is asking server to add the details of New teacher id to Database.Info attribute contains an JSON object with all the attributes of teacher id.
 
+* Action Code 3
+
+The Client is asking server to give a list of all teachers in database. info contains nothing and response info contains JSON array where each JSON object contains firstname,lastname and phone number of teacher.
+
 * Action Code 99
 
 The Client is informing the server to close the socket.Info contains nothing

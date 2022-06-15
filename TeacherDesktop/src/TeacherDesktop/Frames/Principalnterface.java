@@ -1,5 +1,6 @@
 package TeacherDesktop.Frames;
 
+import TeacherDesktop.Frames.Panel.CreateGradePanel;
 import TeacherDesktop.Frames.Panel.CreateTeacherPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
@@ -77,6 +78,8 @@ public class Principalnterface extends JFrame implements ActionListener {
 
         if( e.getSource() == createTeacherIdButton){
             optionPanel = new CreateTeacherPanel(serverConnection);
+        }else if( e.getSource() == createGradeButton ){
+            optionPanel = new CreateGradePanel(serverConnection);
         }
 
         add(optionPanel,Constraint.setPosition(1,1,1,4));
