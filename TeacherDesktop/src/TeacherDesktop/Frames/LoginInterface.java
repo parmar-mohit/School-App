@@ -1,5 +1,6 @@
 package TeacherDesktop.Frames;
 
+import TeacherDesktop.Frames.Panel.BrandingPanel;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
 import TeacherDesktop.Server.ServerConnection;
@@ -9,7 +10,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class LoginInterface extends JFrame implements ActionListener, ItemListener, KeyListener {
-    private JLabel schoolImageLabel, schoolNameLabel,messageLabel;
+
+    private BrandingPanel brandingPanel;
+    private JLabel messageLabel;
     private JTextField usernameTextField;
     private JPasswordField passwordField;
     private JCheckBox showPasswordCheckBox;
@@ -21,10 +24,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         //Intialising Variables
         this.serverConnection = serverConnection;
         serverConnection.setCurrentFrame(this);
-        Image img = new ImageIcon(Constant.SCHOOL_LOGO).getImage();
-        img = img.getScaledInstance(150,150,Image.SCALE_DEFAULT);
-        schoolImageLabel = new JLabel(new ImageIcon(img));
-        schoolNameLabel = new JLabel(Constant.SCHOOL_NAME);
+        brandingPanel = new BrandingPanel();
         usernameTextField = new JTextField("000000",20);
         passwordField =new JPasswordField("password",20);
         showPasswordCheckBox = new JCheckBox("Show Password");
@@ -32,8 +32,6 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         messageLabel = new JLabel();
 
         //Editing Component
-        schoolImageLabel.setPreferredSize(new Dimension(150,150));
-        schoolNameLabel.setFont(new Font("SansSerif",Font.BOLD,30));
         usernameTextField.setHorizontalAlignment(SwingConstants.CENTER);
         passwordField.setHorizontalAlignment(SwingConstants.CENTER);
         passwordField.setEchoChar('*');
@@ -55,13 +53,12 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         getContentPane().setBackground(Constant.FRAME_BACKGROUND);
 
         //Adding Components to Frame
-        add(schoolImageLabel,Constraint.setPosition(0,0));
-        add(schoolNameLabel,Constraint.setPosition(1,0));
-        add(usernameTextField,Constraint.setPosition(0,1,2,1));
-        add(passwordField,Constraint.setPosition(0,2,2,1));
-        add(showPasswordCheckBox,Constraint.setPosition(0,3,2,1));
-        add(loginButton,Constraint.setPosition(0,4,2,1));
-        add(messageLabel,Constraint.setPosition(0,5,2,1));
+        add(brandingPanel,Constraint.setPosition(0,0));
+        add(usernameTextField,Constraint.setPosition(0,1));
+        add(passwordField,Constraint.setPosition(0,2));
+        add(showPasswordCheckBox,Constraint.setPosition(0,3));
+        add(loginButton,Constraint.setPosition(0,4));
+        add(messageLabel,Constraint.setPosition(0,5));
     }
 
     @Override

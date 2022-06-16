@@ -14,7 +14,7 @@ import java.awt.event.KeyListener;
 public class CreateGradePanel extends JPanel implements KeyListener {
 
     private ServerConnection serverConnection;
-    private JLabel standardLabel,divisionLabel, teacherInchargeLabel,messageLabel;
+    private JLabel panelNameLabel,standardLabel,divisionLabel, teacherInchargeLabel,messageLabel;
     private JTextField standardTextField,divisionTextField;
     private JComboBox teacherInchargeComboBox;
     private JButton createGradeButton;
@@ -22,6 +22,7 @@ public class CreateGradePanel extends JPanel implements KeyListener {
     public CreateGradePanel(ServerConnection serverConnection){
         //Initialising Members
         this.serverConnection = serverConnection;
+        panelNameLabel = new JLabel("Create Grade");
         standardLabel =  new JLabel("Standard : ");
         standardTextField = new JTextField(20);
         divisionLabel = new JLabel("Division : ");
@@ -35,6 +36,7 @@ public class CreateGradePanel extends JPanel implements KeyListener {
         fillTeacherInchargeComboBox();
 
         //Editing Components
+        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
         createGradeButton.setBackground(Constant.BUTTON_BACKGROUND);
 
         //Adding Listeners
@@ -43,16 +45,18 @@ public class CreateGradePanel extends JPanel implements KeyListener {
 
         //panel details
         setLayout(new GridBagLayout());
+        setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding components to Panel
-        add(standardLabel, Constraint.setPosition(0,0));
-        add(standardTextField,Constraint.setPosition(1,0));
-        add(divisionLabel,Constraint.setPosition(2,0));
-        add(divisionTextField,Constraint.setPosition(3,0));
-        add(teacherInchargeLabel,Constraint.setPosition(0,1,2,1));
-        add(teacherInchargeComboBox,Constraint.setPosition(2,1,2,1));
-        add(messageLabel,Constraint.setPosition(0,2,4,1));
-        add(createGradeButton,Constraint.setPosition(0,3,4,1));
+        add(panelNameLabel,Constraint.setPosition(0,0,4,1));
+        add(standardLabel, Constraint.setPosition(0,1));
+        add(standardTextField,Constraint.setPosition(1,1));
+        add(divisionLabel,Constraint.setPosition(2,1));
+        add(divisionTextField,Constraint.setPosition(3,1));
+        add(teacherInchargeLabel,Constraint.setPosition(0,2,2,1,Constraint.RIGHT));
+        add(teacherInchargeComboBox,Constraint.setPosition(2,2,2,1,Constraint.LEFT));
+        add(messageLabel,Constraint.setPosition(0,3,4,1));
+        add(createGradeButton,Constraint.setPosition(0,4,4,1));
     }
 
     private void fillTeacherInchargeComboBox(){
@@ -76,7 +80,7 @@ public class CreateGradePanel extends JPanel implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         if( e.getSource() == standardTextField ){
-            if( Character.isAlphabetic(e.getKeyChar()) || standardTextField.getText().length() > 0 ){
+            if( Character.isAlphabetic(e.getKeyChar()) || standardTextField.getText().length() > 1 ){
                 e.consume();
             }
         }else if( e.getSource() == divisionTextField ){

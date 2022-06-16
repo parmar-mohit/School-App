@@ -11,7 +11,7 @@ import java.math.BigInteger;
 
 public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListener, ActionListener {
 
-    private JLabel firstnameLabel,lastnameLabel,phoneLabel,emailLabel,passwordLabel,genderLabel,messageLabel;
+    private JLabel panelNameLabel,firstnameLabel,lastnameLabel,phoneLabel,emailLabel,passwordLabel,genderLabel,messageLabel;
     private JTextField firstnameTextField,lastnameTextField,phoneTextField,emailTextField;
     private JPasswordField passwordField;
     private JCheckBox showPasswordCheckBox;
@@ -22,6 +22,7 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
     public CreateTeacherPanel(ServerConnection serverConnection) {
         //Initialising Members
         this.serverConnection = serverConnection;
+        panelNameLabel = new JLabel("Create Teacher Id");
         firstnameLabel = new JLabel("Firstname : ");
         firstnameTextField = new JTextField(20);
         lastnameLabel = new JLabel("Lastname : ");
@@ -39,7 +40,9 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         addTeacherButton = new JButton("Add Teacher");
 
         //Editing Components
+        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
         passwordField.setEchoChar('*');
+        showPasswordCheckBox.setBackground(Constant.PANEL_BACKGROUND);
         addTeacherButton.setBackground(Constant.BUTTON_BACKGROUND);
 
         //Adding Listener
@@ -49,23 +52,25 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
 
         //Panel Details
         setLayout(new GridBagLayout());
+        setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding components to Panel
-        add(firstnameLabel, Constraint.setPosition(0,0));
-        add(firstnameTextField,Constraint.setPosition(1,0));
-        add(lastnameLabel,Constraint.setPosition(2,0));
-        add(lastnameTextField,Constraint.setPosition(3,0));
-        add(phoneLabel,Constraint.setPosition(0,1));
-        add(phoneTextField,Constraint.setPosition(1,1));
-        add(emailLabel,Constraint.setPosition(2,1));
-        add(emailTextField,Constraint.setPosition(3,1));
-        add(passwordLabel,Constraint.setPosition(0,2));
-        add(passwordField,Constraint.setPosition(1,2));
-        add(showPasswordCheckBox,Constraint.setPosition(2,2));
-        add(genderLabel,Constraint.setPosition(0,3));
-        add(genderComboBox,Constraint.setPosition(1,3));
-        add(messageLabel,Constraint.setPosition(1,4,4,1));
-        add(addTeacherButton,Constraint.setPosition(0,5,4,1));
+        add(panelNameLabel,Constraint.setPosition(0,0,4,1));
+        add(firstnameLabel, Constraint.setPosition(0,1));
+        add(firstnameTextField,Constraint.setPosition(1,1));
+        add(lastnameLabel,Constraint.setPosition(2,1));
+        add(lastnameTextField,Constraint.setPosition(3,1));
+        add(phoneLabel,Constraint.setPosition(0,2));
+        add(phoneTextField,Constraint.setPosition(1,2));
+        add(emailLabel,Constraint.setPosition(2,2));
+        add(emailTextField,Constraint.setPosition(3,2));
+        add(passwordLabel,Constraint.setPosition(0,3));
+        add(passwordField,Constraint.setPosition(1,3));
+        add(showPasswordCheckBox,Constraint.setPosition(2,3));
+        add(genderLabel,Constraint.setPosition(0,4));
+        add(genderComboBox,Constraint.setPosition(1,4));
+        add(messageLabel,Constraint.setPosition(1,5,4,1));
+        add(addTeacherButton,Constraint.setPosition(0,6,4,1));
     }
 
     @Override
