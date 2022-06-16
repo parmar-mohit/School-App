@@ -19,7 +19,7 @@ public class GetCredentials extends Thread{
         Log.info("Action Code 1 Started for Client at "+client.socket.getInetAddress().getHostAddress());
 
         JSONObject infoJsonObject = jsonObject.getJSONObject("info");
-        int phone = infoJsonObject.getInt("phone");
+        String phone = infoJsonObject.getString("phone");
 
         try{
             db = new DatabaseCon();

@@ -67,7 +67,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
             messageLabel.setText("Enter Username");
             return;
         }
-        int phone = Integer.parseInt(usernameTextField.getText());
+        String phone = usernameTextField.getText();
 
         String password = new String(passwordField.getPassword());
         if( password == null ){
@@ -80,7 +80,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         if( !Constraint.hashPassword(password).equals(savedPassword) ){
             messageLabel.setText("Invalid Credentials");
             return;
-        }else if( phone == Constant.PRINCIPAL_USERNAME ){
+        }else if( phone.equals(Constant.PRINCIPAL_USERNAME) ){
             new Principalnterface(serverConnection);
             dispose();
         }

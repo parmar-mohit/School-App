@@ -23,6 +23,6 @@ public class Constant {
     public static final Dimension BUTTON_SIZE = new Dimension(200,25);
 
     //Other Constants
-    public static final int PRINCIPAL_USERNAME = 123456;
+    public static final String PRINCIPAL_USERNAME = "123456";
 
 }

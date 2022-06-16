@@ -31,7 +31,7 @@ public class ServerConnection {
         this.currentFrame = currentFrame;
     }
 
-    public String getPassword(int phone){
+    public String getPassword(String phone){
         //Creating Appropriate JSON String
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",1);

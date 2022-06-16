@@ -28,9 +28,9 @@ public class DatabaseCon {
             System.out.println(e);
         }
     }
-    public String getPassword(int phone) throws Exception{
+    public String getPassword(String phone) throws Exception{
         PreparedStatement preparedStatement = db.prepareStatement("SELECT password FROM teacher WHERE t_phone=?;");
-        preparedStatement.setInt(1,phone);
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         ResultSet resultSet = preparedStatement.executeQuery();
         if(!resultSet.next()) {
             return null;
