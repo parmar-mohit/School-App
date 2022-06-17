@@ -1,5 +1,6 @@
 package ServerProgram.Client;
 
+import ServerProgram.ActionCode.CreateGrade;
 import ServerProgram.ActionCode.CreateTeacherId;
 import ServerProgram.ActionCode.GetCredentials;
 import ServerProgram.ActionCode.GetTeacherList;
@@ -39,6 +40,10 @@ public class Client extends Thread{
 
                     case 3:
                         new GetTeacherList(jsonObject,this).start();
+                        break;
+
+                    case 4:
+                        new CreateGrade(jsonObject,this).start();
                         break;
 
                     case 99:

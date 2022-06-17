@@ -24,5 +24,6 @@ public class Constant {
 
     //Other Constants
     public static final String PRINCIPAL_USERNAME = "123456";
+    public static final String CANCEL_IMAGE = "Images/Cancel.png";
 
 }

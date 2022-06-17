@@ -94,6 +94,18 @@ public class ServerConnection {
         return infoJsonArray;
     }
 
+    public int createGrade(JSONObject infoJsonObject){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",4);
+        jsonObject.put("info",infoJsonObject);
+
+        //sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = checkMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
     private JSONObject checkMessage(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){

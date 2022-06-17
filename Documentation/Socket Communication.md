@@ -41,6 +41,46 @@ The Client is asking server to add the details of New teacher id to Database.Inf
 
 The Client is asking server to give a list of all teachers in database. info contains nothing and response info contains JSON array where each JSON object contains firstname,lastname and phone number of teacher.
 
+* Action Code 
+
+The Client is requesting server to create a new grade. Info attribute of message contains all the details of grade to be created in JSON format.Example message is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 4,
+    "info" : {
+                "standard" : $standard,
+                "division" : $division,
+                "teacher_incharge" : $phone_no_of_teacher_incharge,
+                "subject_list" : [
+                    {
+                        "subject_name" : $subject_name_1,
+                        "subject_teacher" : $phone_no_of_subject_teacher,
+                    },
+                    {
+                        "subject_name" : $subject_name_2,
+                        "subject_teacher" : $phone_no_of_subject_teacher,
+                    },
+                    {
+                        "subject_name" : $subject_name_3,
+                        "subject_teacher" : $phone_no_of_subject_teacher,
+                    },
+                ]
+            }
+}
+```
+
+Info Attribute of Response Message will contain response code
+indicating status of the request. Response code is set to 0 if request was fulfilled successfully, or is set to 1 is a grade with same standard and division exist.Example is given below
+```
+{
+    "id" : $messageid,
+    "info" : {
+        "response_code" : 0 or 1
+    }
+}
+```
+
 * Action Code 99
 
 The Client is informing the server to close the socket.Info contains nothing
