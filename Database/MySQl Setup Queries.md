@@ -46,7 +46,7 @@ CREATE TABLE parent_child(
 	FOREIGN KEY(sid) REFERENCES student(sid) ON DELETE CASCADE
 	);
 
-CREATE TABLE grade (
+CREATE TABLE classroom (
 	standard INT,
 	division VARCHAR(1),
 	t_phone BIGINT,
@@ -59,7 +59,7 @@ CREATE TABLE subject (
 	t_phone BIGINT
 );
 
-CREATE TABLE subject_grade (
+CREATE TABLE subject_classroom (
 	sub_id INT,
 	standard INT,
 	division VARCHAR(1),

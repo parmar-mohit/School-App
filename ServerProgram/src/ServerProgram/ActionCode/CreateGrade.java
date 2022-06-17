@@ -33,10 +33,10 @@ public class CreateGrade extends Thread {
             responseJsonObject.put("id",jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-           if( db.checkGrade(standard,division) ){
+           if( db.checkClassroom(standard,division) ){
                responseInfoJsonObject.put("response_code",1);
            }else{
-               db.insertGrade(standard,division,teacherIncharge);
+               db.insertClassroom(standard,division,teacherIncharge);
 
                JSONArray subjectListJsonArray = infoJsonObject.getJSONArray("subject_list");
                for( int i = 0; i < subjectListJsonArray.length(); i++){

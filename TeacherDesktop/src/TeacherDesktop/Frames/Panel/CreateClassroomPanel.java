@@ -13,9 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class CreateGradePanel extends JPanel implements KeyListener, ActionListener {
+public class CreateClassroomPanel extends JPanel implements KeyListener, ActionListener {
 
     private ServerConnection serverConnection;
     private JLabel panelNameLabel,standardLabel,divisionLabel, teacherInchargeLabel,messageLabel;
@@ -24,13 +23,13 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
     private JScrollPane scrollPane;
     private JPanel subjectListPanel;
     private ArrayList<SubjectPanel> subjectList;
-    private JButton addSubjectButton,removeSubjectButton,createGradeButton;
+    private JButton addSubjectButton,removeSubjectButton, createClassrooomButton;
     private JSONArray teacherListJsonArray;
 
-    public CreateGradePanel(ServerConnection serverConnection){
+    public CreateClassroomPanel(ServerConnection serverConnection){
         //Initialising Members
         this.serverConnection = serverConnection;
-        panelNameLabel = new JLabel("Create Grade");
+        panelNameLabel = new JLabel("Create Classroom");
         standardLabel =  new JLabel("Standard : ");
         standardTextField = new JTextField(20);
         divisionLabel = new JLabel("Division : ");
@@ -43,7 +42,7 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
         addSubjectButton = new JButton("Add Subject");
         removeSubjectButton = new JButton("Remove Subject");
         messageLabel = new JLabel();
-        createGradeButton = new JButton("Create Grade");
+        createClassrooomButton = new JButton("Create New Classroom");
 
         //Filling TeacherInchargeComboBox
         fillTeacherInchargeComboBox();
@@ -70,8 +69,8 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
         scrollPane.setPreferredSize(new Dimension(750,250));
         addSubjectButton.setBackground(Constant.BUTTON_BACKGROUND);
         addSubjectButton.setPreferredSize(Constant.BUTTON_SIZE);
-        createGradeButton.setBackground(Constant.BUTTON_BACKGROUND);
-        createGradeButton.setPreferredSize(Constant.BUTTON_SIZE);
+        createClassrooomButton.setBackground(Constant.BUTTON_BACKGROUND);
+        createClassrooomButton.setPreferredSize(Constant.BUTTON_SIZE);
         removeSubjectButton.setPreferredSize(Constant.BUTTON_SIZE);
         removeSubjectButton.setBackground(Constant.BUTTON_BACKGROUND);
 
@@ -80,7 +79,7 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
         divisionTextField.addKeyListener(this);
         addSubjectButton.addActionListener(this);
         removeSubjectButton.addActionListener(this);
-        createGradeButton.addActionListener(this);
+        createClassrooomButton.addActionListener(this);
 
         //panel details
         setLayout(new GridBagLayout());
@@ -98,7 +97,7 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
         add(addSubjectButton,Constraint.setPosition(0,4,2,1));
         add(removeSubjectButton,Constraint.setPosition(2,4,2,1));
         add(messageLabel,Constraint.setPosition(0,5,4,1));
-        add(createGradeButton,Constraint.setPosition(0,6,4,1));
+        add(createClassrooomButton,Constraint.setPosition(0,6,4,1));
     }
 
     @Override
@@ -117,7 +116,7 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
             subjectList.remove(lastSubjectPanel);
             revalidate();
             repaint();
-        }else if( e.getSource() == createGradeButton ){
+        }else if( e.getSource() == createClassrooomButton){
             if( standardTextField.getText().equals("") ){
                 messageLabel.setText("Enter Standard");
                 return;
@@ -155,7 +154,7 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
                 subjectJsonObject.put("subject_name",subjectPanel.subjectNameTextField.getText().toLowerCase());
 
                 if( subjectPanel.subjectTeacherComboBox.getSelectedItem() == null ){
-                    messageLabel.setText("Select Subject Teacher for Subject No : "+i+1);
+                    messageLabel.setText("Select Subject Teacher for Subject No : "+(i+1));
                     return;
                 }
                 subjectJsonObject.put("subject_teacher",getPhone(subjectPanel.subjectTeacherComboBox.getSelectedItem()+""));
@@ -169,7 +168,7 @@ public class CreateGradePanel extends JPanel implements KeyListener, ActionListe
             if( response == 0 ){
                 messageLabel.setText("Grade Created");
             }else if( response == 1 ){
-                messageLabel.setText("Grade with same Standard and Division exist");
+                messageLabel.setText("Classroom with same Standard and Division exist");
             }
         }
     }

@@ -1,13 +1,7 @@
 package ServerProgram;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.Vector;
 
 public class DatabaseCon {
 
@@ -61,25 +55,25 @@ public class DatabaseCon {
         preparedStatement.setBigDecimal(1,new BigDecimal(entry));
         ResultSet result = preparedStatement.executeQuery();
         result.next();
-
         return result.getBoolean(1);
     }
 
-    public boolean checkGrade(int standard,String division) throws Exception{
-        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM grade WHERE standard = ? AND DIVISION = ?;");
+    public boolean checkClassroom(int standard,String division) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM classroom WHERE standard = ? AND DIVISION = ?;");
         preparedStatement.setInt(1,standard);
         preparedStatement.setString(2,division);
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet.next();
     }
 
-    public void insertGrade(int standard, String division, String phone) throws Exception{
-        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO grade VALUES(?,?,?);");
+    public void insertClassroom(int standard, String division, String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO classroom VALUES(?,?,?);");
         preparedStatement.setInt(1,standard);
         preparedStatement.setString(2,division);
         preparedStatement.setBigDecimal(3,new BigDecimal(phone));
         preparedStatement.executeUpdate();
     }
+
 
     public void insertSubject(int standard,String division,String subjectName,String phone) throws Exception{
         //Inserting New Subject
@@ -94,8 +88,8 @@ public class DatabaseCon {
         resultSet.next();
         int id = resultSet.getInt(1);
 
-        //Inserting Subject Grade
-        preparedStatement = db.prepareStatement("INSERT INTO subject_grade VALUES(?,?,?);");
+        //Inserting Subject_Classroom
+        preparedStatement = db.prepareStatement("INSERT INTO subject_classroom VALUES(?,?,?);");
         preparedStatement.setInt(1,id);
         preparedStatement.setInt(2,standard);
         preparedStatement.setString(3,division);
