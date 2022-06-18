@@ -31,15 +31,86 @@ The action needed to perform when a message with certain action code is recived.
 
 * Action Code 1
 
-The Client is asking server to check crendential of teacher user.Info attribute contains phone of teacher. Response Info contains  password which is set "null" (String) if user does not exist and contains password if user exists.
+The Client is asking server to check crendential of teacher user.Info attribute of message contains phone of teacher.
+Example of message is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 1,
+    "info" : {
+        "phone" : $phone_no_of_teacher
+    }
+}
+```
+Info attribute of response message contains "null" if user does not exist or it contains hashed password saved in database.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "password" : $null_or_password
+    }
+}
+```
 
 * Action Code 2
 
-The Client is asking server to add the details of New teacher id to Database.Info attribute contains an JSON object with all the attributes of teacher id.Response attribute contains response code which is 0 if teacher id was added to database successfully. Response code is 1 if teacher id was not added to because a teacher with same phone exist in database.
+The Client is asking server to add the details of New teacher id to Database.Info attribute of message contains an JSON object with all the attributes of teacher id.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 2,
+    "info" : {
+        "phone" : $phone,
+        "firsname" : $firstname,
+        "lastname" : $lastname,
+        "email" : $email,
+        "gender: : $gender,
+        "password" : $hashed_password
+    }
+}
+```
+Info attribute of response message contains responseCode which is set to 0 if teacher id was successfully added to database, Or else it is set to 1 if teacher id was not added because a teacher with same phone exist in database.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0 or 1
+    }
+}
+```
 
 * Action Code 3
 
-The Client is asking server to give a list of all teachers in database. info contains nothing and response info contains JSON array where each JSON object contains firstname,lastname and phone number of teacher.
+The Client is asking server to give a list of all teachers in database. There is no Info attribute of message.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 3
+}
+``` 
+Info attribute of response message contains an array of JSONObject where each Object contains firstname,lastname,phone of teacher.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : [
+        {
+            "firstname" : $firstname_of_teacher1,
+            "lastname" : $lastname_of_teacher1,
+            "phone" : $phone_of_teacher1
+        },
+        {
+            "firstname" : $firstname_of_teacher2,
+            "lastname" : $lastname_of_teacher2,
+            "phone" : $phone_of_teacher2
+        },
+        {
+            "firstname" : $firstname_of_teacher3,
+            "lastname" : $lastname_of_teacher3,
+            "phone" : $phone_of_teacher3
+        }
+    ]
+}
+```
 
 * Action Code 
 
@@ -64,7 +135,7 @@ The Client is requesting server to create a new grade. Info attribute of message
                     {
                         "subject_name" : $subject_name_3,
                         "subject_teacher" : $phone_no_of_subject_teacher,
-                    },
+                    }
                 ]
             }
 }
@@ -80,7 +151,3 @@ indicating status of the request. Response code is set to 0 if request was fulfi
     }
 }
 ```
-
-* Action Code 99
-
-The Client is informing the server to close the socket.Info contains nothing

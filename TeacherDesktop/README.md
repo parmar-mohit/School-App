@@ -20,6 +20,10 @@ The Principal user will be able to do following task
 * View Details of Student
 * Create and Enter Score of Exams
 
+### ServerConnection
+
+ServerConnection is a class/module that allows this program to connect to serverSocket and request resources.Whenever a ServerConnection object is instantiated it creates a new receiver Thread. This receiver thread continously listen for incoming messages from server.When a message from server is received it first checks if client has to execute some module, otherwise it stores the message in messagepool. Whenever the program requires some data from server it first asks the serverConnection to send a message requesting the resource and when a response message is received from server it is stored in messagepool which is an arraylist of messages of String data type.From this messagepool we can get our response message which will contain requested data.
+
 ### Additional Resources Used
 
 The Additional Resoruces that are required by the program are stored in Jar Files  directory.

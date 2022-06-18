@@ -112,9 +112,4 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
     public void keyReleased(KeyEvent e) {
 
     }
-
-    @Override
-    protected void finalize() throws Throwable {
-        serverConnection.closeConnection();
-    }
 }

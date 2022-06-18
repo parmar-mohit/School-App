@@ -45,12 +45,6 @@ public class Client extends Thread{
                     case 4:
                         new CreateGrade(jsonObject,this).start();
                         break;
-
-                    case 99:
-                        Log.info("Closing Connection with Client at "+socket.getInetAddress().getHostAddress());
-                        socket.close();
-                        clientList.remove(this);
-                        break exit;
                 }
             }
         }catch(SocketException e){

@@ -164,10 +164,4 @@ public class ServerConnection {
         };
         receiverThread.start();
     }
-
-    public void closeConnection(){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("action_code",99);
-        sendMessage(jsonObject);
-    }
 }
