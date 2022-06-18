@@ -112,7 +112,7 @@ Info attribute of response message contains an array of JSONObject where each Ob
 }
 ```
 
-* Action Code 
+* Action Code 4
 
 The Client is requesting server to create a new grade. Info attribute of message contains all the details of grade to be created in JSON format.Example message is as follows
 ```
@@ -148,6 +148,29 @@ indicating status of the request. Response code is set to 0 if request was fulfi
     "id" : $messageid,
     "info" : {
         "response_code" : 0 or 1
+    }
+}
+```
+
+* Action Code 5
+
+The Client is requesting server to change password of a user.Info attribute of message contains phone no of user whoose password is to be changed and new password.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 5,
+    "info" : {
+        "phone" : $phone_of_teacher,
+        "password" : $new_hashed_password
+    }
+}
+```
+Info Attribute of response message contains response code which is set to 0 when passsword is changed successfully.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
     }
 }
 ```

@@ -95,4 +95,11 @@ public class DatabaseCon {
         preparedStatement.setString(3,division);
         preparedStatement.executeUpdate();
     }
+
+    public void changePassword(String phone, String password) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE teacher SET password = ? WHERE t_phone  = ?;");
+        preparedStatement.setString(1,password);
+        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        preparedStatement.executeUpdate();
+    }
 }

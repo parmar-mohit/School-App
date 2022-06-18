@@ -106,6 +106,21 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
+    public int changePassword(String phone,String password){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",5);
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+        infoJsonObject.put("password",password);
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = checkMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
     private JSONObject checkMessage(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){

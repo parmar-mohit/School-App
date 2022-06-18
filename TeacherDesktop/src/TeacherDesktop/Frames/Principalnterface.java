@@ -1,6 +1,7 @@
 package TeacherDesktop.Frames;
 
 import TeacherDesktop.Frames.Panel.BrandingPanel;
+import TeacherDesktop.Frames.Panel.ChangePasswordPanel;
 import TeacherDesktop.Frames.Panel.CreateClassroomPanel;
 import TeacherDesktop.Frames.Panel.CreateTeacherPanel;
 import TeacherDesktop.Server.ServerConnection;
@@ -65,6 +66,12 @@ public class Principalnterface extends JFrame implements ActionListener {
             optionPanel = new CreateTeacherPanel(serverConnection);
         }else if( e.getSource() == buttonPanel.createClassroomButton){
             optionPanel = new CreateClassroomPanel(serverConnection);
+        }else if( e.getSource() == buttonPanel.changePasswordButton ){
+            optionPanel = new ChangePasswordPanel(serverConnection);
+        }else if( e.getSource() ==  buttonPanel.logoutButton ){
+            dispose();
+            new LoginInterface(serverConnection);
+            return;
         }
 
         //Coloring Buttons

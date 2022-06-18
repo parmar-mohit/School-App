@@ -1,9 +1,6 @@
 package ServerProgram.Client;
 
-import ServerProgram.ActionCode.CreateGrade;
-import ServerProgram.ActionCode.CreateTeacherId;
-import ServerProgram.ActionCode.GetCredentials;
-import ServerProgram.ActionCode.GetTeacherList;
+import ServerProgram.ActionCode.*;
 import ServerProgram.Log;
 import org.json.JSONObject;
 
@@ -44,6 +41,10 @@ public class Client extends Thread{
 
                     case 4:
                         new CreateGrade(jsonObject,this).start();
+                        break;
+
+                    case 5:
+                        new ChangePassword(jsonObject,this).start();
                         break;
                 }
             }
