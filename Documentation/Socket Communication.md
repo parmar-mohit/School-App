@@ -88,7 +88,7 @@ The Client is asking server to give a list of all teachers in database. There is
     "action_code" : 3
 }
 ``` 
-Info attribute of response message contains an array of JSONObject where each Object contains firstname,lastname,phone of teacher.Example is as follows
+Info attribute of response message contains an array of JSONObject where each Object contains attribuutes of teacher.Example is as follows
 ```
 {
     "id" : $messageId,
@@ -96,17 +96,23 @@ Info attribute of response message contains an array of JSONObject where each Ob
         {
             "firstname" : $firstname_of_teacher1,
             "lastname" : $lastname_of_teacher1,
-            "phone" : $phone_of_teacher1
+            "phone" : $phone_of_teacher1,
+            "email" : $email_of_teacher1,
+            "gender" : $gender_of_teacher1
         },
         {
             "firstname" : $firstname_of_teacher2,
             "lastname" : $lastname_of_teacher2,
-            "phone" : $phone_of_teacher2
+            "phone" : $phone_of_teacher2,
+            "email" : $email_of_teacher2,
+            "gender" : $gender_of_teacher2
         },
         {
             "firstname" : $firstname_of_teacher3,
             "lastname" : $lastname_of_teacher3,
-            "phone" : $phone_of_teacher3
+            "phone" : $phone_of_teacher3,
+            "email" : $email_of_teacher3,
+            "gender" : $gender_of_teacher3
         }
     ]
 }

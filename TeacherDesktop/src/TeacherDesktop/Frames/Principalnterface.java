@@ -1,9 +1,6 @@
 package TeacherDesktop.Frames;
 
-import TeacherDesktop.Frames.Panel.BrandingPanel;
-import TeacherDesktop.Frames.Panel.ChangePasswordPanel;
-import TeacherDesktop.Frames.Panel.CreateClassroomPanel;
-import TeacherDesktop.Frames.Panel.CreateTeacherPanel;
+import TeacherDesktop.Frames.Panel.*;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
@@ -31,7 +28,7 @@ public class Principalnterface extends JFrame implements ActionListener {
 
 
         //Adding Listener
-        buttonPanel.createTeacherIdButton.addActionListener(this);
+        buttonPanel.teacherButton.addActionListener(this);
         buttonPanel.createClassroomButton.addActionListener(this);
         buttonPanel.changePasswordButton.addActionListener(this);
         buttonPanel.logoutButton.addActionListener(this);
@@ -50,6 +47,7 @@ public class Principalnterface extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Constant.FRAME_BACKGROUND);
+        setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         //Adding Components to Frame
         add(brandingPanel,Constraint.setPosition(0,0,2,1));
@@ -62,8 +60,8 @@ public class Principalnterface extends JFrame implements ActionListener {
             remove(optionPanel);
         }
 
-        if( e.getSource() == buttonPanel.createTeacherIdButton){
-            optionPanel = new CreateTeacherPanel(serverConnection);
+        if( e.getSource() == buttonPanel.teacherButton){
+            optionPanel = new TeacherPanel(serverConnection);
         }else if( e.getSource() == buttonPanel.createClassroomButton){
             optionPanel = new CreateClassroomPanel(serverConnection);
         }else if( e.getSource() == buttonPanel.changePasswordButton ){
@@ -75,7 +73,7 @@ public class Principalnterface extends JFrame implements ActionListener {
         }
 
         //Coloring Buttons
-        buttonPanel.createTeacherIdButton.setBackground(Constant.BUTTON_BACKGROUND);
+        buttonPanel.teacherButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.createClassroomButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.changePasswordButton.setBackground(Constant.BUTTON_BACKGROUND);
 
@@ -93,18 +91,18 @@ public class Principalnterface extends JFrame implements ActionListener {
 
 class ButtonPanel extends JPanel {
 
-    protected JButton createTeacherIdButton, createClassroomButton,changePasswordButton,logoutButton;
+    protected JButton teacherButton, createClassroomButton,changePasswordButton,logoutButton;
 
     public ButtonPanel(){
         //Initialising Member Variables
-        createTeacherIdButton = new JButton("Create Teacher Id");
+        teacherButton = new JButton("Teacher");
         createClassroomButton = new JButton("Create Classroom");
         changePasswordButton = new JButton("Change Password");
         logoutButton = new JButton("Logout");
 
         //Editing Components
-        createTeacherIdButton.setPreferredSize(Constant.BUTTON_SIZE);
-        createTeacherIdButton.setBackground(Constant.BUTTON_BACKGROUND);
+        teacherButton.setPreferredSize(Constant.BUTTON_SIZE);
+        teacherButton.setBackground(Constant.BUTTON_BACKGROUND);
         createClassroomButton.setPreferredSize(Constant.BUTTON_SIZE);
         createClassroomButton.setBackground(Constant.BUTTON_BACKGROUND);
         changePasswordButton.setPreferredSize(Constant.BUTTON_SIZE);
@@ -117,7 +115,7 @@ class ButtonPanel extends JPanel {
         setBackground(Constant.BUTTON_PANEL_BACKGROUND);
 
         //Adding Components to Frame
-        add(createTeacherIdButton,Constraint.setPosition(0,0));
+        add(teacherButton,Constraint.setPosition(0,0));
         add(createClassroomButton,Constraint.setPosition(0,1));
         add(changePasswordButton,Constraint.setPosition(0,2));
         add(logoutButton,Constraint.setPosition(0,3));

@@ -1,9 +1,7 @@
 package TeacherDesktop.Frames.Panel;
 
-import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
-import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,8 +21,6 @@ public class SubjectPanel extends JPanel {
         subjectNameTextField = new JTextField(20);
         subjectTeacherLabel = new JLabel("Subject Teacher : ");
         subjectTeacherComboBox = new JComboBox();
-        Image img = new ImageIcon(Constant.CANCEL_IMAGE).getImage();
-        img = img.getScaledInstance(20,20,Image.SCALE_DEFAULT);
 
         //Filling SubjectIncharge ComboBox
         fillSubjectTeacherComboBox();

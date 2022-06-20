@@ -16,7 +16,8 @@ public class Constant {
     public static final Color BUTTON_PANEL_BACKGROUND = new Color(12, 8, 56);
     public static final Color PANEL_BACKGROUND = new Color(66, 135, 245);
     public static final Color BUTTON_BACKGROUND = new Color(255,255,255);
-    public static final Color SELECTED_BUTTON = new Color(104, 123, 153);
+    public static final Color SELECTED_BUTTON = new Color(163, 198, 255);
+    public static final Color TEACHER_CARD_PANEL = new Color(235, 101, 128);
 
     //Size Constants
     public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -24,6 +25,7 @@ public class Constant {
 
     //Other Constants
     public static final String PRINCIPAL_USERNAME = "123456";
-    public static final String CANCEL_IMAGE = "Images/Cancel.png";
-
+    public static final String ADD_ICON = "Images/Add Icon.png";
+    public static final String MALE_AVATAR = "Images/Male Avatar.png";
+    public static final String FEMALE_AVATAR = "Images/Female Avatar.png";
 }

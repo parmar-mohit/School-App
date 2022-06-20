@@ -151,14 +151,13 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
                     return;
                 }
                 JSONObject subjectJsonObject = new JSONObject();
-                subjectJsonObject.put("subject_name",subjectPanel.subjectNameTextField.getText().toLowerCase());
+                subjectJsonObject.put("subject_name", subjectPanel.subjectNameTextField.getText().toLowerCase());
 
                 if( subjectPanel.subjectTeacherComboBox.getSelectedItem() == null ){
                     messageLabel.setText("Select Subject Teacher for Subject No : "+(i+1));
                     return;
                 }
                 subjectJsonObject.put("subject_teacher",getPhone(subjectPanel.subjectTeacherComboBox.getSelectedItem()+""));
-
                 subjectJsonArray.put(subjectJsonObject);
             }
 

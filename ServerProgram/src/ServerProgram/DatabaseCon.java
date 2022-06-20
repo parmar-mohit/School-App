@@ -38,14 +38,14 @@ public class DatabaseCon {
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         preparedStatement.setString(2,firstname.toLowerCase());
         preparedStatement.setString(3,lastname.toLowerCase());
-        preparedStatement.setString(4,email);
+        preparedStatement.setString(4,email.toLowerCase());
         preparedStatement.setString(5,gender);
         preparedStatement.setString(6,password);
         preparedStatement.executeUpdate();
     }
 
     public ResultSet getTeacherList() throws Exception {
-        PreparedStatement preparedStatement = db.prepareStatement("SELECT t_phone,firstname,lastname FROM teacher;");
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT t_phone,firstname,lastname,email,gender FROM teacher;");
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet;
     }

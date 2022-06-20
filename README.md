@@ -17,7 +17,7 @@ To Develop this Program we will use a 3 tier architecture for Database.Clients w
 
 [Teacher Desktop](./TeacherDesktop/) contains Source code for Desktop Application for Teachers. This is a client program.
 
-[Doucmentation](./Documentation/) contains additional documentation for this project.
+[Documentation](./Documentation/) contains additional documentation for this project.
 
 ### Database
 

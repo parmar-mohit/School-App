@@ -35,6 +35,8 @@ public class GetTeacherList extends Thread {
                 teacherJsonObject.put("phone",resultSet.getBigDecimal("t_phone")+"");
                 teacherJsonObject.put("firstname",resultSet.getString("firstname"));
                 teacherJsonObject.put("lastname",resultSet.getString("lastname"));
+                teacherJsonObject.put("email",resultSet.getString("email"));
+                teacherJsonObject.put("gender",resultSet.getString("gender"));
                 jsonArray.put(teacherJsonObject);
             }
 
