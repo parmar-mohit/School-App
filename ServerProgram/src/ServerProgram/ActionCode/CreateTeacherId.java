@@ -18,7 +18,7 @@ public class CreateTeacherId extends Thread{
     }
     @Override
     public void run() {
-        Log.info("Action Code 2 Started for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 2 Started for Client at "+client.getIpAddress());
 
         JSONObject infoJsonObject = jsonObject.getJSONObject("info");
         String phone = infoJsonObject.getString("phone");
@@ -37,7 +37,7 @@ public class CreateTeacherId extends Thread{
             JSONObject responseInfoObject = new JSONObject();
 
             //Checking if a teacher with same phone exist
-            if( db.checkPhone("t_phone","teacher",phone) ){
+            if( db.checkPhone(phone) ){
                 responseInfoObject.put("response_code",1);
             }else{
                 db.createTeacherId(phone,firstname,lastname,email,gender,password);
@@ -50,6 +50,6 @@ public class CreateTeacherId extends Thread{
         }finally {
             db.closeConnection();
         }
-        Log.info("Action Code 2 Completed for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 2 Completed for Client at "+client.getIpAddress());
     }
 }

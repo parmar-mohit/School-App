@@ -72,7 +72,6 @@ CREATE TABLE exam (
 	exam_id INT PRIMARY KEY AUTO_INCREMENT,
 	exam_name VARCHAR(50),
 	sub_id INT,
-	t_phone BIGINT,
 	total_marks INT,
 	FOREIGN KEY(sub_id) REFERENCES subject(sub_id) ON DELETE CASCADE
 	);
@@ -97,9 +96,6 @@ CREATE TABLE teacher (
 	);
 
 ALTER TABLE grade
-ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
-
-ALTER TABLE exam
 ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
 
 ALTER TABLE subject

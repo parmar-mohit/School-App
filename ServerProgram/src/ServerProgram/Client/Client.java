@@ -11,7 +11,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 public class Client extends Thread{
-    public Socket socket;
+    private Socket socket;
     private ArrayList<Client> clientList;
     public Client(Socket socket,ArrayList<Client> clientList) {
         this.socket = socket;
@@ -46,6 +46,10 @@ public class Client extends Thread{
                     case 5:
                         new ChangePassword(jsonObject,this).start();
                         break;
+
+                    case 6:
+                        new UpdateTeacherAttributes(jsonObject,this).start();
+                        break;
                 }
             }
         }catch(SocketException e){
@@ -65,5 +69,9 @@ public class Client extends Thread{
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String getIpAddress(){
+        return socket.getInetAddress().getHostAddress();
     }
 }

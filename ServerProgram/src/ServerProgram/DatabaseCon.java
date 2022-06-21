@@ -50,9 +50,9 @@ public class DatabaseCon {
         return resultSet;
     }
 
-    public Boolean checkPhone(String column,String table,String entry) throws Exception{
-        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS (SELECT "+column+" FROM "+table+" WHERE "+column+"=?);");
-        preparedStatement.setBigDecimal(1,new BigDecimal(entry));
+    public Boolean checkPhone(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS (SELECT t_phone FROM teacher WHERE t_phone = ?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         ResultSet result = preparedStatement.executeQuery();
         result.next();
         return result.getBoolean(1);
@@ -100,6 +100,17 @@ public class DatabaseCon {
         PreparedStatement preparedStatement = db.prepareStatement("UPDATE teacher SET password = ? WHERE t_phone  = ?;");
         preparedStatement.setString(1,password);
         preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        preparedStatement.executeUpdate();
+    }
+
+    public void updateTeacherAttributes(String phone,String firstname,String lastname,String email,String gender) throws Exception{
+        //Updating in teacher Table
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE teacher SET firstname =?, lastname = ?, email = ?, gender = ? WHERE t_phone = ?;");
+        preparedStatement.setString(1,firstname);
+        preparedStatement.setString(2,lastname);
+        preparedStatement.setString(3,email);
+        preparedStatement.setString(4,gender);
+        preparedStatement.setBigDecimal(5,new BigDecimal(phone));
         preparedStatement.executeUpdate();
     }
 }

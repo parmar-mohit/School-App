@@ -50,7 +50,7 @@ public class ServerConnection {
         }
 
         //Waiting till message is received
-        JSONObject recvMessage = checkMessage(id);
+        JSONObject recvMessage = getResponseMessage(id);
         String password = recvMessage.getJSONObject("info").getString("password");
         return password;
     }
@@ -69,7 +69,7 @@ public class ServerConnection {
         long id = sendMessage(jsonObject);
 
         //Getting Message
-        JSONObject responseJsonObject = checkMessage(id);
+        JSONObject responseJsonObject = getResponseMessage(id);
 
         //returning response code
         return responseJsonObject.getJSONObject("info").getInt("response_code");
@@ -89,7 +89,7 @@ public class ServerConnection {
             e.printStackTrace();
         }
 
-        jsonObject = checkMessage(id);
+        jsonObject = getResponseMessage(id);
         JSONArray infoJsonArray = jsonObject.getJSONArray("info");
         return infoJsonArray;
     }
@@ -102,7 +102,7 @@ public class ServerConnection {
         //sending message
         long id = sendMessage(jsonObject);
 
-        JSONObject responseJsonObject = checkMessage(id);
+        JSONObject responseJsonObject = getResponseMessage(id);
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
@@ -117,11 +117,23 @@ public class ServerConnection {
         //Sending Message
         long id = sendMessage(jsonObject);
 
-        JSONObject responseJsonObject = checkMessage(id);
+        JSONObject responseJsonObject = getResponseMessage(id);
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
-    private JSONObject checkMessage(long messageId){
+    public int updateTeacherAttributes(JSONObject teacherObject){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",6);
+        jsonObject.put("info",teacherObject);
+
+        //sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
+    private JSONObject getResponseMessage(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){
                 JSONObject jsonObject = new JSONObject(messagePool.get(i));

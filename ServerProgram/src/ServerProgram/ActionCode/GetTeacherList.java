@@ -21,7 +21,7 @@ public class GetTeacherList extends Thread {
 
     @Override
     public void run() {
-        Log.info("Action Code 3 Started for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 3 Started for Client at "+client.getIpAddress());
 
         try{
             db = new DatabaseCon();
@@ -48,6 +48,6 @@ public class GetTeacherList extends Thread {
             db.closeConnection();
         }
 
-        Log.info("Action Code 3 Completed for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 3 Completed for Client at "+client.getIpAddress());
     }
 }

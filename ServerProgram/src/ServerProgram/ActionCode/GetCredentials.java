@@ -16,7 +16,7 @@ public class GetCredentials extends Thread{
     }
     @Override
     public void run() {
-        Log.info("Action Code 1 Started for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 1 Started for Client at "+client.getIpAddress());
 
         JSONObject infoJsonObject = jsonObject.getJSONObject("info");
         String phone = infoJsonObject.getString("phone");
@@ -39,6 +39,6 @@ public class GetCredentials extends Thread{
         }finally {
             db.closeConnection();
         }
-        Log.info("Action Code 1 Completed for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 1 Completed for Client at "+client.getIpAddress());
     }
 }

@@ -180,3 +180,30 @@ Info Attribute of response message contains response code which is set to 0 when
     }
 }
 ```
+
+* Action Code 5
+
+The Client is requesting server to update Details of Teacher.Info attribute of message contains all attributes of teacher.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 5,
+    "info" : {
+        "phone" : $hone,
+        "firstnamee" : $new_firstname,
+        "lastname" : $new_lastname,
+        "email" : $new_email,
+        "gender" : $new_gender
+    }
+}
+```
+
+Info attribute of response message contains response code which is set to 0 if updation was successfull.
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
+    }
+}
+```

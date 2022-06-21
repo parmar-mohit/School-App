@@ -19,7 +19,7 @@ public class CreateGrade extends Thread {
 
     @Override
     public void run() {
-        Log.info("Action Code 4 Started for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 4 Started for Client at "+client.getIpAddress());
 
         try{
            db = new DatabaseCon();
@@ -54,6 +54,6 @@ public class CreateGrade extends Thread {
         }finally {
             db.closeConnection();
         }
-        Log.info("Action Code 4 Completed for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 4 Completed for Client at "+client.getIpAddress());
     }
 }

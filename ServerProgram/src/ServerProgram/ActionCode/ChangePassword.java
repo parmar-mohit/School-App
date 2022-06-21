@@ -18,7 +18,7 @@ public class ChangePassword extends Thread {
 
     @Override
     public void run() {
-        Log.info("Action Code 5 Started for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 5 Started for Client at "+client.getIpAddress());
 
         try{
             db = new DatabaseCon();
@@ -42,6 +42,6 @@ public class ChangePassword extends Thread {
             db.closeConnection();
         }
 
-        Log.info("Action Code 5 Completed for Client at "+client.socket.getInetAddress().getHostAddress());
+        Log.info("Action Code 5 Completed for Client at "+client.getIpAddress());
     }
 }

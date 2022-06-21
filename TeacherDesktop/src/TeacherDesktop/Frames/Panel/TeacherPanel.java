@@ -92,8 +92,8 @@ public class TeacherPanel extends JPanel implements ActionListener {
         for( int i = 0; i < teacherJsonArray.length(); i++ ){
             JSONObject teacherJsonObject = teacherJsonArray.getJSONObject(i);
             if( !teacherJsonObject.getString("phone").equals(Constant.PRINCIPAL_USERNAME) ){
-                TeacherCardPanel teacherCardPanel = new TeacherCardPanel(teacherJsonObject);
-                teacherCardPanel.setPreferredSize(new Dimension(900,150));
+                TeacherCardPanel teacherCardPanel = new TeacherCardPanel(teacherJsonObject,serverConnection);
+                teacherCardPanel.setPreferredSize(new Dimension(900,200));
                 teacherListPanel.add(teacherCardPanel,Constraint.setPosition(0,teacherCardPanelList.size()));
                 teacherCardPanelList.add(teacherCardPanel);
             }
