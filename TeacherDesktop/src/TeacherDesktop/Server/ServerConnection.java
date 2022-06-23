@@ -63,7 +63,7 @@ public class ServerConnection {
         infoJsonObject.put("lastname",lastname);
         infoJsonObject.put("phone",phone);
         infoJsonObject.put("email",email);
-        infoJsonObject.put("password", Constraint.hashPassword(password));
+        infoJsonObject.put("password", password);
         infoJsonObject.put("gender",gender);
         jsonObject.put("info",infoJsonObject);
         long id = sendMessage(jsonObject);
@@ -142,6 +142,22 @@ public class ServerConnection {
 
         JSONObject responseJsonObject = getResponseMessage(id);
         return responseJsonObject.getJSONArray("info");
+    }
+
+    public int deleteTeacher(String phone){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",8);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+       long id = sendMessage(jsonObject);
+
+       JSONObject responseJsonObject = getResponseMessage(id);
+       return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
     private JSONObject getResponseMessage(long messageId){
         while (true){

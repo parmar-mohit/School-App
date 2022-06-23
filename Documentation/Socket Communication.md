@@ -268,3 +268,26 @@ Info Attribute of Response Message contains an JSON array, this array has JSON o
     ]
 }
 ```
+
+* Action Code 8
+
+The Client is requesting server to delete a teacher Id.Info attribute of message contains phone no of teacher whoose id is to be deleted.Exmaple is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 8,
+    "info" : {
+        "phone" : $phone_of_teacher
+    }
+}
+```
+
+Info attribute of response message contains response code which is set to 0 if teacher was deleted and set to 1 if teacher was not deleted because teacher is incharge of a class or subject.This check is done to make sure that we do not delete a teacher which has been appointed some duty.Example of JSON is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0 or 1
+    }
+}
+```

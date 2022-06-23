@@ -134,4 +134,22 @@ public class DatabaseCon {
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet;
     }
+
+    public boolean checkIfTeacherIncharge(String phone) throws Exception{
+        PreparedStatement preparedStatement1 = db.prepareStatement("SELECT EXISTS ( SELECT * FROM subject WHERE t_phone = ? );");
+        preparedStatement1.setBigDecimal(1,new BigDecimal(phone));
+        PreparedStatement preparedStatement2 = db.prepareStatement("SELECT EXISTS ( SELECT * FROM classroom WHERE t_phone = ? );");
+        preparedStatement2.setBigDecimal(1,new BigDecimal(phone));
+        ResultSet resultSet1 = preparedStatement1.executeQuery();
+        resultSet1.next();
+        ResultSet resultSet2 = preparedStatement2.executeQuery();
+        resultSet2.next();
+        return resultSet1.getBoolean(1) || resultSet2.getBoolean(1);
+    }
+
+    public void deleteTeacherId(String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM teacher WHERE t_phone = ?;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.executeUpdate();
+    }
 }
