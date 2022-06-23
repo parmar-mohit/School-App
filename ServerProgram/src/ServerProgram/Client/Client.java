@@ -50,6 +50,10 @@ public class Client extends Thread{
                     case 6:
                         new UpdateTeacherAttributes(jsonObject,this).start();
                         break;
+
+                    case 7:
+                        new GetClassroomList(jsonObject,this).start();
+                        break;
                 }
             }
         }catch(SocketException e){

@@ -113,4 +113,25 @@ public class DatabaseCon {
         preparedStatement.setBigDecimal(5,new BigDecimal(phone));
         preparedStatement.executeUpdate();
     }
+
+    public ResultSet getClassroomList() throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM classroom;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
+
+    public ResultSet getTeacherName(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT firstname,lastname FROM teacher WHERE t_phone = ?;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
+
+    public ResultSet getSubjectList(int standard,String division) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT subject_name,t_phone FROM subject WHERE sub_id IN ( SELECT sub_id FROM subject_classroom WHERE standard = ? AND division = ? );");
+        preparedStatement.setInt(1,standard);
+        preparedStatement.setString(2,division);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
 }

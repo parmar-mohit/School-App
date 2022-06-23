@@ -48,6 +48,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
         fillTeacherInchargeComboBox();
 
         //Editing SubjectListPanel
+        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,18));
         subjectListPanel.setLayout(new GridBagLayout());
         JLabel subjectListLabel = new JLabel("Subject List");
         subjectListLabel.setFont(new Font("Serif",Font.PLAIN,16));
@@ -65,8 +66,8 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
 
         //Editing Components
         panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
-        scrollPane.setMinimumSize(new Dimension(750,280));
-        scrollPane.setPreferredSize(new Dimension(750,250));
+        scrollPane.setMinimumSize(new Dimension(750,220));
+        scrollPane.setPreferredSize(new Dimension(750,220));
         addSubjectButton.setBackground(Constant.BUTTON_BACKGROUND);
         addSubjectButton.setPreferredSize(Constant.BUTTON_SIZE);
         createClassrooomButton.setBackground(Constant.BUTTON_BACKGROUND);
@@ -165,7 +166,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
             int response = serverConnection.createGrade(infoJsonObject);
 
             if( response == 0 ){
-                messageLabel.setText("Grade Created");
+                messageLabel.setText("Classroom Created");
             }else if( response == 1 ){
                 messageLabel.setText("Classroom with same Standard and Division exist");
             }

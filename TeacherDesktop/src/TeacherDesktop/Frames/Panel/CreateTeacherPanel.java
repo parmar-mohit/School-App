@@ -40,7 +40,7 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         addTeacherButton = new JButton("Add Teacher");
 
         //Editing Components
-        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
+        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,18));
         passwordField.setEchoChar('*');
         showPasswordCheckBox.setBackground(Constant.PANEL_BACKGROUND);
         addTeacherButton.setBackground(Constant.BUTTON_BACKGROUND);

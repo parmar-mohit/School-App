@@ -133,6 +133,16 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
+    public JSONArray getClassroomList(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",7);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONArray("info");
+    }
     private JSONObject getResponseMessage(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){

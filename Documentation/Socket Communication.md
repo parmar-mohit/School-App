@@ -181,7 +181,7 @@ Info Attribute of response message contains response code which is set to 0 when
 }
 ```
 
-* Action Code 5
+* Action Code 6
 
 The Client is requesting server to update Details of Teacher.Info attribute of message contains all attributes of teacher.Example is as follows
 ```
@@ -205,5 +205,66 @@ Info attribute of response message contains response code which is set to 0 if u
     "info" : {
         "response_code" : 0
     }
+}
+```
+
+* Action Code 7
+
+The Client is requesting server to given details of all classroom available in database.There is no Info atrribute in message.Example is as follows
+```
+{
+    "id" : $messadeId,
+    "action_code" : 7
+}
+```
+
+Info Attribute of Response Message contains an JSON array, this array has JSON object containing information about each classroom, Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : [
+        {
+            "standard" : $standard_1,
+            "division" : $division_1,
+            "teacher_incharge" : $phone_no_of_teacherIncharge,
+            "firstname" : $firstname_of_teacherIncharge,
+            "lastname" : $lastname_of_teacherIncharge,
+            "subject_list" : [
+                {
+                    "subject_name" : $subjectname_1,
+                    "subject_incharge" : $phone_no_of_subjectIncharge,
+                    "firstname" : $firstname_of_subjectIncharge,
+                    "lastname" : $lastname_of_subjectIncharge
+                },
+                 {
+                    "subject_name" : $subjectname_2,
+                    "subject_incharge" : $phone_no_of_subjectIncharge,
+                    "firstname" : $firstname_of_subjectIncharge,
+                    "lastname" : $lastname_of_subjectIncharge
+                }
+            ]
+        },
+        {
+            "standard" : $standard_2,
+            "division" : $division_2,
+            "teacher_incharge" : $phone_no_of_teacherIncharge,
+            "firstname" : $firstname_of_teacherIncharge,
+            "lastname" : $lastname_of_teacherIncharge,
+            "subject_list" : [
+                {
+                    "subject_name" : $subjectname_1,
+                    "subject_incharge" : $phone_no_of_subjectIncharge,
+                    "firstname" : $firstname_of_subjectIncharge,
+                    "lastname" : $lastname_of_subjectIncharge
+                },
+                 {
+                    "subject_name" : $subjectname_2,
+                    "subject_incharge" : $phone_no_of_subjectIncharge,
+                    "firstname" : $firstname_of_subjectIncharge,
+                    "lastname" : $lastname_of_subjectIncharge
+                }
+            ]
+        }
+    ]
 }
 ```

@@ -9,9 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.net.URL;
 
 public class TeacherCardPanel extends JPanel implements ActionListener {
 
@@ -70,7 +67,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
 
         //Editing Panel Details
         setLayout(new GridBagLayout());
-        setBackground(Constant.TEACHER_CARD_PANEL);
+        setBackground(Constant.CARD_PANEL);
 
         //Adding Components to ViewPanel
         add(imageLabel, Constraint.setPosition(0,0,1,5,Constraint.LEFT));

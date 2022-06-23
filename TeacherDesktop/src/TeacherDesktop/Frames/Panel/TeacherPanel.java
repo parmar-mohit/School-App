@@ -32,19 +32,16 @@ public class TeacherPanel extends JPanel implements ActionListener {
         Image img = new ImageIcon(Constant.ADD_ICON).getImage();
         img = img.getScaledInstance(30,30,Image.SCALE_DEFAULT);
         createTeacherIdButton = new JButton("Create Teacher Id",new ImageIcon(img));
-        backButton = new JButton("Back");
 
         //Editing Members
         panelNameLabel.setFont(new Font("SansSerif", Font.BOLD,22));
         createTeacherIdButton.setBackground(Constant.BUTTON_BACKGROUND);
-        backButton.setBackground(Constant.BUTTON_BACKGROUND);
-        backButton.setVisible(false);
         teacherListPanel.setLayout(new GridBagLayout());
         scrollPane.setMinimumSize(new Dimension(1000,400));
         scrollPane.setPreferredSize(new Dimension(1000,400));
+
         //Adding Listeners
         createTeacherIdButton.addActionListener(this);
-        backButton.addActionListener(this);
 
         //Filling TeacherCards
         fillTeacherCard();
@@ -56,24 +53,39 @@ public class TeacherPanel extends JPanel implements ActionListener {
         //Adding Components to Panel
         add(panelNameLabel,Constraint.setPosition(0,0,2,1));
         add(createTeacherIdButton,Constraint.setPosition(1,1,Constraint.RIGHT));
-        add(backButton,Constraint.setPosition(1,1,Constraint.RIGHT));
         add(scrollPane, Constraint.setPosition(0,2,2,1));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if( e.getSource() == createTeacherIdButton ){
+            //Setting Components to Invisible
             scrollPane.setVisible(false);
             createTeacherIdButton.setVisible(false);
-            backButton.setVisible(true);
+
+            //Instating createTeacherPanel and BackButton
             createTeacherPanel = new CreateTeacherPanel(serverConnection);
-            createTeacherPanel.setVisible(true);
+            backButton = new JButton("Back");
+
+            //Editing Components
+            backButton.setBackground(Constant.BUTTON_BACKGROUND);
+
+            //Adding ActionListener
+            backButton.addActionListener(this);
+
+            //Adding Components to Frame
+            add(backButton,Constraint.setPosition(1,1,Constraint.RIGHT));
             add(createTeacherPanel,Constraint.setPosition(0,2,2,1));
         }else if( e.getSource() == backButton ){
+            //Setting Components to Visible
             scrollPane.setVisible(true);
             createTeacherIdButton.setVisible(true);
-            backButton.setVisible(false);
+
+            //Removing Components
+            remove(backButton);
             remove(createTeacherPanel);
+
+            //Refreshing TeacherCardList
             fillTeacherCard();
         }
         revalidate();
