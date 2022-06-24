@@ -56,21 +56,15 @@ CREATE TABLE classroom (
 CREATE TABLE subject (
 	sub_id INT PRIMARY KEY AUTO_INCREMENT,
 	subject_name VARCHAR(50),
-	t_phone BIGINT
-);
-
-CREATE TABLE subject_classroom (
-	sub_id INT,
 	standard INT,
 	division VARCHAR(1),
-	PRIMARY KEY(sub_id, standard, division),
-	FOREIGN KEY(sub_id) REFERENCES subject(sub_id) ON DELETE CASCADE,
-	FOREIGN KEY(standard,division) REFERENCES grade(standard,division) ON DELETE CASCADE
-	);
+	t_phone BIGINT,
+	FOREIGN KEY(standard,division) REFERENCES classroom(standard,division) ON DELETE CASCADE
+);
 
 CREATE TABLE exam (
 	exam_id INT PRIMARY KEY AUTO_INCREMENT,
-	exam_name VARCHAR(50),
+	exam_name VARCHAR(100),
 	sub_id INT,
 	total_marks INT,
 	FOREIGN KEY(sub_id) REFERENCES subject(sub_id) ON DELETE CASCADE
@@ -95,7 +89,7 @@ CREATE TABLE teacher (
 	CHECK(gender IN('Male','Female','Other'))
 	);
 
-ALTER TABLE grade
+ALTER TABLE classroom
 ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
 
 ALTER TABLE subject

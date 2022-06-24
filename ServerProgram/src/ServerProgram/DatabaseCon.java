@@ -1,5 +1,6 @@
 package ServerProgram;
 
+import javax.xml.transform.Result;
 import java.math.BigDecimal;
 import java.sql.*;
 
@@ -77,22 +78,11 @@ public class DatabaseCon {
 
     public void insertSubject(int standard,String division,String subjectName,String phone) throws Exception{
         //Inserting New Subject
-        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO subject(subject_name,t_phone) VALUES(?,?);");
-        preparedStatement.setString(1,subjectName);
-        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
-        preparedStatement.executeUpdate();
-
-        //Retrieving new Subject Id
-        preparedStatement = db.prepareStatement("SELECT LAST_INSERT_ID();");
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        int id = resultSet.getInt(1);
-
-        //Inserting Subject_Classroom
-        preparedStatement = db.prepareStatement("INSERT INTO subject_classroom VALUES(?,?,?);");
-        preparedStatement.setInt(1,id);
-        preparedStatement.setInt(2,standard);
-        preparedStatement.setString(3,division);
+        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO subject(standard,division,subject_name,t_phone) VALUES(?,?,?,?);");
+        preparedStatement.setInt(1,standard);
+        preparedStatement.setString(2,division);
+        preparedStatement.setString(3,subjectName);
+        preparedStatement.setBigDecimal(4,new BigDecimal(phone));
         preparedStatement.executeUpdate();
     }
 
@@ -128,7 +118,7 @@ public class DatabaseCon {
     }
 
     public ResultSet getSubjectList(int standard,String division) throws Exception{
-        PreparedStatement preparedStatement = db.prepareStatement("SELECT subject_name,t_phone FROM subject WHERE sub_id IN ( SELECT sub_id FROM subject_classroom WHERE standard = ? AND division = ? );");
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT subject_name,t_phone FROM subject WHERE standard = ? AND division = ?;");
         preparedStatement.setInt(1,standard);
         preparedStatement.setString(2,division);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -151,5 +141,21 @@ public class DatabaseCon {
         PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM teacher WHERE t_phone = ?;");
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         preparedStatement.executeUpdate();
+    }
+
+    public void updateClassroomTeacherIncharge(int standard,String divison,String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE classroom SET t_phone = ? WHERE standard = ? AND division = ?;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.setInt(2,standard);
+        preparedStatement.setString(3,divison);
+        preparedStatement.executeUpdate();
+    }
+
+    public boolean checkSubjectExist(int standard,String division,String subjectName) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS( SELECT * FROM subject WHERE subject_name = ? AND sub_id IN (SELECT sub_id FROM subject_classroom WHERE standard = ? AND division = ? ) );");
+        preparedStatement.setString(1,subjectName);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getBoolean(1);
     }
 }

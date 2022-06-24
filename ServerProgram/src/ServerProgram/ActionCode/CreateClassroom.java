@@ -6,13 +6,13 @@ import ServerProgram.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class CreateGrade extends Thread {
+public class CreateClassroom extends Thread {
 
     private JSONObject jsonObject;
     private Client client;
     private DatabaseCon db;
 
-    public CreateGrade(JSONObject jsonObject,Client client){
+    public CreateClassroom(JSONObject jsonObject, Client client){
         this.jsonObject = jsonObject;
         this.client = client;
     }
