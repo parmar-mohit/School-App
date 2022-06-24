@@ -8,13 +8,13 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 
-public class SubjectPanel extends JPanel {
+public class CreateSubjectPanel extends JPanel {
 
     private JLabel subjectNameLabel,subjectTeacherLabel;
     public JTextField subjectNameTextField;
     public JComboBox subjectTeacherComboBox;
     private JSONArray teacherListJsonArray;
-    public SubjectPanel(JSONArray teacherListJsonArray, int no){
+    public CreateSubjectPanel(JSONArray teacherListJsonArray, int no){
         //Intialising Member Variables
         this.teacherListJsonArray = teacherListJsonArray;
         subjectNameLabel = new JLabel("Subject Name "+no+" : ");

@@ -113,6 +113,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
             String firstname = firstnameTextField.getText();
             if( firstname.equals("") ){
                 messageLabel.setText("Enter Firstname");
+                Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
             updateTeacherJsonObject.put("firstname",firstname);
@@ -120,6 +121,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
             String lastname = lastnameTextField.getText();
             if( lastname.equals("") ){
                 messageLabel.setText("Enter Lastname");
+                Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
             updateTeacherJsonObject.put("lastname",lastname);
@@ -129,6 +131,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
             String email = emailTextField.getText();
             if( !Constraint.emailCheck(email) ){
                 messageLabel.setText("Enter a Valid Email");
+                Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
             updateTeacherJsonObject.put("email",email);
@@ -170,6 +173,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
                 editButton.setVisible(true);
             }else if( response == 1 ){
                 messageLabel.setText("There was some problem updating.Please try again later");
+                Constraint.labelDeleteAfterTime(messageLabel);
             }
         }else if( e.getSource() == deleteButton ){
             int result = JOptionPane.showConfirmDialog(this,"Are you sure you want to delete Teacher id?");
@@ -178,7 +182,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
                 int response = serverConnection.deleteTeacher(teacherJsonObject.getString("phone"));
                 if( response ==  1 ){
                     messageLabel.setText("Teacher is Incharge of some Class or Subject and hence Id cannot be Deleted");
-                    return;
+                    Constraint.labelDeleteAfterTime(messageLabel);
                 }else {
                     parent.fillTeacherCard();
                     parent.revalidate();

@@ -22,7 +22,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
     private JComboBox teacherInchargeComboBox;
     private JScrollPane scrollPane;
     private JPanel subjectListPanel;
-    private ArrayList<SubjectPanel> subjectList;
+    private ArrayList<CreateSubjectPanel> subjectList;
     private JButton addSubjectButton,removeSubjectButton, createClassrooomButton;
     private JSONArray teacherListJsonArray;
 
@@ -57,7 +57,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
         //Adding 3 Subjects
         for( int i = 1; i <= 3; i++){
             //Adding SubjectPanel
-            SubjectPanel subjectPanel = new SubjectPanel(teacherListJsonArray,i);
+            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,i);
             subjectList.add(subjectPanel);
             subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
         }
@@ -105,14 +105,14 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
     public void actionPerformed(ActionEvent e) {
         if( e.getSource() == addSubjectButton ){
             //Adding SubjectPanel
-            SubjectPanel subjectPanel = new SubjectPanel(teacherListJsonArray,subjectList.size()+1);
+            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,subjectList.size()+1);
             subjectList.add(subjectPanel);
             subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
             revalidate();
             repaint();
         }else if( e.getSource() == removeSubjectButton ){
             //Removing SubjectPanel
-            SubjectPanel lastSubjectPanel = subjectList.get(subjectList.size()-1);
+            CreateSubjectPanel lastSubjectPanel = subjectList.get(subjectList.size()-1);
             subjectListPanel.remove(lastSubjectPanel);
             subjectList.remove(lastSubjectPanel);
             revalidate();
@@ -120,6 +120,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
         }else if( e.getSource() == createClassrooomButton){
             if( standardTextField.getText().equals("") ){
                 messageLabel.setText("Enter Standard");
+                Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
             JSONObject infoJsonObject = new JSONObject();
@@ -127,28 +128,32 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
 
             if( divisionTextField.getText().equals("") ){
                 messageLabel.setText("Enter Division");
+                Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
             infoJsonObject.put("division",divisionTextField.getText().toUpperCase());
 
             if( teacherInchargeComboBox.getSelectedItem() == null ){
                 messageLabel.setText("Select Teacher Incharge");
+                Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
             infoJsonObject.put("teacher_incharge",getPhone(teacherInchargeComboBox.getSelectedItem()+""));
 
             //Getting Subject List
             if( subjectList.size() == 0 ){
-                messageLabel.setText("Minimum 1 Subject is required to create a grade");
+                messageLabel.setText("Minimum 1 Subject is required to create a Classroom");
+                Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
 
             JSONArray subjectJsonArray = new JSONArray();
             for( int i = 0; i < subjectList.size(); i++){
-                SubjectPanel subjectPanel = subjectList.get(i);
+                CreateSubjectPanel subjectPanel = subjectList.get(i);
 
                 if( subjectPanel.subjectNameTextField.getText().equals("") ){
                     messageLabel.setText("Enter Subject No for Subject No : "+(i+1));
+                    Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
                 JSONObject subjectJsonObject = new JSONObject();
@@ -156,6 +161,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
 
                 if( subjectPanel.subjectTeacherComboBox.getSelectedItem() == null ){
                     messageLabel.setText("Select Subject Teacher for Subject No : "+(i+1));
+                    Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
                 subjectJsonObject.put("subject_teacher",getPhone(subjectPanel.subjectTeacherComboBox.getSelectedItem()+""));
@@ -167,8 +173,10 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
 
             if( response == 0 ){
                 messageLabel.setText("Classroom Created");
+                Constraint.labelDeleteAfterTime(messageLabel);
             }else if( response == 1 ){
                 messageLabel.setText("Classroom with same Standard and Division exist");
+                Constraint.labelDeleteAfterTime(messageLabel);
             }
         }
     }

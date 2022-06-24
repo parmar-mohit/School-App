@@ -68,39 +68,46 @@ public class ChangePasswordPanel extends JPanel implements ItemListener, ActionL
         String oldPassword = new String(oldPasswordField.getPassword());
         if( oldPassword.equals("") ){
             messageLabel.setText("Enter Old Password");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         String newPassword = new String(newPasswordField.getPassword());
         if( newPassword.equals("")){
             messageLabel.setText("Enter New Password");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         String confirmPassword = new String(confirmPasswordField.getPassword());
         if( confirmPassword.equals("")){
             messageLabel.setText("Enter Confirm Password");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         if( !Constraint.isValidPassword(newPassword) ){
             messageLabel.setText("Password must contain 1 Uppercase letter, 1 Lowercase letter and 1 Number");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         if( !newPassword.equals(confirmPassword) ){
             messageLabel.setText("New Passwords Do not match");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         if( !Constraint.hashPassword(oldPassword).equals(serverConnection.getPassword(Constant.PRINCIPAL_USERNAME))){
             messageLabel.setText("Old Password is Incorrect");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         int response = serverConnection.changePassword(Constant.PRINCIPAL_USERNAME,Constraint.hashPassword(newPassword));
         if( response == 0 ){
             messageLabel.setText("Password Changed Successfully");
+            Constraint.labelDeleteAfterTime(messageLabel);
         }
     }
 

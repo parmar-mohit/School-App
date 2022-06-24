@@ -78,17 +78,20 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         String firstname = firstnameTextField.getText();
         if( firstname.equals("") ){
             messageLabel.setText("Enter Firstname");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         String lastname = lastnameTextField.getText();
         if( lastname.equals("") ){
             messageLabel.setText("Enter Lastname");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         if( phoneTextField.getText().length() < 10 ){
             messageLabel.setText("Phone No should be of 10 Digit");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
         String phone = phoneTextField.getText();
@@ -96,17 +99,20 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         String email = emailTextField.getText();
         if( !Constraint.emailCheck(email) ){
             messageLabel.setText("Enter a Valid Email");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         String password = new String(passwordField.getPassword());
         if(password.equals("")){
             messageLabel.setText("Enter Password");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         if( !Constraint.isValidPassword(password) ){
             messageLabel.setText("Password Must contain 1 Uppercase, 1 Lowercase and 1 Digit");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
@@ -117,8 +123,10 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         int response = serverConnection.addTeacherId(firstname,lastname,phone,email,password,gender);
         if( response == 1 ){
             messageLabel.setText("Teacher with same phone already exist in Database");
+            Constraint.labelDeleteAfterTime(messageLabel);
         }else {
             messageLabel.setText("Teacher Id Created");
+            Constraint.labelDeleteAfterTime(messageLabel);
         }
     }
 

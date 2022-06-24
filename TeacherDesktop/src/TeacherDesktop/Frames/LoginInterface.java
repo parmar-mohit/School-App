@@ -66,6 +66,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
     public void actionPerformed(ActionEvent e) {
         if( usernameTextField.getText() == null ){
             messageLabel.setText("Enter Username");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
         String phone = usernameTextField.getText();
@@ -73,6 +74,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
         String password = new String(passwordField.getPassword());
         if( password == null ){
             messageLabel.setText("Enter Password");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
@@ -80,6 +82,7 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
 
         if( !Constraint.hashPassword(password).equals(savedPassword) ){
             messageLabel.setText("Invalid Credentials");
+            Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }else if( phone.equals(Constant.PRINCIPAL_USERNAME) ){
             new Principalnterface(serverConnection);

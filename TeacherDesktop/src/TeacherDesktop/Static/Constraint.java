@@ -1,6 +1,9 @@
 package TeacherDesktop.Static;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -76,6 +79,17 @@ public class Constraint {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public static void labelDeleteAfterTime(JLabel label){
+        Timer t = new Timer(5000,new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                label.setText(null);
+            }
+        });
+        t.setRepeats(false);
+        t.start();
     }
 }
 
