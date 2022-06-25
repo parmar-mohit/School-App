@@ -171,6 +171,23 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
+    public int deleteClassroom(JSONObject classroomJsonObject){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",10);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("standard",classroomJsonObject.getInt("standard"));
+        infoJsonObject.put("division",classroomJsonObject.getString("division"));
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
     private JSONObject getResponseMessage(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){

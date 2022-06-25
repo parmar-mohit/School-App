@@ -62,6 +62,10 @@ public class Client extends Thread{
                     case 9:
                         new UpdateClassroom(jsonObject,this).start();
                         break;
+
+                    case 10:
+                        new DeleteClassroom(jsonObject,this).start();
+                        break;
                 }
             }
         }catch(SocketException e){

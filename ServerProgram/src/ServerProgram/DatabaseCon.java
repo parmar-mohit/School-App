@@ -182,7 +182,13 @@ public class DatabaseCon {
         PreparedStatement preparedStatement = db.prepareStatement(query);
         preparedStatement.setInt(1,standard);
         preparedStatement.setString(2,division);
-        Log.debug(preparedStatement.toString());
+        preparedStatement.executeUpdate();
+    }
+
+    public void deleteClassroom(int standard,String division) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM classroom WHERE standard = ? AND division = ? ;");
+        preparedStatement.setInt(1,standard);
+        preparedStatement.setString(2,division);
         preparedStatement.executeUpdate();
     }
 }

@@ -328,3 +328,27 @@ Info attribute of response message contains response code which is set to 0 indi
     }
 }
 ```
+
+* Action Code 10
+
+The Client is requesting the server to delete data of classroom.Info attribute of message contains details about the classroom to be deleted.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 10,
+    "info" : {
+        "standard" : $standard,
+        "division" : $division
+    }
+}
+```
+
+Info Attribute of response message contains response code indicating status of this request.Response code is set to 0 if request is completed succesfully.Example is as follow
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
+    }
+}
+```
