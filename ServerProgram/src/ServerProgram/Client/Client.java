@@ -40,7 +40,7 @@ public class Client extends Thread{
                         break;
 
                     case 4:
-                        new CreateGrade(jsonObject,this).start();
+                        new CreateClassroom(jsonObject,this).start();
                         break;
 
                     case 5:
@@ -57,6 +57,10 @@ public class Client extends Thread{
 
                     case 8:
                         new DeleteTeacherId(jsonObject,this).start();
+                        break;
+
+                    case 9:
+                        new UpdateClassroom(jsonObject,this).start();
                         break;
                 }
             }

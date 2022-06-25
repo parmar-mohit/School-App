@@ -152,7 +152,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
                 CreateSubjectPanel subjectPanel = subjectList.get(i);
 
                 if( subjectPanel.subjectNameTextField.getText().equals("") ){
-                    messageLabel.setText("Enter Subject No for Subject No : "+(i+1));
+                    messageLabel.setText("Enter Subject Name for Subject No : "+(i+1));
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
@@ -169,7 +169,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
             }
 
             infoJsonObject.put("subject_list",subjectJsonArray);
-            int response = serverConnection.createGrade(infoJsonObject);
+            int response = serverConnection.createClassroom(infoJsonObject);
 
             if( response == 0 ){
                 messageLabel.setText("Classroom Created");

@@ -120,7 +120,7 @@ Info attribute of response message contains an array of JSONObject where each Ob
 
 * Action Code 4
 
-The Client is requesting server to create a new grade. Info attribute of message contains all the details of grade to be created in JSON format.Example message is as follows
+The Client is requesting server to create a new classrooom. Info attribute of message contains all the details of classroom to be created in JSON format.Example message is as follows
 ```
 {
     "id" : $messageId,
@@ -288,6 +288,43 @@ Info attribute of response message contains response code which is set to 0 if t
     "id" : $messageId,
     "info" : {
         "response_code" : 0 or 1
+    }
+}
+```
+
+* Action Code 9 
+The Client is requesting server to update details of a classroom.Info Attribute of message contains details about classroom.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 9,
+    "info" : {
+        "standard" : $standard,
+        "division" : $division,
+        "teacher_incharge" : $phone_of_teacher,
+        "subject_list" : [
+            {
+                "subject_name" : $subject_name_1,
+                "subject_teacher" : $phone_of_teacher
+            },
+            {
+                "subject_name" : $subject_name_2,
+                "subject_teacher" : $phone_of_teacher
+            },
+            {
+                "subject_name" : $subject_name_3,
+                "subject_teacher" : $phone_of_teacher
+            }
+        ]
+    }
+}
+```
+Info attribute of response message contains response code which is set to 0 indicating that classroom has been updated successfully.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
     }
 }
 ```

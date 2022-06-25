@@ -1,6 +1,7 @@
 package ServerProgram;
 
-import javax.xml.transform.Result;
+import org.json.JSONArray;
+
 import java.math.BigDecimal;
 import java.sql.*;
 
@@ -152,10 +153,36 @@ public class DatabaseCon {
     }
 
     public boolean checkSubjectExist(int standard,String division,String subjectName) throws Exception {
-        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS( SELECT * FROM subject WHERE subject_name = ? AND sub_id IN (SELECT sub_id FROM subject_classroom WHERE standard = ? AND division = ? ) );");
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS( SELECT * FROM subject WHERE subject_name = ? AND  standard = ? AND division = ? );");
         preparedStatement.setString(1,subjectName);
+        preparedStatement.setInt(2,standard);
+        preparedStatement.setString(3,division);
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();
         return resultSet.getBoolean(1);
+    }
+
+    public void updateSubjectTeacherIncharge(int standard,String division,String subjectName,String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE subject SET t_phone = ? WHERE standard = ? AND division = ? AND subject_name = ? ;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.setInt(2,standard);
+        preparedStatement.setString(3,division);
+        preparedStatement.setString(4,subjectName);
+        preparedStatement.executeUpdate();
+    }
+
+    public void deleteExtraSubjects(int standard,String division,JSONArray subjectListJsonArray) throws Exception {
+        String query = "DELETE FROM subject WHERE standard = ? AND division = ? AND subject_name NOT IN(";
+        for( int i = 0; i < subjectListJsonArray.length(); i++) {
+            query += "\"" + subjectListJsonArray.getJSONObject(i).getString("subject_name")+"\",";
+        }
+        query = query.substring(0,query.length()-1);
+        query += ");";
+
+        PreparedStatement preparedStatement = db.prepareStatement(query);
+        preparedStatement.setInt(1,standard);
+        preparedStatement.setString(2,division);
+        Log.debug(preparedStatement.toString());
+        preparedStatement.executeUpdate();
     }
 }

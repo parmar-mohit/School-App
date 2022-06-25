@@ -1,5 +1,7 @@
 package TeacherDesktop.Frames.Panel;
 
+import TeacherDesktop.Frames.Dialog.UpdateClassroomDialog;
+import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
 import org.json.JSONArray;
@@ -9,17 +11,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-public class ClassroomCardPanel extends JPanel implements ActionListener {
+public class ClassroomCardPanel extends JPanel implements ActionListener, WindowListener {
 
     private JLabel standardLabel,divisionLabel,teacherInchargeLabel;
-    private JButton expandButton,collapseButton;
+    private JButton expandButton,collapseButton, editButton;
     private JPanel subjectListPanel;
     private JSONObject classroomJsonObject;
+    private ServerConnection serverConnection;
+    private ClassroomPanel parent;
 
-    public ClassroomCardPanel(JSONObject classroomJsonObject){
+    public ClassroomCardPanel(JSONObject classroomJsonObject,ServerConnection serverConnection,ClassroomPanel parent){
         //Initialising Members
         this.classroomJsonObject = classroomJsonObject;
+        this.serverConnection = serverConnection;
+        this.parent = parent;
         standardLabel = new JLabel("Standard : "+classroomJsonObject.getInt("standard"));
         divisionLabel = new JLabel("Division : "+classroomJsonObject.getString("division"));
         String teacherIncharge = getTeacherInchargeString(classroomJsonObject.getString("firstname"),classroomJsonObject.getString("lastname"),classroomJsonObject.getString("teacher_incharge"));
@@ -56,14 +64,17 @@ public class ClassroomCardPanel extends JPanel implements ActionListener {
             Image img = new ImageIcon(Constant.COLLAPSE_ICON).getImage();
             img = img.getScaledInstance(15,15,Image.SCALE_DEFAULT);
             collapseButton = new JButton(new ImageIcon(img));
+            editButton = new JButton("Edit");
 
             //Editing Components
             collapseButton.setBackground(Constant.CARD_PANEL);
             subjectListPanel.setLayout(new GridBagLayout());
             subjectListPanel.setBackground(Constant.CARD_PANEL);
+            editButton.setBackground(Constant.BUTTON_BACKGROUND);
 
             //Adding Listeners
             collapseButton.addActionListener(this);
+            editButton.addActionListener(this);
 
             //Getting Panel Size
             Dimension panelSize = getPreferredSize();
@@ -89,6 +100,7 @@ public class ClassroomCardPanel extends JPanel implements ActionListener {
             //Adding Components to Panel
             add(collapseButton,Constraint.setPosition(3,0,Constraint.RIGHT));
             add(subjectListPanel,Constraint.setPosition(0,1,4,1));
+            add(editButton,Constraint.setPosition(0,2,4,1));
         }else if( e.getSource() == collapseButton ){
             //Setting Components Visible
             expandButton.setVisible(true);
@@ -96,9 +108,13 @@ public class ClassroomCardPanel extends JPanel implements ActionListener {
             //Removing Components from Panel
             remove(collapseButton);
             remove(subjectListPanel);
+            remove(editButton);
 
             //Setting PanelSize
             setPreferredSize(new Dimension(900,100));
+        }else if( e.getSource() == editButton ){
+            JDialog dialog = new UpdateClassroomDialog((JFrame)SwingUtilities.getWindowAncestor(this),classroomJsonObject,serverConnection);
+            dialog.addWindowListener(this);
         }
     }
 
@@ -107,5 +123,42 @@ public class ClassroomCardPanel extends JPanel implements ActionListener {
         teacherIncharge += Character.toUpperCase(lastname.charAt(0))+lastname.substring(1)+" ";
         teacherIncharge += "("+phone+")";
         return teacherIncharge;
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        parent.fillClassroomCard();
+        parent.revalidate();
+        parent.repaint();
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }

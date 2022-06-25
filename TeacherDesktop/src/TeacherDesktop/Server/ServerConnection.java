@@ -1,7 +1,6 @@
 package TeacherDesktop.Server;
 
 import TeacherDesktop.Frames.NoConnectionInterface;
-import TeacherDesktop.Static.Constraint;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -94,7 +93,7 @@ public class ServerConnection {
         return infoJsonArray;
     }
 
-    public int createGrade(JSONObject infoJsonObject){
+    public int createClassroom(JSONObject infoJsonObject){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",4);
         jsonObject.put("info",infoJsonObject);
@@ -159,6 +158,19 @@ public class ServerConnection {
        JSONObject responseJsonObject = getResponseMessage(id);
        return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
+
+    public int updateClassroom(JSONObject infoJsonObject){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",9);
+        jsonObject.put("info",infoJsonObject);
+
+        //Send Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
     private JSONObject getResponseMessage(long messageId){
         while (true){
             for( int i = 0; i < messagePool.size(); i++){

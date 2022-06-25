@@ -92,7 +92,7 @@ public class ClassroomPanel extends JPanel implements ActionListener  {
         repaint();
     }
 
-    private void fillClassroomCard(){
+    public void fillClassroomCard(){
         for( int i = 0; i < classroomCardPanelArrayList.size(); i++){
             classroomListPanel.remove(classroomCardPanelArrayList.get(i));
         }
@@ -100,7 +100,7 @@ public class ClassroomPanel extends JPanel implements ActionListener  {
 
         JSONArray classroomJsonArray = serverConnection.getClassroomList();
         for( int i = 0; i < classroomJsonArray.length(); i++){
-            ClassroomCardPanel classroomCardPanel = new ClassroomCardPanel(classroomJsonArray.getJSONObject(i));
+            ClassroomCardPanel classroomCardPanel = new ClassroomCardPanel(classroomJsonArray.getJSONObject(i),serverConnection,this);
             classroomCardPanel.setPreferredSize(new Dimension(900,100));
             classroomListPanel.add(classroomCardPanel,Constraint.setPosition(0,classroomCardPanelArrayList.size()));
             classroomCardPanelArrayList.add(classroomCardPanel);
