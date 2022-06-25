@@ -1,6 +1,7 @@
 package TeacherDesktop.Server;
 
 import TeacherDesktop.Frames.NoConnectionInterface;
+import TeacherDesktop.Frames.ServerNotRespondingInterface;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -189,7 +190,8 @@ public class ServerConnection {
     }
 
     private JSONObject getResponseMessage(long messageId){
-        while (true){
+        long startTime = System.currentTimeMillis();
+        while ( System.currentTimeMillis() <= startTime + 60000 ){ // Loop for minute
             for( int i = 0; i < messagePool.size(); i++){
                 JSONObject jsonObject = new JSONObject(messagePool.get(i));
                 long id = jsonObject.getLong("id");
@@ -206,8 +208,16 @@ public class ServerConnection {
                 e.printStackTrace();
             }
         }
-    }
 
+        try {
+            socket.close();
+            currentFrame.dispose();
+            new ServerNotRespondingInterface();
+        }catch(Exception e){
+            //do nothing
+        }
+        return null;
+    }
 
     private long sendMessage(JSONObject jsonObject){
         long messageId = new Date().getTime();
