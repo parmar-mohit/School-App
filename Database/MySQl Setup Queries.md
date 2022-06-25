@@ -34,7 +34,7 @@ CREATE TABLE student (
 	email VARCHAR(50),
 	phone INT,
 	standard INT,
-	divison VARCHAR(1),
+	division VARCHAR(1),
 	CHECK(gender IN('Male','Female','Other'))
 	);
 
@@ -52,6 +52,9 @@ CREATE TABLE classroom (
 	t_phone BIGINT,
 	PRIMARY KEY(standard,division)
 	);
+
+ALTER TABLE student
+ADD FOREIGN KEY(standard,division) REFERENCES classroom(standard,division) ON DELETE CASCADE;
 
 CREATE TABLE subject (
 	sub_id INT PRIMARY KEY AUTO_INCREMENT,
