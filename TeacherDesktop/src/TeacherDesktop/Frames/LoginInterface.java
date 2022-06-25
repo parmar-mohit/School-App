@@ -85,7 +85,10 @@ public class LoginInterface extends JFrame implements ActionListener, ItemListen
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }else if( phone.equals(Constant.PRINCIPAL_USERNAME) ){
-            new Principalnterface(serverConnection);
+            new PrincipalInterface(serverConnection);
+            dispose();
+        }else{
+            new TeacherInterface(serverConnection,phone);
             dispose();
         }
     }

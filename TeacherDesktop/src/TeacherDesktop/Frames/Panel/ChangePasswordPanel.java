@@ -18,10 +18,12 @@ public class ChangePasswordPanel extends JPanel implements ItemListener, ActionL
     private JCheckBox showPasswordCheckBox;
     private JButton changePasswordButton;
     private ServerConnection serverConnection;
+    private String phone;
 
-    public ChangePasswordPanel(ServerConnection serverConnection){
+    public ChangePasswordPanel(ServerConnection serverConnection,String phone){
         //Initialising member Variables
         this.serverConnection = serverConnection;
+        this.phone = phone;
         panelNameLabel = new JLabel("Change Password");
         oldPasswordLabel  = new JLabel("Old Password : ");
         oldPasswordField  = new JPasswordField(20);
@@ -98,13 +100,13 @@ public class ChangePasswordPanel extends JPanel implements ItemListener, ActionL
             return;
         }
 
-        if( !Constraint.hashPassword(oldPassword).equals(serverConnection.getPassword(Constant.PRINCIPAL_USERNAME))){
+        if( !Constraint.hashPassword(oldPassword).equals(serverConnection.getPassword(phone))){
             messageLabel.setText("Old Password is Incorrect");
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
-        int response = serverConnection.changePassword(Constant.PRINCIPAL_USERNAME,Constraint.hashPassword(newPassword));
+        int response = serverConnection.changePassword(phone,Constraint.hashPassword(newPassword));
         if( response == 0 ){
             messageLabel.setText("Password Changed Successfully");
             Constraint.labelDeleteAfterTime(messageLabel);

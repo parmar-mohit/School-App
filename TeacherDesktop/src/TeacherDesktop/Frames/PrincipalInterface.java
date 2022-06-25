@@ -4,28 +4,27 @@ import TeacherDesktop.Frames.Panel.*;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
+import com.sun.tools.jconsole.JConsoleContext;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Principalnterface extends JFrame implements ActionListener {
+public class PrincipalInterface extends JFrame implements ActionListener {
 
     private BrandingPanel brandingPanel;
-    private ButtonPanel buttonPanel;
+    private PrincipalButtonPanel buttonPanel;
     private JPanel optionPanel;
 
     private ServerConnection serverConnection;
 
-    public Principalnterface(ServerConnection serverConnection){
+    public PrincipalInterface(ServerConnection serverConnection){
         //Initialisng Member Variables
         this.serverConnection = serverConnection;
         serverConnection.setCurrentFrame(this);
         brandingPanel = new BrandingPanel();
-        buttonPanel = new ButtonPanel();
-
-
+        buttonPanel = new PrincipalButtonPanel();
 
         //Adding Listener
         buttonPanel.teacherButton.addActionListener(this);
@@ -65,7 +64,7 @@ public class Principalnterface extends JFrame implements ActionListener {
         }else if( e.getSource() == buttonPanel.classroomButton){
             optionPanel = new ClassroomPanel(serverConnection);
         }else if( e.getSource() == buttonPanel.securityButton ){
-            optionPanel = new ChangePasswordPanel(serverConnection);
+            optionPanel = new ChangePasswordPanel(serverConnection,Constant.PRINCIPAL_USERNAME);
         }else if( e.getSource() ==  buttonPanel.logoutButton ){
             dispose();
             new LoginInterface(serverConnection);
@@ -89,11 +88,11 @@ public class Principalnterface extends JFrame implements ActionListener {
     }
 }
 
-class ButtonPanel extends JPanel {
+class PrincipalButtonPanel extends JPanel {
 
     protected JButton teacherButton, classroomButton,securityButton,logoutButton;
 
-    public ButtonPanel(){
+    public PrincipalButtonPanel(){
         //Initialising Member Variables
         teacherButton = new JButton("Teacher");
         classroomButton = new JButton("Classroom");
