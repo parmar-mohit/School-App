@@ -36,10 +36,10 @@ public class UpdateClassroom extends Thread {
             JSONArray subjectListJsonArray = infoJsonObject.getJSONArray("subject_list");
             for( int i = 0; i < subjectListJsonArray.length(); i++ ){
                 JSONObject subjectJsonObject = subjectListJsonArray.getJSONObject(i);
-                if( db.checkSubjectExist(standard,division,subjectJsonObject.getString("subject_name"))){
-                    db.updateSubjectTeacherIncharge(standard,division,subjectJsonObject.getString("subject_name"),subjectJsonObject.getString("subject_teacher"));
+                if( subjectJsonObject.getString("old_subject_name").equals("null") ){
+                    db.insertSubject(standard,division,subjectJsonObject.getString("new_subject_name"),subjectJsonObject.getString("new_subject_teacher"));
                 }else{
-                    db.insertSubject(standard,division,subjectJsonObject.getString("subject_name"),subjectJsonObject.getString("subject_teacher"));
+                    db.updateSubject(standard,division,subjectJsonObject);
                 }
             }
 

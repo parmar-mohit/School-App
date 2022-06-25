@@ -100,6 +100,8 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
 
             //Adding SubjectPanel
             CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,i);
+            subjectPanel.oldSubjectName = subjectJsonObject.getString("subject_name");
+            subjectPanel.oldSubjectTeacher = subjectJsonObject.getString("subject_incharge");
             subjectPanel.subjectNameTextField.setText(subjectJsonObject.getString("subject_name"));
             subjectPanel.subjectTeacherComboBox.setSelectedItem(getTeacherInchargeString(subjectJsonObject.getString("firstname"),subjectJsonObject.getString("lastname"),subjectJsonObject.getString("subject_incharge")));
             subjectList.add(subjectPanel);
@@ -173,14 +175,16 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
                     return;
                 }
                 JSONObject subjectJsonObject = new JSONObject();
-                subjectJsonObject.put("subject_name", subjectPanel.subjectNameTextField.getText().toLowerCase());
+                subjectJsonObject.put("old_subject_name",subjectPanel.oldSubjectName);
+                subjectJsonObject.put("new_subject_name", subjectPanel.subjectNameTextField.getText().toLowerCase());
 
                 if( subjectPanel.subjectTeacherComboBox.getSelectedItem() == null ){
                     messageLabel.setText("Select Subject Teacher for Subject No : "+(i+1));
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
-                subjectJsonObject.put("subject_teacher",getPhone(subjectPanel.subjectTeacherComboBox.getSelectedItem()+""));
+                subjectJsonObject.put("old_subject_teacher",subjectPanel.oldSubjectTeacher);
+                subjectJsonObject.put("new_subject_teacher",getPhone(subjectPanel.subjectTeacherComboBox.getSelectedItem()+""));
                 subjectJsonArray.put(subjectJsonObject);
             }
 

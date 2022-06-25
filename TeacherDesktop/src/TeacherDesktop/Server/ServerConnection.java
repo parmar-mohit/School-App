@@ -211,8 +211,6 @@ public class ServerConnection {
 
         try {
             socket.close();
-            currentFrame.dispose();
-            new ServerNotRespondingInterface();
         }catch(Exception e){
             //do nothing
         }

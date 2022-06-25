@@ -1,6 +1,7 @@
 package ServerProgram;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -162,19 +163,20 @@ public class DatabaseCon {
         return resultSet.getBoolean(1);
     }
 
-    public void updateSubjectTeacherIncharge(int standard,String division,String subjectName,String phone) throws Exception{
-        PreparedStatement preparedStatement = db.prepareStatement("UPDATE subject SET t_phone = ? WHERE standard = ? AND division = ? AND subject_name = ? ;");
-        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
-        preparedStatement.setInt(2,standard);
-        preparedStatement.setString(3,division);
-        preparedStatement.setString(4,subjectName);
+    public void updateSubject(int standard,String division,JSONObject subjectJsonObject) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE subject SET subject_name = ?, t_phone = ? WHERE standard = ? AND division =? AND subject_name = ?;");
+        preparedStatement.setString(1,subjectJsonObject.getString("new_subject_name"));
+        preparedStatement.setBigDecimal(2,new BigDecimal(subjectJsonObject.getString("new_subject_teacher")));
+        preparedStatement.setInt(3,standard);
+        preparedStatement.setString(4,division);
+        preparedStatement.setString(5,subjectJsonObject.getString("old_subject_name"));
         preparedStatement.executeUpdate();
     }
 
     public void deleteExtraSubjects(int standard,String division,JSONArray subjectListJsonArray) throws Exception {
         String query = "DELETE FROM subject WHERE standard = ? AND division = ? AND subject_name NOT IN(";
         for( int i = 0; i < subjectListJsonArray.length(); i++) {
-            query += "\"" + subjectListJsonArray.getJSONObject(i).getString("subject_name")+"\",";
+            query += "\"" + subjectListJsonArray.getJSONObject(i).getString("new_subject_name")+"\",";
         }
         query = query.substring(0,query.length()-1);
         query += ");";

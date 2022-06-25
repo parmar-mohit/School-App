@@ -14,7 +14,11 @@ public class CreateSubjectPanel extends JPanel {
     public JTextField subjectNameTextField;
     public JComboBox subjectTeacherComboBox;
     private JSONArray teacherListJsonArray;
+
+    public String oldSubjectName,oldSubjectTeacher;
     public CreateSubjectPanel(JSONArray teacherListJsonArray, int no){
+        oldSubjectName = "null";
+        oldSubjectTeacher = "null";
         //Intialising Member Variables
         this.teacherListJsonArray = teacherListJsonArray;
         subjectNameLabel = new JLabel("Subject Name "+no+" : ");

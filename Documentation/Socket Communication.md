@@ -304,20 +304,28 @@ The Client is requesting server to update details of a classroom.Info Attribute 
         "teacher_incharge" : $phone_of_teacher,
         "subject_list" : [
             {
-                "subject_name" : $subject_name_1,
-                "subject_teacher" : $phone_of_teacher
+                "old_subject_name" : $old_subject_name1,
+                "new_subject_name" : $subject_name_1,
+                "old_subject_teacher" : $phone_of_teacher,
+                "new_subject_teacher" : $phone_of_teacher,
             },
             {
-                "subject_name" : $subject_name_2,
-                "subject_teacher" : $phone_of_teacher
+                "old_subject_name" : $old_subject_name2,
+                "new_subject_name" : $subject_name_2,
+                "old_subject_teacher" : $phone_of_teacher,
+                "new_subject_teacher" : $phone_of_teacher,
             },
             {
-                "subject_name" : $subject_name_3,
-                "subject_teacher" : $phone_of_teacher
+                "old_subject_name" : $old_subject_name3,
+                "new_subject_name" : $subject_name_3,
+                "old_subject_teacher" : $phone_of_teacher,
+                "new_subject_teacher" : $phone_of_teacher,
             }
         ]
     }
 }
+
+Note : if new subject is created while editing then old_subject_name  and ols_subject_teacher will contain null
 ```
 Info attribute of response message contains response code which is set to 0 indicating that classroom has been updated successfully.Example is as follows
 ```
