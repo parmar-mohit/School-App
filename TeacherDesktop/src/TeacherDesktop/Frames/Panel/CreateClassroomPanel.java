@@ -174,6 +174,27 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
             if( response == 0 ){
                 messageLabel.setText("Classroom Created");
                 Constraint.labelDeleteAfterTime(messageLabel);
+
+                //Clearing Fields
+                standardTextField.setText(null);
+                divisionTextField.setText(null);
+                teacherInchargeComboBox.setSelectedItem(-1);
+
+                //Adding 3 Blank Subjects
+                subjectList = new ArrayList<>();
+                subjectListPanel.removeAll();
+                JLabel subjectListLabel = new JLabel("Subject List");
+                subjectListLabel.setFont(new Font("Serif",Font.PLAIN,16));
+                subjectListPanel.add(subjectListLabel,Constraint.setPosition(0,0));
+
+                for( int i = 1; i <= 3; i++){
+                    //Adding SubjectPanel
+                    CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,i);
+                    subjectList.add(subjectPanel);
+                    subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
+                }
+                revalidate();
+                repaint();
             }else if( response == 1 ){
                 messageLabel.setText("Classroom with same Standard and Division exist");
                 Constraint.labelDeleteAfterTime(messageLabel);
