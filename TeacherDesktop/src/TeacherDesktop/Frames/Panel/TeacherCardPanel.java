@@ -15,7 +15,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
     private JLabel imageLabel,firstnameLabel,lastnameLabel,phoneLabel,emailLabel,genderLabel,messageLabel;
     private JTextField firstnameTextField,lastnameTextField,emailTextField;
     private JComboBox genderComboBox;
-    private JButton editButton,saveButton,deleteButton;
+    private JButton updateButton,saveButton,deleteButton;
     private JSONObject teacherJsonObject;
     private ServerConnection serverConnection;
     private TeacherPanel parent;
@@ -42,13 +42,13 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
         phoneLabel = new JLabel("Phone : "+teacherJsonObject.getString("phone"));
         emailLabel = new JLabel("Email : "+teacherJsonObject.getString("email"));
         genderLabel = new JLabel("Gender : "+teacherJsonObject.getString("gender"));
-        editButton = new JButton("Edit");
+        updateButton = new JButton("Update");
 
         //Editing Components
-        editButton.setBackground(Constant.BUTTON_BACKGROUND);
+        updateButton.setBackground(Constant.BUTTON_BACKGROUND);
 
         //Adding listeners
-        editButton.addActionListener(this);
+        updateButton.addActionListener(this);
 
         //Editing Panel Details
         setLayout(new GridBagLayout());
@@ -61,14 +61,14 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
         add(phoneLabel,Constraint.setPosition(1,2,Constraint.LEFT));
         add(emailLabel,Constraint.setPosition(1,3,Constraint.LEFT));
         add(genderLabel,Constraint.setPosition(1,4,Constraint.LEFT));
-        add(editButton,Constraint.setPosition(3,0,1,5,Constraint.RIGHT));
+        add(updateButton,Constraint.setPosition(3,0,1,5,Constraint.RIGHT));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == editButton ){
+        if( e.getSource() == updateButton ){
             //Making editButton Invisible
-            editButton.setVisible(false);
+            updateButton.setVisible(false);
 
             //Setting Labels
             firstnameLabel.setText("Firstname : ");
@@ -170,7 +170,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
                 remove(deleteButton);
 
                 //Setting editButton Visible
-                editButton.setVisible(true);
+                updateButton.setVisible(true);
             }else if( response == 1 ){
                 messageLabel.setText("There was some problem updating.Please try again later");
                 Constraint.labelDeleteAfterTime(messageLabel);

@@ -17,7 +17,7 @@ import java.awt.event.WindowListener;
 public class ClassroomCardPanel extends JPanel implements ActionListener, WindowListener {
 
     private JLabel standardLabel,divisionLabel,teacherInchargeLabel;
-    private JButton expandButton,collapseButton, editButton;
+    private JButton expandButton,collapseButton, updateButton;
     private JPanel subjectListPanel;
     private JSONObject classroomJsonObject;
     private ServerConnection serverConnection;
@@ -64,17 +64,17 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
             Image img = new ImageIcon(Constant.COLLAPSE_ICON).getImage();
             img = img.getScaledInstance(15,15,Image.SCALE_DEFAULT);
             collapseButton = new JButton(new ImageIcon(img));
-            editButton = new JButton("Edit");
+            updateButton = new JButton("Update");
 
             //Editing Components
             collapseButton.setBackground(Constant.CARD_PANEL);
             subjectListPanel.setLayout(new GridBagLayout());
             subjectListPanel.setBackground(Constant.CARD_PANEL);
-            editButton.setBackground(Constant.BUTTON_BACKGROUND);
+            updateButton.setBackground(Constant.BUTTON_BACKGROUND);
 
             //Adding Listeners
             collapseButton.addActionListener(this);
-            editButton.addActionListener(this);
+            updateButton.addActionListener(this);
 
             //Getting Panel Size
             Dimension panelSize = getPreferredSize();
@@ -100,7 +100,7 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
             //Adding Components to Panel
             add(collapseButton,Constraint.setPosition(3,0,Constraint.RIGHT));
             add(subjectListPanel,Constraint.setPosition(0,1,4,1));
-            add(editButton,Constraint.setPosition(0,2,4,1));
+            add(updateButton,Constraint.setPosition(0,2,4,1));
         }else if( e.getSource() == collapseButton ){
             //Setting Components Visible
             expandButton.setVisible(true);
@@ -108,11 +108,11 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
             //Removing Components from Panel
             remove(collapseButton);
             remove(subjectListPanel);
-            remove(editButton);
+            remove(updateButton);
 
             //Setting PanelSize
             setPreferredSize(new Dimension(900,100));
-        }else if( e.getSource() == editButton ){
+        }else if( e.getSource() == updateButton ){
             JDialog dialog = new UpdateClassroomDialog((JFrame)SwingUtilities.getWindowAncestor(this),classroomJsonObject,serverConnection);
             dialog.addWindowListener(this);
         }
