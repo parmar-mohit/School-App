@@ -6,6 +6,9 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.sql.*;
 
+import static java.sql.Types.BIGINT;
+import static java.sql.Types.VARCHAR;
+
 public class DatabaseCon {
 
     private static final String URL = "jdbc:mysql://localhost:3306/school_app";
@@ -192,5 +195,112 @@ public class DatabaseCon {
         preparedStatement.setInt(1,standard);
         preparedStatement.setString(2,division);
         preparedStatement.executeUpdate();
+    }
+
+    public ResultSet getDistinctStandard(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT DISTINCT(standard) FROM classroom WHERE t_phone = ?;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getDistinctDivision(int standard,String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT DISTINCT(division) FROM classroom WHERE standard = ? AND t_phone = ?");
+        preparedStatement.setInt(1,standard);
+        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        return preparedStatement.executeQuery();
+    }
+
+    public int createStudentId(JSONObject studentJsonObject) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO student(firstname,lastname,gender,dob,email,phone,standard,division) VALUES(?,?,?,?,?,?,?,?);");
+        preparedStatement.setString(1,studentJsonObject.getString("firstname"));
+        preparedStatement.setString(2,studentJsonObject.getString("lastname"));
+        preparedStatement.setString(3,studentJsonObject.getString("gender"));
+        preparedStatement.setDate(4,new Date(studentJsonObject.getLong("dob")));
+        if( studentJsonObject.getString("email").equals("null")  ){
+            preparedStatement.setNull(5,VARCHAR);
+        }else{
+            preparedStatement.setString(5,studentJsonObject.getString("email"));
+        }
+
+        if( studentJsonObject.getString("phone").equals("null") ){
+            preparedStatement.setNull(6,BIGINT);
+        }else{
+            preparedStatement.setBigDecimal(6,new BigDecimal(studentJsonObject.getString("phone")));
+        }
+
+        preparedStatement.setInt(7,studentJsonObject.getInt("standard"));
+        preparedStatement.setString(8,studentJsonObject.getString("division"));
+        preparedStatement.executeUpdate();
+
+        preparedStatement = db.prepareStatement("SELECT LAST_INSERT_ID();");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    public void insertParent(int sid,JSONObject studentJsonObject) throws Exception{
+        //Execute only if father data exist
+        if( !studentJsonObject.getString("father_phone").equals("null") ){
+            //Checking if father phone exist
+            String fatherPhone = studentJsonObject.getString("father_phone");
+
+            PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS( SELECT phone FROM parent WHERE phone = ? );");
+            preparedStatement.setBigDecimal(1,new BigDecimal(fatherPhone));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            if( !resultSet.getBoolean(1) ){
+                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?);");
+                preparedStatement.setBigDecimal(1,new BigDecimal(fatherPhone));
+                preparedStatement.setString(2,studentJsonObject.getString("father_firstname"));
+                preparedStatement.setString(3,studentJsonObject.getString("father_lastname"));
+                if( studentJsonObject.getString("father_email").equals("null") ){
+                    preparedStatement.setNull(4,VARCHAR);
+                }else{
+                    preparedStatement.setString(4,studentJsonObject.getString("father_email"));
+                }
+                preparedStatement.executeUpdate();
+            }
+
+            preparedStatement = db.prepareStatement("INSERT INTO parent_child VALUES(?,?);");
+            preparedStatement.setBigDecimal(1,new BigDecimal(fatherPhone));
+            preparedStatement.setInt(2,sid);
+            preparedStatement.executeUpdate();
+        }
+
+        //Execute only if mother data exist
+        if( !studentJsonObject.getString("mother_phone").equals("null") ) {
+            //Checking if father phone exist
+            String motherPhone = studentJsonObject.getString("mother_phone");
+
+            PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS( SELECT phone FROM parent WHERE phone = ? );");
+            preparedStatement.setBigDecimal(1, new BigDecimal(motherPhone));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            if (!resultSet.getBoolean(1)) {
+                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?);");
+                preparedStatement.setBigDecimal(1, new BigDecimal(motherPhone));
+                preparedStatement.setString(2, studentJsonObject.getString("mother_firstname"));
+                preparedStatement.setString(3, studentJsonObject.getString("mother_lastname"));
+                if (studentJsonObject.getString("mother_email").equals("null")) {
+                    preparedStatement.setNull(4, VARCHAR);
+                } else {
+                    preparedStatement.setString(4, studentJsonObject.getString("mother_email"));
+                }
+                preparedStatement.executeUpdate();
+            }
+
+            preparedStatement = db.prepareStatement("INSERT INTO parent_child VALUES(?,?);");
+            preparedStatement.setBigDecimal(1, new BigDecimal(motherPhone));
+            preparedStatement.setInt(2, sid);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public void setAutoCommit(boolean b) throws Exception{
+        db.setAutoCommit(b);
+    }
+
+    public void commit() throws Exception {
+        db.commit();
     }
 }

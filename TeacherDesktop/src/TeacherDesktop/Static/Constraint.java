@@ -82,7 +82,7 @@ public class Constraint {
     }
 
     public static void labelDeleteAfterTime(JLabel label){
-        Timer t = new Timer(5000,new ActionListener(){
+        Timer t = new Timer(10000,new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 label.setText(null);

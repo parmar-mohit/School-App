@@ -360,3 +360,74 @@ Info Attribute of response message contains response code indicating status of t
     }
 }
 ```
+
+* Action Code 11
+
+The Client is requesting server to provide the information about classroom with a particular teacher incharge.Info attribute of message contains the phone no of teacher.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 11,
+    "info" : {
+        "phone" : $phone_of_teacher
+    }
+}
+```
+
+Info Attribute of response message contains an arrray, where each object has an stanadard and all the division with that standard.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : [
+        {
+            "standard" : $standard,
+            "division" : [$divisionArray]
+        },
+        {
+            "standard" : $standard,
+            "division" : [$divisionArray]
+        }
+    ]
+}
+```
+
+* Action Code 12
+
+The Client is requesting server to creat new Student Id.Info attribute of message conatins all information about student.Example is as folows.
+```
+{
+    "id" : $messageId,
+    "action_code" : 12,
+    "info" : {
+        "firstname" : $firstname,
+        "lastname" : $lastname,
+        "email" : $email,
+        "phone" : $phone,
+        "gender" : $gender,
+        "dob" : $date_of_birth,
+        "standard" : $standard,
+        "division" : $division,
+        "father_firstname" : $father_firstname,
+        "father_lastname" : $father_lastname,
+        "father_phone" : $father_phone,
+        "father_email" : $father_email,
+        "mother_firstname" : $mother_firstname,
+        "mother_lastname" : $mother_lastname,
+        "mother_phone" : $mother_phone,
+        "mother_email" : $mother_email,
+        "img" : $img
+    }
+}
+
+Note : If input for any of the above field is not given by user then it will contain "null"(String).Dob is of long data type,obtained from Date.getTime() method.Image contains an Base64 encoded String so that image is being able to be sent through JSON.
+```
+
+Info attribute of response message contains sid of the newly created Student ID.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "sid" : $sid;
+    }
+}
+```

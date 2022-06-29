@@ -28,6 +28,7 @@ ServerConnection is a class/module that allows this program to connect to server
 
 The Additional Resoruces that are required by the program are stored in Jar Files  directory.
 * JSON Parser files help to create,parse JSON Strings. 
+* JCalendar has JDateChooser Class which helps in taking Date inputs.
 
 
 ##### Main Function

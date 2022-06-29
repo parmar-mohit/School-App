@@ -2,9 +2,11 @@ package TeacherDesktop.Frames;
 
 import TeacherDesktop.Frames.Panel.BrandingPanel;
 import TeacherDesktop.Frames.Panel.ChangePasswordPanel;
+import TeacherDesktop.Frames.Panel.StudentPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
+import org.json.JSONArray;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +36,7 @@ public class TeacherInterface extends JFrame implements ActionListener {
         buttonPanel.setPreferredSize(new Dimension(Constant.screenSize.width/5,Constant.screenSize.height*4/5));
 
         //Adding Listeners
+        buttonPanel.studentButton.addActionListener(this);
         buttonPanel.securityButton.addActionListener(this);
         buttonPanel.logoutButton.addActionListener(this);
 
@@ -58,7 +61,9 @@ public class TeacherInterface extends JFrame implements ActionListener {
             remove(optionPanel);
         }
 
-        if( e.getSource() == buttonPanel.securityButton ){
+        if( e.getSource() == buttonPanel.studentButton ){
+            optionPanel = new StudentPanel(serverConnection,phone);
+        }else if( e.getSource() == buttonPanel.securityButton ){
             optionPanel = new ChangePasswordPanel(serverConnection,phone);
         }else if( e.getSource() ==  buttonPanel.logoutButton ){
             dispose();

@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -189,6 +190,34 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
+    public JSONArray getClassrooms(String phone){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",11);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONArray("info");
+    }
+
+    public int createStudent(JSONObject studentJsonObject){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",12);
+        jsonObject.put("info",studentJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("sid");
+    }
+
     private JSONObject getResponseMessage(long messageId){
         long startTime = System.currentTimeMillis();
         while ( System.currentTimeMillis() <= startTime + 60000 ){ // Loop for minute
@@ -222,7 +251,15 @@ public class ServerConnection {
         jsonObject.put("id",messageId);
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            dataOutputStream.writeUTF(jsonObject.toString());
+            int i = 0;
+            while( i < jsonObject.toString().length() ) {
+                if( jsonObject.toString().length() < i + 65535 ) {
+                    dataOutputStream.writeUTF(jsonObject.toString().substring(i));
+                }else{
+                    dataOutputStream.writeUTF(jsonObject.toString().substring(i,i+65535));
+                }
+                i += 65535;
+            }
             dataOutputStream.flush();
         }catch(Exception e){
             e.printStackTrace();

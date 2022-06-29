@@ -19,27 +19,27 @@ FLUSH PRIVILEGES;
 USE school_app;
 
 CREATE TABLE parent (
-		phone INT PRIMARY KEY,
+		phone BIGINT PRIMARY KEY,
 		firstname VARCHAR(50),
 		lastname VARCHAR(50),
 		email VARCHAR(50)
 		);
 
 CREATE TABLE student (
-	sid INT PRIMARY KEY,
+	sid INT PRIMARY KEY AUTO_INCREMENT,
 	firstname VARCHAR(50),
 	lastname VARCHAR(50),
 	gender VARCHAR(6),
 	dob DATE,
 	email VARCHAR(50),
-	phone INT,
+	phone BIGINT,
 	standard INT,
 	division VARCHAR(1),
 	CHECK(gender IN('Male','Female','Other'))
 	);
 
 CREATE TABLE parent_child(
-	phone INT,
+	phone BIGINT,
 	sid INT,
 	PRIMARY KEY(phone,sid),
 	FOREIGN KEY(phone) REFERENCES parent(phone) ON DELETE CASCADE,

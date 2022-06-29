@@ -2,12 +2,14 @@ package ServerProgram.Client;
 
 import ServerProgram.ActionCode.*;
 import ServerProgram.Log;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Client extends Thread{
@@ -21,10 +23,18 @@ public class Client extends Thread{
     @Override
     public void run() {
         try{
-            exit:
             while(true){
                 DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-                JSONObject jsonObject = new JSONObject(dataInputStream.readUTF());
+                String recvString = dataInputStream.readUTF();
+                JSONObject jsonObject;
+                while(true) {
+                    try {
+                        jsonObject = new JSONObject(recvString);
+                        break;
+                    } catch (JSONException e) {
+                        recvString += dataInputStream.readUTF();
+                    }
+                }
 
                 switch(jsonObject.getInt("action_code")){
                     case 1:
@@ -65,6 +75,14 @@ public class Client extends Thread{
 
                     case 10:
                         new DeleteClassroom(jsonObject,this).start();
+                        break;
+
+                    case 11:
+                        new GetClassrooms(jsonObject,this).start();
+                        break;
+
+                    case 12:
+                        new CreateStudentId(jsonObject,this).start();
                         break;
                 }
             }

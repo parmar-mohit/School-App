@@ -7,3 +7,6 @@ out/*
 # IntelliJ  Files
 .idea/*
 ServerProgram.iml
+
+# Student Image Files received From Client Program
+Student Images/*
