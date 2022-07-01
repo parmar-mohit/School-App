@@ -249,7 +249,7 @@ public class DatabaseCon {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             if( !resultSet.getBoolean(1) ){
-                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?);");
+                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
                 preparedStatement.setBigDecimal(1,new BigDecimal(fatherPhone));
                 preparedStatement.setString(2,studentJsonObject.getString("father_firstname"));
                 preparedStatement.setString(3,studentJsonObject.getString("father_lastname"));
@@ -258,6 +258,7 @@ public class DatabaseCon {
                 }else{
                     preparedStatement.setString(4,studentJsonObject.getString("father_email"));
                 }
+                preparedStatement.setString(5,"Male");
                 preparedStatement.executeUpdate();
             }
 
@@ -277,7 +278,7 @@ public class DatabaseCon {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             if (!resultSet.getBoolean(1)) {
-                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?);");
+                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
                 preparedStatement.setBigDecimal(1, new BigDecimal(motherPhone));
                 preparedStatement.setString(2, studentJsonObject.getString("mother_firstname"));
                 preparedStatement.setString(3, studentJsonObject.getString("mother_lastname"));
@@ -286,6 +287,7 @@ public class DatabaseCon {
                 } else {
                     preparedStatement.setString(4, studentJsonObject.getString("mother_email"));
                 }
+                preparedStatement.setString(5,"Female");
                 preparedStatement.executeUpdate();
             }
 
@@ -302,5 +304,25 @@ public class DatabaseCon {
 
     public void commit() throws Exception {
         db.commit();
+    }
+
+    public ResultSet getTeacherInchargeStudentList(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student WHERE standard = ( SELECT DISTINCT(standard) FROM classroom WHERE t_phone = ? ) AND division IN (SELECT DISTINCT(division) FROM classroom WHERE t_phone = ?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getParents(int sid) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM parent WHERE phone IN ( SELECT phone FROM parent_child WHERE sid = ? );");
+        preparedStatement.setInt(1,sid);
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getSubjectTeacherStudentList(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student WHERE standard = ( SELECT DISTINCT(standard) FROM subject WHERE t_phone = ? ) AND division IN (SELECT DISTINCT(division) FROM subject WHERE t_phone = ?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        return preparedStatement.executeQuery();
     }
 }

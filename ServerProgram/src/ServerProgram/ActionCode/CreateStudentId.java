@@ -62,7 +62,7 @@ public class CreateStudentId extends Thread {
         if( !imageDirectory.exists() ){
             imageDirectory.mkdir();
         }
-        File imageFile = new File("Student Images/"+sid+".png");
+        File imageFile = new File("Student Images/"+sid+".jpg");
         imageFile.createNewFile();
         ImageIO.write(studentImg,"png",imageFile);
     }

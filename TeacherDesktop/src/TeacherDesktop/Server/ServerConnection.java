@@ -1,15 +1,14 @@
 package TeacherDesktop.Server;
 
 import TeacherDesktop.Frames.NoConnectionInterface;
-import TeacherDesktop.Frames.ServerNotRespondingInterface;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,7 +16,7 @@ import static java.lang.Thread.sleep;
 
 public class ServerConnection {
     private final Socket socket;
-    private ArrayList<String> messagePool;
+    private ArrayList<JSONObject> messagePool;
     private Thread receiverThread;
 
     private JFrame currentFrame;
@@ -218,11 +217,43 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("sid");
     }
 
+    public JSONArray getTeacherInchargeStudentList(String phone){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",13);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONArray("info");
+    }
+
+    public JSONArray getSubjectTeacherStudentList(String phone){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",14);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONArray("info");
+    }
+
     private JSONObject getResponseMessage(long messageId){
         long startTime = System.currentTimeMillis();
         while ( System.currentTimeMillis() <= startTime + 60000 ){ // Loop for minute
             for( int i = 0; i < messagePool.size(); i++){
-                JSONObject jsonObject = new JSONObject(messagePool.get(i));
+                JSONObject jsonObject = messagePool.get(i);
                 long id = jsonObject.getLong("id");
                 if( messageId == id ){
                     messagePool.remove(i);
@@ -275,12 +306,19 @@ public class ServerConnection {
             public void run() {
                 try{
                     while(true){
-                        //Receiving Message
                         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-                        String recvMessage = dataInputStream.readUTF();
-
-                        //Storing Message in MessagePool
-                        messagePool.add(recvMessage);
+                        //Receiving and Storing  and Message in MessagePool
+                        String recvString = dataInputStream.readUTF();
+                        JSONObject jsonObject;
+                        while(true) {
+                            try {
+                                jsonObject = new JSONObject(recvString);
+                                break;
+                            } catch (JSONException e) {
+                                recvString += dataInputStream.readUTF();
+                            }
+                        }
+                        messagePool.add(jsonObject);
                     }
                 }catch(Exception e){
                     e.printStackTrace();

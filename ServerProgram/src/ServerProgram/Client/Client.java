@@ -9,7 +9,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Client extends Thread{
@@ -84,6 +83,14 @@ public class Client extends Thread{
                     case 12:
                         new CreateStudentId(jsonObject,this).start();
                         break;
+
+                    case 13:
+                        new GetTeacherInchargeStudentList(jsonObject,this).start();
+                        break;
+
+                    case 14:
+                        new GetSubjectTeacherStudentList(jsonObject,this).start();
+                        break;
                 }
             }
         }catch(SocketException e){
@@ -98,7 +105,15 @@ public class Client extends Thread{
     public void sendMessage(JSONObject jsonObject){
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            dataOutputStream.writeUTF(jsonObject.toString());
+            int i = 0;
+            while( i < jsonObject.toString().length() ) {
+                if( jsonObject.toString().length() < i + 65535 ) {
+                    dataOutputStream.writeUTF(jsonObject.toString().substring(i));
+                }else{
+                    dataOutputStream.writeUTF(jsonObject.toString().substring(i,i+65535));
+                }
+                i += 65535;
+            }
             dataOutputStream.flush();
         }catch(Exception e){
             e.printStackTrace();

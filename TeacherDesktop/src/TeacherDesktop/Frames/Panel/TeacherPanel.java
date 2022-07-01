@@ -94,9 +94,7 @@ public class TeacherPanel extends JPanel implements ActionListener {
 
     public void fillTeacherCard(){
         if( teacherCardPanelList.size() > 0 ){
-            for( int i = 0; i < teacherCardPanelList.size(); i++){
-                teacherListPanel.remove(teacherCardPanelList.get(i));
-            }
+            teacherListPanel.removeAll();
             teacherCardPanelList = new ArrayList<>();
         }
 

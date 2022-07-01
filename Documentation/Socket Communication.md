@@ -393,7 +393,7 @@ Info Attribute of response message contains an arrray, where each object has an 
 
 * Action Code 12
 
-The Client is requesting server to creat new Student Id.Info attribute of message conatins all information about student.Example is as folows.
+The Client is requesting server to create new Student Id.Info attribute of message conatins all information about student.Example is as folows.
 ```
 {
     "id" : $messageId,
@@ -431,3 +431,51 @@ Info attribute of response message contains sid of the newly created Student ID.
     }
 }
 ```
+
+* Action Code 13
+
+The Client is requesting server to provide list of student who are in classroom with a particular teacher incharge.Info attribute contains phone no of teacher incharge.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 13,
+    "info" : {
+        "phone" : $phone_of_teacher_incharge
+    }
+}
+```
+
+Info attribute of response message contains an JSON array with details of all students.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : [
+        {
+            $info_about_student1
+        },
+        {
+            $info_about_student2
+        },
+        {
+            $info_about_student3
+        }
+    ]
+}
+
+Info of student contains all the attributes that were sent while creating student id,Refer Action Code 12
+```
+
+* Action Code 14
+
+The Client is requesting server to provide list of all students that are being taught by a particular teacher.Info attribute of message contains the phone of teacher.Example is as follows.
+```
+{
+    "id" : $messageId,
+    "action_code" : 14,
+    "info" : {
+        "phone" : $phone_no_of_teacher
+    }
+}
+```
+
+Info Attribute of response message contains all the attribute that were sent while creating student id, Refer Action Code 12.

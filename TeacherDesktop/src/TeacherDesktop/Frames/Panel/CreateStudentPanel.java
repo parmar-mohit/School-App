@@ -334,7 +334,7 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
                 try {
                     BufferedImage studentImg = ImageIO.read(new File(studentImgLocation));
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(studentImg,studentImgLocation.substring(studentImgLocation.length()-3),baos);
+                    ImageIO.write(studentImg,"jpg",baos);
                     byte[] imgArray = baos.toByteArray();
                     String studentImgString = Base64.getEncoder().encodeToString(imgArray);
                     studentJsonObject.put("img",studentImgString);

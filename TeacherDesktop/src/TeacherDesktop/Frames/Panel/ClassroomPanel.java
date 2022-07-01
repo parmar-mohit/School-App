@@ -93,10 +93,10 @@ public class ClassroomPanel extends JPanel implements ActionListener  {
     }
 
     public void fillClassroomCard(){
-        for( int i = 0; i < classroomCardPanelArrayList.size(); i++){
-            classroomListPanel.remove(classroomCardPanelArrayList.get(i));
+        if( classroomCardPanelArrayList.size() > 0 ){
+            classroomListPanel.removeAll();
+            classroomCardPanelArrayList = new ArrayList<>();
         }
-        classroomCardPanelArrayList = new ArrayList<>();
 
         JSONArray classroomJsonArray = serverConnection.getClassroomList();
         for( int i = 0; i < classroomJsonArray.length(); i++){

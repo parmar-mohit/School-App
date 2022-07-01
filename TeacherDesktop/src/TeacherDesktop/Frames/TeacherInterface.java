@@ -2,6 +2,7 @@ package TeacherDesktop.Frames;
 
 import TeacherDesktop.Frames.Panel.BrandingPanel;
 import TeacherDesktop.Frames.Panel.ChangePasswordPanel;
+import TeacherDesktop.Frames.Panel.MyClassroomPanel;
 import TeacherDesktop.Frames.Panel.StudentPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
@@ -36,6 +37,7 @@ public class TeacherInterface extends JFrame implements ActionListener {
         buttonPanel.setPreferredSize(new Dimension(Constant.screenSize.width/5,Constant.screenSize.height*4/5));
 
         //Adding Listeners
+        buttonPanel.myClassroomButton.addActionListener(this);
         buttonPanel.studentButton.addActionListener(this);
         buttonPanel.securityButton.addActionListener(this);
         buttonPanel.logoutButton.addActionListener(this);
@@ -61,7 +63,15 @@ public class TeacherInterface extends JFrame implements ActionListener {
             remove(optionPanel);
         }
 
-        if( e.getSource() == buttonPanel.studentButton ){
+        if( e.getSource() == buttonPanel.myClassroomButton ){
+            JSONArray classroomJsonArray = serverConnection.getClassrooms(phone);
+            if( classroomJsonArray.length() == 0 ){
+                JOptionPane.showMessageDialog(this,"You are not Incharge of any class and hence cannot access My Classroom","Alert",JOptionPane.WARNING_MESSAGE);
+                return;
+            }else {
+                optionPanel = new MyClassroomPanel(serverConnection, phone,classroomJsonArray);
+            }
+        }else if( e.getSource() == buttonPanel.studentButton ){
             optionPanel = new StudentPanel(serverConnection,phone);
         }else if( e.getSource() == buttonPanel.securityButton ){
             optionPanel = new ChangePasswordPanel(serverConnection,phone);
@@ -72,6 +82,7 @@ public class TeacherInterface extends JFrame implements ActionListener {
         }
 
         //Coloring Buttons
+        buttonPanel.myClassroomButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.studentButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.examButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.securityButton.setBackground(Constant.BUTTON_BACKGROUND);
@@ -90,16 +101,19 @@ public class TeacherInterface extends JFrame implements ActionListener {
 
 class TeacherButtonPanel extends JPanel{
 
-    public JButton studentButton,examButton,securityButton,logoutButton;
+    public JButton myClassroomButton,studentButton,examButton,securityButton,logoutButton;
 
     public TeacherButtonPanel(){
         //Initialisng Members
+        myClassroomButton = new JButton("My Classroom");
         studentButton = new JButton("Student");
         examButton = new JButton("Exam");
         securityButton = new JButton("Security");
         logoutButton = new JButton("Logout");
 
         //Editing Components
+        myClassroomButton.setPreferredSize(Constant.BUTTON_SIZE);
+        myClassroomButton.setBackground(Constant.BUTTON_BACKGROUND);
         studentButton.setPreferredSize(Constant.BUTTON_SIZE);
         studentButton.setBackground(Constant.BUTTON_BACKGROUND);
         examButton.setPreferredSize(Constant.BUTTON_SIZE);
@@ -114,9 +128,10 @@ class TeacherButtonPanel extends JPanel{
         setBackground(Constant.BUTTON_PANEL_BACKGROUND);
 
         //Adding Components to Panel
-        add(studentButton, Constraint.setPosition(0,0));
-        add(examButton,Constraint.setPosition(0,1));
-        add(securityButton,Constraint.setPosition(0,2));
-        add(logoutButton,Constraint.setPosition(0,3));
+        add(myClassroomButton,Constraint.setPosition(0,0));
+        add(studentButton, Constraint.setPosition(0,1));
+        add(examButton,Constraint.setPosition(0,2));
+        add(securityButton,Constraint.setPosition(0,3));
+        add(logoutButton,Constraint.setPosition(0,4));
     }
 }
