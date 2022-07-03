@@ -176,7 +176,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
                 Constraint.labelDeleteAfterTime(messageLabel);
             }
         }else if( e.getSource() == deleteButton ){
-            int result = JOptionPane.showConfirmDialog(this,"Are you sure you want to delete Teacher id?");
+            int result = JOptionPane.showConfirmDialog(this,"Are you sure you want to delete Teacher Id?");
 
             if( result == JOptionPane.YES_OPTION ){
                 int response = serverConnection.deleteTeacher(teacherJsonObject.getString("phone"));

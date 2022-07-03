@@ -91,6 +91,14 @@ public class Client extends Thread{
                     case 14:
                         new GetSubjectTeacherStudentList(jsonObject,this).start();
                         break;
+
+                    case 15:
+                        new DeleteStudentId(jsonObject,this).start();
+                        break;
+
+                    case 16:
+                        new UpdateStudentId(jsonObject,this).start();
+                        break;
                 }
             }
         }catch(SocketException e){

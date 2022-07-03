@@ -1,23 +1,48 @@
 package TeacherDesktop.Frames.Panel;
 
+import TeacherDesktop.Frames.Dialog.UpdateStudentDialog;
+import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.ByteArrayInputStream;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 
-public class StudentCardPanel extends JPanel {
+public class StudentCardPanel extends JPanel implements ActionListener, WindowListener {
 
     private JLabel imageLabel,sidLabel,firstnameLabel,lastnameLabel,emailLabel,phoneLabel,genderLabel,dobLabel,standardLabel,divisionLabel,fatherFirstnameLabel,fatherLastnameLabel,fatherPhoneLabel,fatherEmailLabel,motherFirstnameLabel,motherLastnameLabel,motherPhoneLabel,motherEmailLabel;
+    private JButton updateButton,deleteButton;
     private JSONObject studentJsonObject;
+    private ServerConnection serverConnection;
+    private MyClassroomPanel parent;
+    private JSONArray classroomJSonArray;
 
+    public StudentCardPanel(JSONObject studentJsonObject,ServerConnection serverConnection,JSONArray classroomJSonArray,MyClassroomPanel parent){
+        this.studentJsonObject = studentJsonObject;
+        this.serverConnection = serverConnection;
+        this.classroomJSonArray = classroomJSonArray;
+        this.parent = parent;
+        fillPanel(true);
+    }
     public StudentCardPanel(JSONObject studentJsonObject){
         //Intialising Members
         this.studentJsonObject = studentJsonObject;
+        this.serverConnection = serverConnection;
+        fillPanel(false);
+    }
+
+    private void fillPanel(boolean buttonVisibilty){
         imageLabel = new JLabel(getImage());
         sidLabel = new JLabel("SID : "+studentJsonObject.getInt("sid"));
         String firstname = studentJsonObject.getString("firstname");
@@ -35,7 +60,8 @@ public class StudentCardPanel extends JPanel {
             phoneLabel = new JLabel("Phone : "+studentJsonObject.getString("phone"));
         }
         genderLabel = new JLabel("Gender : "+studentJsonObject.getString("gender"));
-        dobLabel = new JLabel("Date of Birth : "+studentJsonObject.getString("dob"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        dobLabel = new JLabel("Date of Birth : "+sdf.format(new Date(studentJsonObject.getLong("dob"))));
         standardLabel = new JLabel("Standard : "+studentJsonObject.getInt("standard"));
         divisionLabel = new JLabel("Division : "+studentJsonObject.getString("division"));
         if( studentJsonObject.getString("father_firstname").equals("null")){
@@ -74,8 +100,21 @@ public class StudentCardPanel extends JPanel {
             motherEmailLabel = new JLabel("Mother's Email : "+studentJsonObject.getString("mother_email"));
         }
 
+        updateButton = new JButton("Update");
+        deleteButton = new JButton("Delete");
+
         //Editing Components
         sidLabel.setFont(new Font("SansSerif",Font.BOLD,16));
+        updateButton.setBackground(Constant.BUTTON_BACKGROUND);
+        deleteButton.setBackground(Color.RED);
+
+        //Editing Button Visibility
+        updateButton.setVisible(buttonVisibilty);
+        deleteButton.setVisible(buttonVisibilty);
+
+        //Adding Listeners
+        updateButton.addActionListener(this);
+        deleteButton.addActionListener(this);
 
         //Editing Panel Details
         setLayout(new GridBagLayout());
@@ -100,6 +139,8 @@ public class StudentCardPanel extends JPanel {
         add(motherLastnameLabel,Constraint.setPosition(2,7,Constraint.LEFT));
         add(motherPhoneLabel,Constraint.setPosition(1,8,Constraint.LEFT));
         add(motherEmailLabel,Constraint.setPosition(2,8,Constraint.LEFT));
+        add(updateButton,Constraint.setPosition(1,9));
+        add(deleteButton,Constraint.setPosition(2,9));
     }
 
     private ImageIcon getImage(){
@@ -113,5 +154,61 @@ public class StudentCardPanel extends JPanel {
         }
         studentImg = studentImg.getScaledInstance(150,150,Image.SCALE_DEFAULT);
         return new ImageIcon(studentImg);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if( e.getSource() == updateButton ){
+            JDialog dialog = new UpdateStudentDialog(serverConnection,classroomJSonArray,studentJsonObject,(JFrame)SwingUtilities.getWindowAncestor(this));
+            dialog.addWindowListener(this);
+        }else if( e.getSource() == deleteButton ){
+            int result = JOptionPane.showConfirmDialog(this,"Are you sure you want to delete Student Id?");
+
+            if( result == JOptionPane.YES_OPTION ){
+                int response = serverConnection.deleteStudentId(studentJsonObject.getInt("sid"));
+                if( response ==  0 ){
+                    parent.fillStudentCard();
+                    parent.revalidate();
+                    repaint();
+                }
+            }
+        }
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        parent.fillStudentCard();
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }

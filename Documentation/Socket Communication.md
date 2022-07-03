@@ -479,3 +479,67 @@ The Client is requesting server to provide list of all students that are being t
 ```
 
 Info Attribute of response message contains all the attribute that were sent while creating student id, Refer Action Code 12.
+
+* Action Code 15
+
+The Client is requesting server to delete the Student Info Attribute contains sid of student.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 15,
+    "info" : {
+        "sid" : $sid_of_student
+    }
+}
+```
+
+Info attribute of response message contains response code which is set to 0 indicating that student id has been deleted.Example is as follows
+```
+{
+    "id" : messageId,
+    "info" : {
+        "response_code" : 0
+    }
+}
+```
+
+* Action Code 16
+
+The Client is requesting server to update details of a student.Info attribute of message contains all attributes of student.Refer action Unlike action code 12 info attribute may or may not have img attribute.If it has img attribute then image has been updated or else image has not been updated.Example is as follows.
+```
+{
+    "id" : $messageId,
+    "action_code" : 12,
+    "info" : {
+        "firstname" : $firstname,
+        "lastname" : $lastname,
+        "email" : $email,
+        "phone" : $phone,
+        "gender" : $gender,
+        "dob" : $date_of_birth,
+        "standard" : $standard,
+        "division" : $division,
+        "father_firstname" : $father_firstname,
+        "father_lastname" : $father_lastname,
+        "father_old_phone" : $father_old_phone,
+        "father_new_phone" : $father_new_phone,
+        "father_email" : $father_email,
+        "mother_firstname" : $mother_firstname,
+        "mother_lastname" : $mother_lastname,
+        "mother_old_phone" : $mother_old_phone,
+        "mother_new_phone" : $mother_new_phone,
+        "mother_email" : $mother_email,
+        "img" : $img
+    }
+}
+```
+
+The Info attribute of response message contains response code set to 0 indicating that Student Id has been updated.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
+    }
+}
+```

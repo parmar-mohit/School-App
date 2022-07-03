@@ -249,6 +249,34 @@ public class ServerConnection {
         return responseJsonObject.getJSONArray("info");
     }
 
+    public int deleteStudentId(int sid){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",15);
+
+        JSONObject infoStudentJsonObject = new JSONObject();
+        infoStudentJsonObject.put("sid",sid);
+
+        jsonObject.put("info",infoStudentJsonObject);
+
+        //sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
+    public int updateStudentId(JSONObject studentJsonObject){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",16);
+        jsonObject.put("info",studentJsonObject);
+
+        //sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
     private JSONObject getResponseMessage(long messageId){
         long startTime = System.currentTimeMillis();
         while ( System.currentTimeMillis() <= startTime + 60000 ){ // Loop for minute

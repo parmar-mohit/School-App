@@ -53,7 +53,7 @@ public class GetTeacherInchargeStudentList extends Thread {
                     studentJsonObject.put("phone",studentResultSet.getBigDecimal("phone").toString());
                 }
                 studentJsonObject.put("gender",studentResultSet.getString("gender"));
-                studentJsonObject.put("dob",studentResultSet.getDate("dob"));
+                studentJsonObject.put("dob",studentResultSet.getDate("dob").getTime());
                 studentJsonObject.put("standard",studentResultSet.getInt("standard"));
                 studentJsonObject.put("division",studentResultSet.getString("division"));
 

@@ -64,6 +64,6 @@ public class CreateStudentId extends Thread {
         }
         File imageFile = new File("Student Images/"+sid+".jpg");
         imageFile.createNewFile();
-        ImageIO.write(studentImg,"png",imageFile);
+        ImageIO.write(studentImg,"jpg",imageFile);
     }
 }

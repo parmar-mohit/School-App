@@ -60,7 +60,7 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
         add(scrollPane,Constraint.setPosition(0,2,2,1));
     }
 
-    private void fillStudentCard(){
+    public void fillStudentCard(){
         if( studentCardPanelArrayList.size() >  0 ){
             studentListPanel.removeAll();
             studentCardPanelArrayList = new ArrayList<>();
@@ -69,7 +69,7 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
         JSONArray studentListJsonArray = serverConnection.getTeacherInchargeStudentList(phone);
         for( int i = 0; i < studentListJsonArray.length(); i++ ){
             JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
-            StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject);
+            StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject,serverConnection,classroomJsonArray,this);
             studentCardPanel.setPreferredSize(new Dimension(900,350));
             studentListPanel.add(studentCardPanel,Constraint.setPosition(0,studentCardPanelArrayList.size()));
             studentCardPanelArrayList.add(studentCardPanel);

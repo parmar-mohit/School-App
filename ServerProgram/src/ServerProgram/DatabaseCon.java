@@ -156,16 +156,6 @@ public class DatabaseCon {
         preparedStatement.executeUpdate();
     }
 
-    public boolean checkSubjectExist(int standard,String division,String subjectName) throws Exception {
-        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS( SELECT * FROM subject WHERE subject_name = ? AND  standard = ? AND division = ? );");
-        preparedStatement.setString(1,subjectName);
-        preparedStatement.setInt(2,standard);
-        preparedStatement.setString(3,division);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getBoolean(1);
-    }
-
     public void updateSubject(int standard,String division,JSONObject subjectJsonObject) throws Exception {
         PreparedStatement preparedStatement = db.prepareStatement("UPDATE subject SET subject_name = ?, t_phone = ? WHERE standard = ? AND division =? AND subject_name = ?;");
         preparedStatement.setString(1,subjectJsonObject.getString("new_subject_name"));
@@ -324,5 +314,91 @@ public class DatabaseCon {
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         preparedStatement.setBigDecimal(2,new BigDecimal(phone));
         return preparedStatement.executeQuery();
+    }
+
+    public void deleteStudentId(int sid) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM student WHERE sid =?");
+        preparedStatement.setInt(1,sid);
+        preparedStatement.executeUpdate();
+    }
+
+    public void updateStudentId(JSONObject studentJsonObject) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE student SET firstname = ?, lastname=?, gender = ?, dob=? , email=?, phone =?, standard=?,division=? WHERE sid = ?");
+        preparedStatement.setString(1,studentJsonObject.getString("firstname"));
+        preparedStatement.setString(2,studentJsonObject.getString("lastname"));
+        preparedStatement.setString(3,studentJsonObject.getString("gender"));
+        preparedStatement.setDate(4,new Date(studentJsonObject.getLong("dob")));
+        if( studentJsonObject.getString("email").equals("null")  ){
+            preparedStatement.setNull(5,VARCHAR);
+        }else{
+            preparedStatement.setString(5,studentJsonObject.getString("email"));
+        }
+
+        if( studentJsonObject.getString("phone").equals("null") ){
+            preparedStatement.setNull(6,BIGINT);
+        }else{
+            preparedStatement.setBigDecimal(6,new BigDecimal(studentJsonObject.getString("phone")));
+        }
+
+        preparedStatement.setInt(7,studentJsonObject.getInt("standard"));
+        preparedStatement.setString(8,studentJsonObject.getString("division"));
+        preparedStatement.setInt(9,studentJsonObject.getInt("sid"));
+        preparedStatement.executeUpdate();
+    }
+
+    public void updateParent(JSONObject studentJsonObject) throws Exception{
+        //Updating Father
+
+        //Deleting Previous details
+        if( !studentJsonObject.getString("father_old_phone").equals("null") ) {
+            PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM parent WHERE phone = ?");
+            preparedStatement.setBigDecimal(1, new BigDecimal(studentJsonObject.getString("father_old_phone")));
+            preparedStatement.executeUpdate();
+        }
+        if( !studentJsonObject.getString("father_new_phone").equals("null") ){
+            PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+            preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("father_new_phone")));
+            preparedStatement.setString(2,studentJsonObject.getString("father_firstname"));
+            preparedStatement.setString(3,studentJsonObject.getString("father_lastname"));
+            if( studentJsonObject.getString("father_email").equals("null") ){
+                preparedStatement.setNull(4,VARCHAR);
+            }else{
+                preparedStatement.setString(4,studentJsonObject.getString("father_email"));
+            }
+            preparedStatement.setString(5,"Male");
+            preparedStatement.executeUpdate();
+
+            preparedStatement = db.prepareStatement("INSERT INTO parent_child VALUES(?,?);");
+            preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("father_new_phone")));
+            preparedStatement.setInt(2,studentJsonObject.getInt("sid"));
+            preparedStatement.executeUpdate();
+        }
+
+        //Updating Mother
+
+        //Deleting Previous details
+        if( !studentJsonObject.getString("mother_old_phone").equals("null") ) {
+            PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM parent WHERE phone = ?");
+            preparedStatement.setBigDecimal(1, new BigDecimal(studentJsonObject.getString("mother_old_phone")));
+            preparedStatement.executeUpdate();
+        }
+        if( !studentJsonObject.getString("mother_new_phone").equals("null") ){
+            PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+            preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("mother_new_phone")));
+            preparedStatement.setString(2,studentJsonObject.getString("mother_firstname"));
+            preparedStatement.setString(3,studentJsonObject.getString("mother_lastname"));
+            if( studentJsonObject.getString("mother_email").equals("null") ){
+                preparedStatement.setNull(4,VARCHAR);
+            }else{
+                preparedStatement.setString(4,studentJsonObject.getString("mother_email"));
+            }
+            preparedStatement.setString(5,"Female");
+            preparedStatement.executeUpdate();
+
+            preparedStatement = db.prepareStatement("INSERT INTO parent_child VALUES(?,?);");
+            preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("mother_new_phone")));
+            preparedStatement.setInt(2,studentJsonObject.getInt("sid"));
+            preparedStatement.executeUpdate();
+        }
     }
 }
