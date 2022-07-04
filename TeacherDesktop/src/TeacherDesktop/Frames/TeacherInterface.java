@@ -106,7 +106,7 @@ class TeacherButtonPanel extends JPanel{
     public TeacherButtonPanel(){
         //Initialisng Members
         myClassroomButton = new JButton("My Classroom");
-        studentButton = new JButton("Student");
+        studentButton = new JButton("Students");
         examButton = new JButton("Exam");
         securityButton = new JButton("Security");
         logoutButton = new JButton("Logout");

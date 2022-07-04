@@ -28,6 +28,7 @@ public class PrincipalInterface extends JFrame implements ActionListener {
 
         //Adding Listener
         buttonPanel.teacherButton.addActionListener(this);
+        buttonPanel.allStudentButton.addActionListener(this);
         buttonPanel.classroomButton.addActionListener(this);
         buttonPanel.securityButton.addActionListener(this);
         buttonPanel.logoutButton.addActionListener(this);
@@ -61,6 +62,8 @@ public class PrincipalInterface extends JFrame implements ActionListener {
 
         if( e.getSource() == buttonPanel.teacherButton){
             optionPanel = new TeacherPanel(serverConnection);
+        }else if( e.getSource() == buttonPanel.allStudentButton ){
+            optionPanel = new AllStudentPanel(serverConnection);
         }else if( e.getSource() == buttonPanel.classroomButton){
             optionPanel = new ClassroomPanel(serverConnection);
         }else if( e.getSource() == buttonPanel.securityButton ){
@@ -73,6 +76,7 @@ public class PrincipalInterface extends JFrame implements ActionListener {
 
         //Coloring Buttons
         buttonPanel.teacherButton.setBackground(Constant.BUTTON_BACKGROUND);
+        buttonPanel.allStudentButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.classroomButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.securityButton.setBackground(Constant.BUTTON_BACKGROUND);
 
@@ -90,11 +94,12 @@ public class PrincipalInterface extends JFrame implements ActionListener {
 
 class PrincipalButtonPanel extends JPanel {
 
-    protected JButton teacherButton, classroomButton,securityButton,logoutButton;
+    protected JButton teacherButton, allStudentButton, classroomButton,securityButton,logoutButton;
 
     public PrincipalButtonPanel(){
         //Initialising Member Variables
         teacherButton = new JButton("Teacher");
+        allStudentButton = new JButton("All Students");
         classroomButton = new JButton("Classroom");
         securityButton = new JButton("Security");
         logoutButton = new JButton("Logout");
@@ -102,6 +107,8 @@ class PrincipalButtonPanel extends JPanel {
         //Editing Components
         teacherButton.setPreferredSize(Constant.BUTTON_SIZE);
         teacherButton.setBackground(Constant.BUTTON_BACKGROUND);
+        allStudentButton.setPreferredSize(Constant.BUTTON_SIZE);
+        allStudentButton.setBackground(Constant.BUTTON_BACKGROUND);
         classroomButton.setPreferredSize(Constant.BUTTON_SIZE);
         classroomButton.setBackground(Constant.BUTTON_BACKGROUND);
         securityButton.setPreferredSize(Constant.BUTTON_SIZE);
@@ -115,8 +122,9 @@ class PrincipalButtonPanel extends JPanel {
 
         //Adding Components to Frame
         add(teacherButton,Constraint.setPosition(0,0));
-        add(classroomButton,Constraint.setPosition(0,1));
-        add(securityButton,Constraint.setPosition(0,2));
-        add(logoutButton,Constraint.setPosition(0,3));
+        add(allStudentButton,Constraint.setPosition(0,1));
+        add(classroomButton,Constraint.setPosition(0,2));
+        add(securityButton,Constraint.setPosition(0,3));
+        add(logoutButton,Constraint.setPosition(0,4));
     }
 }

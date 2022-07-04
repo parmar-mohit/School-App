@@ -99,6 +99,10 @@ public class Client extends Thread{
                     case 16:
                         new UpdateStudentId(jsonObject,this).start();
                         break;
+
+                    case 17:
+                        new GetStudentInfoForPrincipal(jsonObject,this).start();
+                        break;
                 }
             }
         }catch(SocketException e){

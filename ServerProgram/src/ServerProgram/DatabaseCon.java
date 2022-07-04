@@ -356,17 +356,23 @@ public class DatabaseCon {
             preparedStatement.executeUpdate();
         }
         if( !studentJsonObject.getString("father_new_phone").equals("null") ){
-            PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+            PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS(SELECT * FROM parent WHERE phone=?);");
             preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("father_new_phone")));
-            preparedStatement.setString(2,studentJsonObject.getString("father_firstname"));
-            preparedStatement.setString(3,studentJsonObject.getString("father_lastname"));
-            if( studentJsonObject.getString("father_email").equals("null") ){
-                preparedStatement.setNull(4,VARCHAR);
-            }else{
-                preparedStatement.setString(4,studentJsonObject.getString("father_email"));
+            ResultSet resulSet = preparedStatement.executeQuery();
+            resulSet.next();
+            if( !resulSet.getBoolean(1) ) {
+                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+                preparedStatement.setBigDecimal(1, new BigDecimal(studentJsonObject.getString("father_new_phone")));
+                preparedStatement.setString(2, studentJsonObject.getString("father_firstname"));
+                preparedStatement.setString(3, studentJsonObject.getString("father_lastname"));
+                if (studentJsonObject.getString("father_email").equals("null")) {
+                    preparedStatement.setNull(4, VARCHAR);
+                } else {
+                    preparedStatement.setString(4, studentJsonObject.getString("father_email"));
+                }
+                preparedStatement.setString(5, "Male");
+                preparedStatement.executeUpdate();
             }
-            preparedStatement.setString(5,"Male");
-            preparedStatement.executeUpdate();
 
             preparedStatement = db.prepareStatement("INSERT INTO parent_child VALUES(?,?);");
             preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("father_new_phone")));
@@ -383,22 +389,44 @@ public class DatabaseCon {
             preparedStatement.executeUpdate();
         }
         if( !studentJsonObject.getString("mother_new_phone").equals("null") ){
-            PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+            PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS(SELECT * FROM parent WHERE phone=?);");
             preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("mother_new_phone")));
-            preparedStatement.setString(2,studentJsonObject.getString("mother_firstname"));
-            preparedStatement.setString(3,studentJsonObject.getString("mother_lastname"));
-            if( studentJsonObject.getString("mother_email").equals("null") ){
-                preparedStatement.setNull(4,VARCHAR);
-            }else{
-                preparedStatement.setString(4,studentJsonObject.getString("mother_email"));
+            ResultSet resulSet = preparedStatement.executeQuery();
+            resulSet.next();
+            if( !resulSet.getBoolean(1) ) {
+                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+                preparedStatement.setBigDecimal(1, new BigDecimal(studentJsonObject.getString("mother_new_phone")));
+                preparedStatement.setString(2, studentJsonObject.getString("mother_firstname"));
+                preparedStatement.setString(3, studentJsonObject.getString("mother_lastname"));
+                if (studentJsonObject.getString("mother_email").equals("null")) {
+                    preparedStatement.setNull(4, VARCHAR);
+                } else {
+                    preparedStatement.setString(4, studentJsonObject.getString("mother_email"));
+                }
+                preparedStatement.setString(5, "Female");
+                preparedStatement.executeUpdate();
             }
-            preparedStatement.setString(5,"Female");
-            preparedStatement.executeUpdate();
 
             preparedStatement = db.prepareStatement("INSERT INTO parent_child VALUES(?,?);");
             preparedStatement.setBigDecimal(1,new BigDecimal(studentJsonObject.getString("mother_new_phone")));
             preparedStatement.setInt(2,studentJsonObject.getInt("sid"));
             preparedStatement.executeUpdate();
         }
+    }
+
+    public ResultSet getPrincipalStudentList() throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student;");
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getDistinctStandard() throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT DISTINCT(standard) FROM classroom;");
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getDistinctDivision(int standard) throws  Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT DISTINCT(division) FROM classroom WHERE standard=?;");
+        preparedStatement.setInt(1,standard);
+        return preparedStatement.executeQuery();
     }
 }

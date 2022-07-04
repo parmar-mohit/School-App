@@ -25,14 +25,22 @@ public class StudentCardPanel extends JPanel implements ActionListener, WindowLi
     private JButton updateButton,deleteButton;
     private JSONObject studentJsonObject;
     private ServerConnection serverConnection;
-    private MyClassroomPanel parent;
+    private MyClassroomPanel myClassroomPanelParent;
+    private AllStudentPanel allStudentPanelParent;
     private JSONArray classroomJSonArray;
 
-    public StudentCardPanel(JSONObject studentJsonObject,ServerConnection serverConnection,JSONArray classroomJSonArray,MyClassroomPanel parent){
+    public StudentCardPanel(JSONObject studentJsonObject,ServerConnection serverConnection,JSONArray classroomJSonArray,MyClassroomPanel myClassroomPanelParent){
         this.studentJsonObject = studentJsonObject;
         this.serverConnection = serverConnection;
         this.classroomJSonArray = classroomJSonArray;
-        this.parent = parent;
+        fillPanel(true);
+    }
+
+    public StudentCardPanel(JSONObject studentJsonObject,ServerConnection serverConnection,JSONArray classroomJSonArray,AllStudentPanel allStudentPanelParent){
+        this.studentJsonObject = studentJsonObject;
+        this.serverConnection = serverConnection;
+        this.classroomJSonArray = classroomJSonArray;
+        this.allStudentPanelParent = allStudentPanelParent;
         fillPanel(true);
     }
     public StudentCardPanel(JSONObject studentJsonObject){
@@ -167,9 +175,15 @@ public class StudentCardPanel extends JPanel implements ActionListener, WindowLi
             if( result == JOptionPane.YES_OPTION ){
                 int response = serverConnection.deleteStudentId(studentJsonObject.getInt("sid"));
                 if( response ==  0 ){
-                    parent.fillStudentCard();
-                    parent.revalidate();
-                    repaint();
+                    if( myClassroomPanelParent != null ) {
+                        myClassroomPanelParent.fillStudentCard();
+                        myClassroomPanelParent.revalidate();
+                        myClassroomPanelParent.repaint();
+                    }else{
+                        allStudentPanelParent.fillStudentCard();
+                        allStudentPanelParent.revalidate();
+                        allStudentPanelParent.repaint();
+                    }
                 }
             }
         }
@@ -189,7 +203,11 @@ public class StudentCardPanel extends JPanel implements ActionListener, WindowLi
 
     @Override
     public void windowClosed(WindowEvent e) {
-        parent.fillStudentCard();
+        if( myClassroomPanelParent != null ) {
+            myClassroomPanelParent.fillStudentCard();
+        }else{
+            allStudentPanelParent.fillStudentCard();
+        }
     }
 
     @Override

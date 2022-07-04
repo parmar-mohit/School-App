@@ -543,3 +543,24 @@ The Info attribute of response message contains response code set to 0 indicatin
     }
 }
 ```
+
+* Action Code 17
+
+The Client is requestint server to provide information of all students as well as provide list of all classrooms as in Action Code 11.Info Attribute is not there in message.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 17
+}
+```
+
+Info attribute of response message contains 2 array one array containing list of student as in action code 13 and second array will contain list of classrooms as in action code 11.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "student_list" : $studentListArray
+        "classroom_list" : $classroomListArray
+    }
+}
+```
