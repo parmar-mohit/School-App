@@ -56,7 +56,7 @@ public class DatabaseCon {
         return resultSet;
     }
 
-    public Boolean checkPhone(String phone) throws Exception{
+    public Boolean checkTeacherPhone(String phone) throws Exception{
         PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS (SELECT t_phone FROM teacher WHERE t_phone = ?);");
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         ResultSet result = preparedStatement.executeQuery();
@@ -98,7 +98,7 @@ public class DatabaseCon {
         preparedStatement.executeUpdate();
     }
 
-    public void updateTeacherAttributes(String phone,String firstname,String lastname,String email,String gender) throws Exception{
+    public void updateTeacherId(String phone, String firstname, String lastname, String email, String gender) throws Exception{
         //Updating in teacher Table
         PreparedStatement preparedStatement = db.prepareStatement("UPDATE teacher SET firstname =?, lastname = ?, email = ?, gender = ? WHERE t_phone = ?;");
         preparedStatement.setString(1,firstname);
@@ -109,7 +109,7 @@ public class DatabaseCon {
         preparedStatement.executeUpdate();
     }
 
-    public ResultSet getClassroomList() throws Exception{
+    public ResultSet getClassroomListForPrincipal() throws Exception{
         PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM classroom;");
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet;
@@ -296,7 +296,7 @@ public class DatabaseCon {
         db.commit();
     }
 
-    public ResultSet getTeacherInchargeStudentList(String phone) throws Exception{
+    public ResultSet getStudentListForClassroomIncharge(String phone) throws Exception{
         PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student WHERE standard = ( SELECT DISTINCT(standard) FROM classroom WHERE t_phone = ? ) AND division IN (SELECT DISTINCT(division) FROM classroom WHERE t_phone = ?);");
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         preparedStatement.setBigDecimal(2,new BigDecimal(phone));
@@ -309,7 +309,7 @@ public class DatabaseCon {
         return preparedStatement.executeQuery();
     }
 
-    public ResultSet getSubjectTeacherStudentList(String phone) throws Exception{
+    public ResultSet getStudentListForSubjectTeacher(String phone) throws Exception{
         PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student WHERE standard = ( SELECT DISTINCT(standard) FROM subject WHERE t_phone = ? ) AND division IN (SELECT DISTINCT(division) FROM subject WHERE t_phone = ?);");
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         preparedStatement.setBigDecimal(2,new BigDecimal(phone));
@@ -414,7 +414,7 @@ public class DatabaseCon {
         }
     }
 
-    public ResultSet getPrincipalStudentList() throws Exception {
+    public ResultSet getStudentListForPrincipal() throws Exception {
         PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student;");
         return preparedStatement.executeQuery();
     }

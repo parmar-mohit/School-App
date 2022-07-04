@@ -1,6 +1,6 @@
-package TeacherDesktop.Frames.Dialog;
+package TeacherDesktop.Dialog;
 
-import TeacherDesktop.Frames.Panel.CreateSubjectPanel;
+import TeacherDesktop.Panel.CreateSubjectPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
@@ -11,8 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class UpdateClassroomDialog extends JDialog implements ActionListener {

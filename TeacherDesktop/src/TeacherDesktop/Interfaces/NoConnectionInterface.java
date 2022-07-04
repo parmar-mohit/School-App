@@ -1,4 +1,4 @@
-package TeacherDesktop.Frames;
+package TeacherDesktop.Interfaces;
 
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;

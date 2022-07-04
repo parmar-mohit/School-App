@@ -1,6 +1,6 @@
 package TeacherDesktop.Server;
 
-import TeacherDesktop.Frames.NoConnectionInterface;
+import TeacherDesktop.Interfaces.NoConnectionInterface;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,7 +121,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
-    public int updateTeacherAttributes(JSONObject teacherObject){
+    public int updateTeacherId(JSONObject teacherObject){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",6);
         jsonObject.put("info",teacherObject);
@@ -133,7 +133,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
-    public JSONArray getClassroomList(){
+    public JSONArray getClassroomListForPrincipal(){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",7);
 
@@ -189,7 +189,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
-    public JSONArray getClassrooms(String phone){
+    public JSONArray getStandardDivisionOfTeacher(String phone){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",11);
 
@@ -217,7 +217,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("sid");
     }
 
-    public JSONArray getTeacherInchargeStudentList(String phone){
+    public JSONArray getStudentListForClassroomIncharge(String phone){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",13);
 
@@ -233,7 +233,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONArray("info");
     }
 
-    public JSONArray getSubjectTeacherStudentList(String phone){
+    public JSONArray getStudentListForSubjectTeacher(String phone){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",14);
 

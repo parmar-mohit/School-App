@@ -37,7 +37,7 @@ public class CreateTeacherId extends Thread{
             JSONObject responseInfoObject = new JSONObject();
 
             //Checking if a teacher with same phone exist
-            if( db.checkPhone(phone) ){
+            if( db.checkTeacherPhone(phone) ){
                 responseInfoObject.put("response_code",1);
             }else{
                 db.createTeacherId(phone,firstname,lastname,email,gender,password);

@@ -1,4 +1,4 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.Panel;
 
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
@@ -7,7 +7,6 @@ import TeacherDesktop.Static.Constraint;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.math.BigInteger;
 
 public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListener, ActionListener {
 

@@ -8,13 +8,13 @@ import org.json.JSONObject;
 
 import java.sql.ResultSet;
 
-public class GetClassrooms extends Thread {
+public class GetStandardDivisionOfTeacher extends Thread {
 
     private JSONObject jsonObject;
     private Client client;
     private DatabaseCon db;
 
-    public GetClassrooms(JSONObject jsonObject,Client client){
+    public GetStandardDivisionOfTeacher(JSONObject jsonObject, Client client){
         this.jsonObject = jsonObject;
         this.client = client;
     }

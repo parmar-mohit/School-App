@@ -34,7 +34,7 @@ public class UpdateTeacherAttributes extends Thread {
             String email = infoJsonObject.getString("email");
             String gender = infoJsonObject.getString("gender");
 
-            db.updateTeacherAttributes(phone,firstname,lastname,email,gender);
+            db.updateTeacherId(phone,firstname,lastname,email,gender);
 
             responseInfoJsonObject.put("response_code",0);
 

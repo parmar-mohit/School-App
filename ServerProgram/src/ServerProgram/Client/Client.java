@@ -61,7 +61,7 @@ public class Client extends Thread{
                         break;
 
                     case 7:
-                        new GetClassroomList(jsonObject,this).start();
+                        new GetClassroomListForPrincipal(jsonObject,this).start();
                         break;
 
                     case 8:
@@ -77,7 +77,7 @@ public class Client extends Thread{
                         break;
 
                     case 11:
-                        new GetClassrooms(jsonObject,this).start();
+                        new GetStandardDivisionOfTeacher(jsonObject,this).start();
                         break;
 
                     case 12:
@@ -85,11 +85,11 @@ public class Client extends Thread{
                         break;
 
                     case 13:
-                        new GetTeacherInchargeStudentList(jsonObject,this).start();
+                        new GetStudentListForClassroomIncharge(jsonObject,this).start();
                         break;
 
                     case 14:
-                        new GetSubjectTeacherStudentList(jsonObject,this).start();
+                        new GetStudentListForSubjectTeacher(jsonObject,this).start();
                         break;
 
                     case 15:

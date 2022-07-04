@@ -1,6 +1,6 @@
-package TeacherDesktop.Frames;
+package TeacherDesktop.Interfaces;
 
-import TeacherDesktop.Frames.Panel.BrandingPanel;
+import TeacherDesktop.Panel.BrandingPanel;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
 import TeacherDesktop.Server.ServerConnection;

@@ -1,4 +1,4 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.Panel;
 
 import TeacherDesktop.FileFilter.ImageFilter;
 import TeacherDesktop.Server.ServerConnection;
@@ -18,7 +18,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 

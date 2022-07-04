@@ -1,5 +1,6 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.Panel;
 
+import TeacherDesktop.CardPanel.StudentCardPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;

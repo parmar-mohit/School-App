@@ -1,7 +1,7 @@
 package TeacherDesktop;
 
-import TeacherDesktop.Frames.LoginInterface;
-import TeacherDesktop.Frames.NoConnectionInterface;
+import TeacherDesktop.Interfaces.LoginInterface;
+import TeacherDesktop.Interfaces.NoConnectionInterface;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 

@@ -1,43 +1,46 @@
-package TeacherDesktop.Frames;
+package TeacherDesktop.Interfaces;
 
-import TeacherDesktop.Frames.Panel.*;
+import TeacherDesktop.Panel.BrandingPanel;
+import TeacherDesktop.Panel.ChangePasswordPanel;
+import TeacherDesktop.Panel.MyClassroomPanel;
+import TeacherDesktop.Panel.StudentPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
-import com.sun.tools.jconsole.JConsoleContext;
+import org.json.JSONArray;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PrincipalInterface extends JFrame implements ActionListener {
+public class TeacherInterface extends JFrame implements ActionListener {
 
     private BrandingPanel brandingPanel;
-    private PrincipalButtonPanel buttonPanel;
+    private TeacherButtonPanel buttonPanel;
     private JPanel optionPanel;
-
     private ServerConnection serverConnection;
+    private String phone;
 
-    public PrincipalInterface(ServerConnection serverConnection){
-        //Initialisng Member Variables
+    public TeacherInterface(ServerConnection serverConnection,String phone){
         this.serverConnection = serverConnection;
-        serverConnection.setCurrentFrame(this);
+        this.serverConnection.setCurrentFrame(this);
+        this.phone = phone;
+        //Initialising Members
         brandingPanel = new BrandingPanel();
-        buttonPanel = new PrincipalButtonPanel();
-
-        //Adding Listener
-        buttonPanel.teacherButton.addActionListener(this);
-        buttonPanel.allStudentButton.addActionListener(this);
-        buttonPanel.classroomButton.addActionListener(this);
-        buttonPanel.securityButton.addActionListener(this);
-        buttonPanel.logoutButton.addActionListener(this);
+        buttonPanel = new TeacherButtonPanel();
 
         //Setting Size
         brandingPanel.setMinimumSize(new Dimension(Constant.screenSize.width,Constant.screenSize.height/5));
         brandingPanel.setPreferredSize(new Dimension(Constant.screenSize.width,Constant.screenSize.height/5));
         buttonPanel.setMinimumSize(new Dimension(Constant.screenSize.width/5,Constant.screenSize.height*4/5));
         buttonPanel.setPreferredSize(new Dimension(Constant.screenSize.width/5,Constant.screenSize.height*4/5));
+
+        //Adding Listeners
+        buttonPanel.myClassroomButton.addActionListener(this);
+        buttonPanel.studentButton.addActionListener(this);
+        buttonPanel.securityButton.addActionListener(this);
+        buttonPanel.logoutButton.addActionListener(this);
 
         //Frame Details
         setTitle(Constant.SCHOOL_NAME);
@@ -60,14 +63,18 @@ public class PrincipalInterface extends JFrame implements ActionListener {
             remove(optionPanel);
         }
 
-        if( e.getSource() == buttonPanel.teacherButton){
-            optionPanel = new TeacherPanel(serverConnection);
-        }else if( e.getSource() == buttonPanel.allStudentButton ){
-            optionPanel = new AllStudentPanel(serverConnection);
-        }else if( e.getSource() == buttonPanel.classroomButton){
-            optionPanel = new ClassroomPanel(serverConnection);
+        if( e.getSource() == buttonPanel.myClassroomButton ){
+            JSONArray classroomJsonArray = serverConnection.getStandardDivisionOfTeacher(phone);
+            if( classroomJsonArray.length() == 0 ){
+                JOptionPane.showMessageDialog(this,"You are not Incharge of any class and hence cannot access My Classroom","Alert",JOptionPane.WARNING_MESSAGE);
+                return;
+            }else {
+                optionPanel = new MyClassroomPanel(serverConnection, phone,classroomJsonArray);
+            }
+        }else if( e.getSource() == buttonPanel.studentButton ){
+            optionPanel = new StudentPanel(serverConnection,phone);
         }else if( e.getSource() == buttonPanel.securityButton ){
-            optionPanel = new ChangePasswordPanel(serverConnection,Constant.PRINCIPAL_USERNAME);
+            optionPanel = new ChangePasswordPanel(serverConnection,phone);
         }else if( e.getSource() ==  buttonPanel.logoutButton ){
             dispose();
             new LoginInterface(serverConnection);
@@ -75,9 +82,9 @@ public class PrincipalInterface extends JFrame implements ActionListener {
         }
 
         //Coloring Buttons
-        buttonPanel.teacherButton.setBackground(Constant.BUTTON_BACKGROUND);
-        buttonPanel.allStudentButton.setBackground(Constant.BUTTON_BACKGROUND);
-        buttonPanel.classroomButton.setBackground(Constant.BUTTON_BACKGROUND);
+        buttonPanel.myClassroomButton.setBackground(Constant.BUTTON_BACKGROUND);
+        buttonPanel.studentButton.setBackground(Constant.BUTTON_BACKGROUND);
+        buttonPanel.examButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.securityButton.setBackground(Constant.BUTTON_BACKGROUND);
 
         JButton buttonClicked = (JButton)e.getSource();
@@ -92,38 +99,38 @@ public class PrincipalInterface extends JFrame implements ActionListener {
     }
 }
 
-class PrincipalButtonPanel extends JPanel {
+class TeacherButtonPanel extends JPanel{
 
-    protected JButton teacherButton, allStudentButton, classroomButton,securityButton,logoutButton;
+    public JButton myClassroomButton,studentButton,examButton,securityButton,logoutButton;
 
-    public PrincipalButtonPanel(){
-        //Initialising Member Variables
-        teacherButton = new JButton("Teacher");
-        allStudentButton = new JButton("All Students");
-        classroomButton = new JButton("Classroom");
+    public TeacherButtonPanel(){
+        //Initialisng Members
+        myClassroomButton = new JButton("My Classroom");
+        studentButton = new JButton("Students");
+        examButton = new JButton("Exam");
         securityButton = new JButton("Security");
         logoutButton = new JButton("Logout");
 
         //Editing Components
-        teacherButton.setPreferredSize(Constant.BUTTON_SIZE);
-        teacherButton.setBackground(Constant.BUTTON_BACKGROUND);
-        allStudentButton.setPreferredSize(Constant.BUTTON_SIZE);
-        allStudentButton.setBackground(Constant.BUTTON_BACKGROUND);
-        classroomButton.setPreferredSize(Constant.BUTTON_SIZE);
-        classroomButton.setBackground(Constant.BUTTON_BACKGROUND);
+        myClassroomButton.setPreferredSize(Constant.BUTTON_SIZE);
+        myClassroomButton.setBackground(Constant.BUTTON_BACKGROUND);
+        studentButton.setPreferredSize(Constant.BUTTON_SIZE);
+        studentButton.setBackground(Constant.BUTTON_BACKGROUND);
+        examButton.setPreferredSize(Constant.BUTTON_SIZE);
+        examButton.setBackground(Constant.BUTTON_BACKGROUND);
         securityButton.setPreferredSize(Constant.BUTTON_SIZE);
         securityButton.setBackground(Constant.BUTTON_BACKGROUND);
         logoutButton.setPreferredSize(Constant.BUTTON_SIZE);
         logoutButton.setBackground(Constant.BUTTON_BACKGROUND);
 
-        //Panel Details
+        //Editing Panel
         setLayout(new GridBagLayout());
         setBackground(Constant.BUTTON_PANEL_BACKGROUND);
 
-        //Adding Components to Frame
-        add(teacherButton,Constraint.setPosition(0,0));
-        add(allStudentButton,Constraint.setPosition(0,1));
-        add(classroomButton,Constraint.setPosition(0,2));
+        //Adding Components to Panel
+        add(myClassroomButton,Constraint.setPosition(0,0));
+        add(studentButton, Constraint.setPosition(0,1));
+        add(examButton,Constraint.setPosition(0,2));
         add(securityButton,Constraint.setPosition(0,3));
         add(logoutButton,Constraint.setPosition(0,4));
     }

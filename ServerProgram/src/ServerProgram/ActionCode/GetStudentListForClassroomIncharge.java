@@ -13,13 +13,13 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.util.Base64;
 
-public class GetTeacherInchargeStudentList extends Thread {
+public class GetStudentListForClassroomIncharge extends Thread {
 
     private JSONObject jsonObject;
     private Client client;
     private DatabaseCon db;
 
-    public GetTeacherInchargeStudentList(JSONObject jsonObject, Client client){
+    public GetStudentListForClassroomIncharge(JSONObject jsonObject, Client client){
         this.jsonObject = jsonObject;
         this.client = client;
     }
@@ -36,7 +36,7 @@ public class GetTeacherInchargeStudentList extends Thread {
             JSONObject responseJsonObject = new JSONObject();
             responseJsonObject.put("id",jsonObject.getLong("id"));
             JSONArray responseInfoJsonArray = new JSONArray();
-            ResultSet studentResultSet = db.getTeacherInchargeStudentList(phone);
+            ResultSet studentResultSet = db.getStudentListForClassroomIncharge(phone);
             while( studentResultSet.next() ){
                 JSONObject studentJsonObject = new JSONObject();
                 studentJsonObject.put("sid",studentResultSet.getInt("sid"));

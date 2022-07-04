@@ -31,7 +31,7 @@ public class GetStudentInfoForPrincipal extends Thread {
         try{
             db = new DatabaseCon();
             JSONArray studentListJsonArray = new JSONArray();
-            ResultSet studentResultSet = db.getPrincipalStudentList();
+            ResultSet studentResultSet = db.getStudentListForPrincipal();
             while( studentResultSet.next() ){
                 JSONObject studentJsonObject = new JSONObject();
                 studentJsonObject.put("sid",studentResultSet.getInt("sid"));

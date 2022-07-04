@@ -8,13 +8,13 @@ import org.json.JSONObject;
 
 import java.sql.ResultSet;
 
-public class GetClassroomList extends Thread {
+public class GetClassroomListForPrincipal extends Thread {
 
     private JSONObject jsonObject;
     private Client client;
     private DatabaseCon db;
 
-    public GetClassroomList(JSONObject jsonObject,Client client){
+    public GetClassroomListForPrincipal(JSONObject jsonObject, Client client){
         this.jsonObject = jsonObject;
         this.client = client;
     }
@@ -30,7 +30,7 @@ public class GetClassroomList extends Thread {
             responseJsonObject.put("id",jsonObject.getLong("id"));
 
             JSONArray infoJsonArray = new JSONArray();
-            ResultSet resultSet = db.getClassroomList();
+            ResultSet resultSet = db.getClassroomListForPrincipal();
 
             while(resultSet.next()){
                 JSONObject classroomJsonObject = new JSONObject();

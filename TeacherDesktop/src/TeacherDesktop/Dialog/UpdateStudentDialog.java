@@ -1,4 +1,4 @@
-package TeacherDesktop.Frames.Dialog;
+package TeacherDesktop.Dialog;
 
 import TeacherDesktop.FileFilter.ImageFilter;
 import TeacherDesktop.Server.ServerConnection;

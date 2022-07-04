@@ -1,6 +1,7 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.CardPanel;
 
-import TeacherDesktop.Frames.Dialog.UpdateClassroomDialog;
+import TeacherDesktop.Dialog.UpdateClassroomDialog;
+import TeacherDesktop.Panel.ClassroomPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;

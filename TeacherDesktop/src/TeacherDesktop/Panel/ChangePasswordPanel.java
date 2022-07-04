@@ -1,4 +1,4 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.Panel;
 
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;

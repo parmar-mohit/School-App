@@ -1,5 +1,6 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.Panel;
 
+import TeacherDesktop.CardPanel.StudentCardPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
@@ -66,7 +67,7 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
             studentCardPanelArrayList = new ArrayList<>();
         }
 
-        JSONArray studentListJsonArray = serverConnection.getTeacherInchargeStudentList(phone);
+        JSONArray studentListJsonArray = serverConnection.getStudentListForClassroomIncharge(phone);
         for( int i = 0; i < studentListJsonArray.length(); i++ ){
             JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
             StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject,serverConnection,classroomJsonArray,this);

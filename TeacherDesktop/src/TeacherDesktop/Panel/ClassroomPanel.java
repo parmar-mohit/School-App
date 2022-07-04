@@ -1,10 +1,10 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.Panel;
 
+import TeacherDesktop.CardPanel.ClassroomCardPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,7 +98,7 @@ public class ClassroomPanel extends JPanel implements ActionListener  {
             classroomCardPanelArrayList = new ArrayList<>();
         }
 
-        JSONArray classroomJsonArray = serverConnection.getClassroomList();
+        JSONArray classroomJsonArray = serverConnection.getClassroomListForPrincipal();
         for( int i = 0; i < classroomJsonArray.length(); i++){
             ClassroomCardPanel classroomCardPanel = new ClassroomCardPanel(classroomJsonArray.getJSONObject(i),serverConnection,this);
             classroomCardPanel.setPreferredSize(new Dimension(900,100));

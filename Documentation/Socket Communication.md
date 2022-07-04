@@ -189,7 +189,7 @@ The Client is requesting server to update Details of Teacher.Info attribute of m
     "id" : $messageId,
     "action_code" : 5,
     "info" : {
-        "phone" : $hone,
+        "phone" : $phone,
         "firstnamee" : $new_firstname,
         "lastname" : $new_lastname,
         "email" : $new_email,

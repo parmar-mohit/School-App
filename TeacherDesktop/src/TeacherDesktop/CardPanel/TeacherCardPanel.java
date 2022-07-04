@@ -1,5 +1,6 @@
-package TeacherDesktop.Frames.Panel;
+package TeacherDesktop.CardPanel;
 
+import TeacherDesktop.Panel.TeacherPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
@@ -139,7 +140,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
             String gender = (String)genderComboBox.getSelectedItem();
             updateTeacherJsonObject.put("gender",gender);
 
-            int response = serverConnection.updateTeacherAttributes(updateTeacherJsonObject);
+            int response = serverConnection.updateTeacherId(updateTeacherJsonObject);
             if( response == 0 ) {
                 teacherJsonObject = updateTeacherJsonObject;
                 //Setting Image and Labels
