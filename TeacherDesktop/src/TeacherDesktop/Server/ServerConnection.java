@@ -288,6 +288,22 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info");
     }
 
+    public JSONObject getExamAndSubjectList(String phone){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",18);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info");
+    }
+
     private JSONObject getResponseMessage(long messageId){
         long startTime = System.currentTimeMillis();
         while ( System.currentTimeMillis() <= startTime + 60000 ){ // Loop for minute

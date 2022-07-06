@@ -44,7 +44,7 @@ public class GetClassroomListForPrincipal extends Thread {
                 classroomJsonObject.put("lastname",nameResultSet.getString("lastname"));
 
                 JSONArray subjectListJsonArray = new JSONArray();
-                ResultSet subjectListResultSet = db.getSubjectList(resultSet.getInt("standard"),resultSet.getString("division"));
+                ResultSet subjectListResultSet = db.getSubjectListOfClassroom(resultSet.getInt("standard"),resultSet.getString("division"));
 
                 while( subjectListResultSet.next() ){
                     JSONObject subjectJsonObject = new JSONObject();

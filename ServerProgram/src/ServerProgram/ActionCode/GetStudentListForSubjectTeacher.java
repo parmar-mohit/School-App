@@ -56,6 +56,7 @@ public class GetStudentListForSubjectTeacher extends Thread {
                 studentJsonObject.put("dob",studentResultSet.getDate("dob").getTime());
                 studentJsonObject.put("standard",studentResultSet.getInt("standard"));
                 studentJsonObject.put("division",studentResultSet.getString("division"));
+                studentJsonObject.put("roll_no",studentResultSet.getInt("roll_no"));
 
                 ResultSet parentResultSet = db.getParents(studentResultSet.getInt("sid"));
                 while( parentResultSet.next() ){

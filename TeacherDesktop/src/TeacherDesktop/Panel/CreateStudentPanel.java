@@ -23,8 +23,8 @@ import java.util.Date;
 
 public class CreateStudentPanel extends JPanel implements KeyListener, ActionListener {
 
-    private JLabel panelNameLabel,imageLabel,firstnameLabel,lastnameLabel,emailLabel,phoneLabel,genderLabel,dobLabel,standardLabel,divisionLabel,fatherFirstnameLabel,fatherLastnameLabel,fatherPhoneLabel,fatherEmailLabel,motherFirstnameLabel,motherLastnameLabel,motherPhoneLabel,motherEmailLabel,messageLabel;
-    private JTextField firstnameTextField,lastnameTextField,emailTextField,phoneTextField,fatherFirstnameTextField,fatherLastnameTextField,fatherPhoneTextField,fatherEmailTextField,motherFirstnameTextField,motherLastnameTextField,motherPhoneTextField,motherEmailTextField;
+    private JLabel panelNameLabel,imageLabel,firstnameLabel,lastnameLabel,emailLabel,phoneLabel,genderLabel,dobLabel,standardLabel,divisionLabel,rollNoLabel,fatherFirstnameLabel,fatherLastnameLabel,fatherPhoneLabel,fatherEmailLabel,motherFirstnameLabel,motherLastnameLabel,motherPhoneLabel,motherEmailLabel,messageLabel;
+    private JTextField firstnameTextField,lastnameTextField,emailTextField,phoneTextField,rollNoTextField,fatherFirstnameTextField,fatherLastnameTextField,fatherPhoneTextField,fatherEmailTextField,motherFirstnameTextField,motherLastnameTextField,motherPhoneTextField,motherEmailTextField;
     private JComboBox genderComboBox,standardComboBox,divisionComboBox;
     private JDateChooser dobDateChooser;
     private JButton selectImageButton,createStudentButton;
@@ -55,6 +55,8 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
         standardComboBox = new JComboBox();
         divisionLabel = new JLabel("Division : ");
         divisionComboBox = new JComboBox();
+        rollNoLabel = new JLabel("Roll No : ");
+        rollNoTextField = new JTextField(20);
         fatherFirstnameLabel = new JLabel("Father's Firstname : ");
         fatherFirstnameTextField = new JTextField(20);
         fatherLastnameLabel = new JLabel("Father's Lastname : ");
@@ -102,6 +104,7 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
         selectImageButton.addActionListener(this);
         phoneTextField.addKeyListener(this);
         standardComboBox.addActionListener(this);
+        rollNoTextField.addKeyListener(this);
         fatherPhoneTextField.addKeyListener(this);
         motherPhoneTextField.addKeyListener(this);
         createStudentButton.addActionListener(this);
@@ -112,7 +115,7 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
 
         //Adding Components to Frame
         add(panelNameLabel, Constraint.setPosition(0,0,5,1));
-        add(imagePanel,Constraint.setPosition(0,1,1,8));
+        add(imagePanel,Constraint.setPosition(0,1,1,9));
         add(firstnameLabel,Constraint.setPosition(1,1,Constraint.LEFT));
         add(firstnameTextField,Constraint.setPosition(2,1,Constraint.LEFT));
         add(lastnameLabel,Constraint.setPosition(3,1,Constraint.LEFT));
@@ -129,24 +132,26 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
         add(standardComboBox,Constraint.setPosition(2,4,Constraint.LEFT));
         add(divisionLabel,Constraint.setPosition(3,4,Constraint.LEFT));
         add(divisionComboBox,Constraint.setPosition(4,4,Constraint.LEFT));
-        add(fatherFirstnameLabel,Constraint.setPosition(1,5,Constraint.LEFT));
-        add(fatherFirstnameTextField,Constraint.setPosition(2,5,Constraint.LEFT));
-        add(fatherLastnameLabel,Constraint.setPosition(3,5,Constraint.LEFT));
-        add(fatherLastnameTextField,Constraint.setPosition(4,5,Constraint.LEFT));
-        add(fatherPhoneLabel,Constraint.setPosition(1,6,Constraint.LEFT));
-        add(fatherPhoneTextField,Constraint.setPosition(2,6,Constraint.LEFT));
-        add(fatherEmailLabel,Constraint.setPosition(3,6,Constraint.LEFT));
-        add(fatherEmailTextField,Constraint.setPosition(4,6,Constraint.LEFT));
-        add(motherFirstnameLabel,Constraint.setPosition(1,7,Constraint.LEFT));
-        add(motherFirstnameTextField,Constraint.setPosition(2,7,Constraint.LEFT));
-        add(motherLastnameLabel,Constraint.setPosition(3,7,Constraint.LEFT));
-        add(motherLastnameTextField,Constraint.setPosition(4,7,Constraint.LEFT));
-        add(motherPhoneLabel,Constraint.setPosition(1,8,Constraint.LEFT));
-        add(motherPhoneTextField,Constraint.setPosition(2,8,Constraint.LEFT));
-        add(motherEmailLabel,Constraint.setPosition(3,8,Constraint.LEFT));
-        add(motherEmailTextField,Constraint.setPosition(4,8,Constraint.LEFT));
-        add(messageLabel,Constraint.setPosition(0,9,5,1));
-        add(createStudentButton,Constraint.setPosition(0,10,5,1));
+        add(rollNoLabel,Constraint.setPosition(1,5,Constraint.LEFT));
+        add(rollNoTextField,Constraint.setPosition(2,5,Constraint.LEFT));
+        add(fatherFirstnameLabel,Constraint.setPosition(1,6,Constraint.LEFT));
+        add(fatherFirstnameTextField,Constraint.setPosition(2,6,Constraint.LEFT));
+        add(fatherLastnameLabel,Constraint.setPosition(3,6,Constraint.LEFT));
+        add(fatherLastnameTextField,Constraint.setPosition(4,6,Constraint.LEFT));
+        add(fatherPhoneLabel,Constraint.setPosition(1,7,Constraint.LEFT));
+        add(fatherPhoneTextField,Constraint.setPosition(2,7,Constraint.LEFT));
+        add(fatherEmailLabel,Constraint.setPosition(3,7,Constraint.LEFT));
+        add(fatherEmailTextField,Constraint.setPosition(4,7,Constraint.LEFT));
+        add(motherFirstnameLabel,Constraint.setPosition(1,8,Constraint.LEFT));
+        add(motherFirstnameTextField,Constraint.setPosition(2,8,Constraint.LEFT));
+        add(motherLastnameLabel,Constraint.setPosition(3,8,Constraint.LEFT));
+        add(motherLastnameTextField,Constraint.setPosition(4,8,Constraint.LEFT));
+        add(motherPhoneLabel,Constraint.setPosition(1,9,Constraint.LEFT));
+        add(motherPhoneTextField,Constraint.setPosition(2,9,Constraint.LEFT));
+        add(motherEmailLabel,Constraint.setPosition(3,9,Constraint.LEFT));
+        add(motherEmailTextField,Constraint.setPosition(4,9,Constraint.LEFT));
+        add(messageLabel,Constraint.setPosition(0,10,5,1));
+        add(createStudentButton,Constraint.setPosition(0,11,5,1));
     }
 
     @Override
@@ -237,6 +242,13 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
                 return;
             }
             studentJsonObject.put("division",(String)divisionComboBox.getSelectedItem());
+
+            if( rollNoTextField.getText().equals("") ){
+                messageLabel.setText("Enter Roll No");
+                Constraint.labelDeleteAfterTime(messageLabel);
+                return;
+            }
+            studentJsonObject.put("roll_no",Integer.parseInt(rollNoTextField.getText()));
 
             String fatherFirstname = fatherFirstnameTextField.getText();
             String fatherLastname = fatherLastnameTextField.getText();

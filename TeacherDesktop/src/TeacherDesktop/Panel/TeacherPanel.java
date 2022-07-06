@@ -38,8 +38,8 @@ public class TeacherPanel extends JPanel implements ActionListener {
         panelNameLabel.setFont(new Font("SansSerif", Font.BOLD,22));
         createTeacherIdButton.setBackground(Constant.BUTTON_BACKGROUND);
         teacherListPanel.setLayout(new GridBagLayout());
-        scrollPane.setMinimumSize(new Dimension(1000,400));
-        scrollPane.setPreferredSize(new Dimension(1000,400));
+        scrollPane.setMinimumSize(Constant.SCROLLPANE_SIZE);
+        scrollPane.setPreferredSize(Constant.SCROLLPANE_SIZE);
 
         //Adding Listeners
         createTeacherIdButton.addActionListener(this);

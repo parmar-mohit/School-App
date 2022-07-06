@@ -35,6 +35,7 @@ CREATE TABLE student (
 	dob DATE,
 	email VARCHAR(50),
 	phone BIGINT,
+	roll_no INT,
 	standard INT,
 	division VARCHAR(1),
 	CHECK(gender IN('Male','Female','Other'))
@@ -70,6 +71,7 @@ CREATE TABLE subject (
 CREATE TABLE exam (
 	exam_id INT PRIMARY KEY AUTO_INCREMENT,
 	exam_name VARCHAR(100),
+	exam_date DATE,
 	sub_id INT,
 	total_marks INT,
 	FOREIGN KEY(sub_id) REFERENCES subject(sub_id) ON DELETE CASCADE
@@ -103,4 +105,4 @@ ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
 
 After these commands are executed successfully the mysql is setup and ready for the program.
 
-NOTE : Images for students will be stored in a directory named "Images" and filename for each image would be same as "SID" of student.
+NOTE : Images for students will be stored in a directory named "Student Images" and filename for each image would be same as "SID" of student.

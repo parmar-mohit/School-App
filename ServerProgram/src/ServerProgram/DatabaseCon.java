@@ -122,7 +122,7 @@ public class DatabaseCon {
         return resultSet;
     }
 
-    public ResultSet getSubjectList(int standard,String division) throws Exception{
+    public ResultSet getSubjectListOfClassroom(int standard, String division) throws Exception{
         PreparedStatement preparedStatement = db.prepareStatement("SELECT subject_name,t_phone FROM subject WHERE standard = ? AND division = ?;");
         preparedStatement.setInt(1,standard);
         preparedStatement.setString(2,division);
@@ -201,7 +201,7 @@ public class DatabaseCon {
     }
 
     public int createStudentId(JSONObject studentJsonObject) throws Exception {
-        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO student(firstname,lastname,gender,dob,email,phone,standard,division) VALUES(?,?,?,?,?,?,?,?);");
+        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO student(firstname,lastname,gender,dob,email,phone,roll_no,standard,division) VALUES(?,?,?,?,?,?,?,?,?);");
         preparedStatement.setString(1,studentJsonObject.getString("firstname"));
         preparedStatement.setString(2,studentJsonObject.getString("lastname"));
         preparedStatement.setString(3,studentJsonObject.getString("gender"));
@@ -218,8 +218,9 @@ public class DatabaseCon {
             preparedStatement.setBigDecimal(6,new BigDecimal(studentJsonObject.getString("phone")));
         }
 
-        preparedStatement.setInt(7,studentJsonObject.getInt("standard"));
-        preparedStatement.setString(8,studentJsonObject.getString("division"));
+        preparedStatement.setInt(7,studentJsonObject.getInt("roll_no"));
+        preparedStatement.setInt(8,studentJsonObject.getInt("standard"));
+        preparedStatement.setString(9,studentJsonObject.getString("division"));
         preparedStatement.executeUpdate();
 
         preparedStatement = db.prepareStatement("SELECT LAST_INSERT_ID();");
@@ -323,7 +324,7 @@ public class DatabaseCon {
     }
 
     public void updateStudentId(JSONObject studentJsonObject) throws Exception{
-        PreparedStatement preparedStatement = db.prepareStatement("UPDATE student SET firstname = ?, lastname=?, gender = ?, dob=? , email=?, phone =?, standard=?,division=? WHERE sid = ?");
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE student SET firstname = ?, lastname=?, gender = ?, dob=? , email=?, phone =?, standard=?,division=?,roll_no=? WHERE sid = ?");
         preparedStatement.setString(1,studentJsonObject.getString("firstname"));
         preparedStatement.setString(2,studentJsonObject.getString("lastname"));
         preparedStatement.setString(3,studentJsonObject.getString("gender"));
@@ -342,7 +343,8 @@ public class DatabaseCon {
 
         preparedStatement.setInt(7,studentJsonObject.getInt("standard"));
         preparedStatement.setString(8,studentJsonObject.getString("division"));
-        preparedStatement.setInt(9,studentJsonObject.getInt("sid"));
+        preparedStatement.setInt(9,studentJsonObject.getInt("roll_no"));
+        preparedStatement.setInt(10,studentJsonObject.getInt("sid"));
         preparedStatement.executeUpdate();
     }
 
@@ -427,6 +429,17 @@ public class DatabaseCon {
     public ResultSet getDistinctDivision(int standard) throws  Exception{
         PreparedStatement preparedStatement = db.prepareStatement("SELECT DISTINCT(division) FROM classroom WHERE standard=?;");
         preparedStatement.setInt(1,standard);
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getDistinctExamName() throws  Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT DISTINCT(exam_name) FROM exam;");
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getSubjectListOfTeacher(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM subject WHERE t_phone = ?");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         return preparedStatement.executeQuery();
     }
 }

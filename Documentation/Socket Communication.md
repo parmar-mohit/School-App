@@ -407,6 +407,7 @@ The Client is requesting server to create new Student Id.Info attribute of messa
         "dob" : $date_of_birth,
         "standard" : $standard,
         "division" : $division,
+        "roll_no" : $roll_no,
         "father_firstname" : $father_firstname,
         "father_lastname" : $father_lastname,
         "father_phone" : $father_phone,
@@ -561,6 +562,52 @@ Info attribute of response message contains 2 array one array containing list of
     "info" : {
         "student_list" : $studentListArray
         "classroom_list" : $classroomListArray
+    }
+}
+```
+
+* Action Code 18
+
+The Client is requesting server to provide a list of all distinct exam names and a list of all subjects taught by a teacher.This action code is used while creating new exam.Info attribute contains phone no of teacher.Example is as folows.
+```
+{
+    "id" : $messageId,
+    "action_code" : 18,
+    "info" : {
+        "phone" : $phone_no_of_teacher
+    }
+}
+```
+
+Info attribute of response message contains list of all distinct exam names and list of subjects taught by teacher.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "exam_name" : [$exam_name_array],
+        "subject_list" : [
+            {
+                "subject_id" : $sub_id,
+                "subject_name" : $subject_name,
+                "standard" : $standard,
+                "division" : $division,
+                "phone" : $phone_of_teacher
+            },
+            {
+                "subject_id" : $sub_id,
+                "subject_name" : $subject_name,
+                "standard" : $standard,
+                "division" : $division,
+                "phone" : $phone_of_teacher
+            },
+            {
+                "subject_id" : $sub_id,
+                "subject_name" : $subject_name,
+                "standard" : $standard,
+                "division" : $division,
+                "phone" : $phone_of_teacher
+            }
+        ]
     }
 }
 ```

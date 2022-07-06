@@ -1,9 +1,6 @@
 package TeacherDesktop.Interfaces;
 
-import TeacherDesktop.Panel.BrandingPanel;
-import TeacherDesktop.Panel.ChangePasswordPanel;
-import TeacherDesktop.Panel.MyClassroomPanel;
-import TeacherDesktop.Panel.StudentPanel;
+import TeacherDesktop.Panel.*;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
@@ -31,21 +28,22 @@ public class TeacherInterface extends JFrame implements ActionListener {
         buttonPanel = new TeacherButtonPanel();
 
         //Setting Size
-        brandingPanel.setMinimumSize(new Dimension(Constant.screenSize.width,Constant.screenSize.height/5));
-        brandingPanel.setPreferredSize(new Dimension(Constant.screenSize.width,Constant.screenSize.height/5));
-        buttonPanel.setMinimumSize(new Dimension(Constant.screenSize.width/5,Constant.screenSize.height*4/5));
-        buttonPanel.setPreferredSize(new Dimension(Constant.screenSize.width/5,Constant.screenSize.height*4/5));
+        brandingPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width,Constant.SCREEN_SIZE.height/5));
+        brandingPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width,Constant.SCREEN_SIZE.height/5));
+        buttonPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width/5,Constant.SCREEN_SIZE.height*4/5));
+        buttonPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width/5,Constant.SCREEN_SIZE.height*4/5));
 
         //Adding Listeners
         buttonPanel.myClassroomButton.addActionListener(this);
         buttonPanel.studentButton.addActionListener(this);
+        buttonPanel.examButton.addActionListener(this);
         buttonPanel.securityButton.addActionListener(this);
         buttonPanel.logoutButton.addActionListener(this);
 
         //Frame Details
         setTitle(Constant.SCHOOL_NAME);
         setIconImage(Toolkit.getDefaultToolkit().getImage(Constant.SCHOOL_LOGO));
-        setSize(Constant.screenSize);
+        setSize(Constant.SCREEN_SIZE);
         setLayout(new GridBagLayout());
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,6 +71,8 @@ public class TeacherInterface extends JFrame implements ActionListener {
             }
         }else if( e.getSource() == buttonPanel.studentButton ){
             optionPanel = new StudentPanel(serverConnection,phone);
+        }else if( e.getSource() == buttonPanel.examButton ){
+            optionPanel = new ExamPanel(serverConnection,phone);
         }else if( e.getSource() == buttonPanel.securityButton ){
             optionPanel = new ChangePasswordPanel(serverConnection,phone);
         }else if( e.getSource() ==  buttonPanel.logoutButton ){
@@ -90,8 +90,8 @@ public class TeacherInterface extends JFrame implements ActionListener {
         JButton buttonClicked = (JButton)e.getSource();
         buttonClicked.setBackground(Constant.SELECTED_BUTTON);
 
-        optionPanel.setMinimumSize(new Dimension(Constant.screenSize.width*4/5,Constant.screenSize.height*4/5));
-        optionPanel.setPreferredSize(new Dimension(Constant.screenSize.width*4/5,Constant.screenSize.height*4/5));
+        optionPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width*4/5,Constant.SCREEN_SIZE.height*4/5));
+        optionPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width*4/5,Constant.SCREEN_SIZE.height*4/5));
         add(optionPanel,Constraint.setPosition(1,1));
         optionPanel.setVisible(true);
         revalidate();

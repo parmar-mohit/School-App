@@ -38,8 +38,8 @@ public class AllStudentPanel extends JPanel implements ActionListener {
         //Editing Components
         panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
         createStudentIdButton.setBackground(Constant.BUTTON_BACKGROUND);
-        scrollPane.setMinimumSize(new Dimension(1000,400));
-        scrollPane.setPreferredSize(new Dimension(1000,400));
+        scrollPane.setMinimumSize(Constant.SCROLLPANE_SIZE);
+        scrollPane.setPreferredSize(Constant.SCROLLPANE_SIZE);
         studentListPanel.setLayout(new GridBagLayout());
 
         //Filling Student Card

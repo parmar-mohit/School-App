@@ -29,7 +29,7 @@ To efficiently store data this project uses RDBMS.The ER Diagram and Relational 
 
 * MySQl
 
-To store the vast amount of data that this project has to handle we have used MySQl Database. The steps required to setup MySQl on Server side are provided in [MySQl Queries Setup](./Database/MySQL%20Setup%20Queries.md)
+To store the vast amount of data that this project has to handle we have used MySQl Database. The steps required to setup MySQl on Server side are provided in [MySQl Queries Setup](./Database/MySQl%20Setup%20Queries.md)
 
 * IntelliJ IDE ( Community Version )
 

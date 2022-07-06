@@ -103,6 +103,10 @@ public class Client extends Thread{
                     case 17:
                         new GetStudentInfoForPrincipal(jsonObject,this).start();
                         break;
+
+                    case 18:
+                        new GetExamAndSubjectList(jsonObject,this).start();
+                        break;
                 }
             }
         }catch(SocketException e){

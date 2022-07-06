@@ -20,8 +20,9 @@ public class Constant {
     public static final Color CARD_PANEL = new Color(235, 101, 128);
 
     //Size Constants
-    public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
     public static final Dimension BUTTON_SIZE = new Dimension(200,25);
+    public static final Dimension SCROLLPANE_SIZE = new Dimension(1000,400);
 
     //Other Constants
     public static final String PRINCIPAL_USERNAME = "123456";

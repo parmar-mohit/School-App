@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class StudentCardPanel extends JPanel implements ActionListener, WindowListener {
 
-    private JLabel imageLabel,sidLabel,firstnameLabel,lastnameLabel,emailLabel,phoneLabel,genderLabel,dobLabel,standardLabel,divisionLabel,fatherFirstnameLabel,fatherLastnameLabel,fatherPhoneLabel,fatherEmailLabel,motherFirstnameLabel,motherLastnameLabel,motherPhoneLabel,motherEmailLabel;
+    private JLabel imageLabel,sidLabel,firstnameLabel,lastnameLabel,emailLabel,phoneLabel,genderLabel,dobLabel,standardLabel,divisionLabel,rollNoLabel,fatherFirstnameLabel,fatherLastnameLabel,fatherPhoneLabel,fatherEmailLabel,motherFirstnameLabel,motherLastnameLabel,motherPhoneLabel,motherEmailLabel;
     private JButton updateButton,deleteButton;
     private JSONObject studentJsonObject;
     private ServerConnection serverConnection;
@@ -35,6 +35,7 @@ public class StudentCardPanel extends JPanel implements ActionListener, WindowLi
         this.studentJsonObject = studentJsonObject;
         this.serverConnection = serverConnection;
         this.classroomJSonArray = classroomJSonArray;
+        this.myClassroomPanelParent = myClassroomPanelParent;
         fillPanel(true);
     }
 
@@ -74,6 +75,7 @@ public class StudentCardPanel extends JPanel implements ActionListener, WindowLi
         dobLabel = new JLabel("Date of Birth : "+sdf.format(new Date(studentJsonObject.getLong("dob"))));
         standardLabel = new JLabel("Standard : "+studentJsonObject.getInt("standard"));
         divisionLabel = new JLabel("Division : "+studentJsonObject.getString("division"));
+        rollNoLabel = new JLabel("Roll No : "+studentJsonObject.getInt("roll_no"));
         if( studentJsonObject.getString("father_firstname").equals("null")){
             fatherFirstnameLabel = new JLabel("Father's Firstname : N/A");
             fatherLastnameLabel = new JLabel("Father's Lastname : N/A");
@@ -132,7 +134,7 @@ public class StudentCardPanel extends JPanel implements ActionListener, WindowLi
 
         //Adding Components to Panel
         add(sidLabel, Constraint.setPosition(1,0,2,1));
-        add(imageLabel,Constraint.setPosition(0,0,1,9));
+        add(imageLabel,Constraint.setPosition(0,0,1,10));
         add(firstnameLabel,Constraint.setPosition(1,1,Constraint.LEFT));
         add(lastnameLabel,Constraint.setPosition(2,1,Constraint.LEFT));
         add(emailLabel,Constraint.setPosition(1,2,Constraint.LEFT));
@@ -141,16 +143,17 @@ public class StudentCardPanel extends JPanel implements ActionListener, WindowLi
         add(dobLabel,Constraint.setPosition(2,3,Constraint.LEFT));
         add(standardLabel,Constraint.setPosition(1,4,Constraint.LEFT));
         add(divisionLabel,Constraint.setPosition(2,4,Constraint.LEFT));
-        add(fatherFirstnameLabel,Constraint.setPosition(1,5,Constraint.LEFT));
-        add(fatherLastnameLabel,Constraint.setPosition(2,5,Constraint.LEFT));
-        add(fatherPhoneLabel,Constraint.setPosition(1,6,Constraint.LEFT));
-        add(fatherEmailLabel,Constraint.setPosition(2,6,Constraint.LEFT));
-        add(motherFirstnameLabel,Constraint.setPosition(1,7,Constraint.LEFT));
-        add(motherLastnameLabel,Constraint.setPosition(2,7,Constraint.LEFT));
-        add(motherPhoneLabel,Constraint.setPosition(1,8,Constraint.LEFT));
-        add(motherEmailLabel,Constraint.setPosition(2,8,Constraint.LEFT));
-        add(updateButton,Constraint.setPosition(1,9));
-        add(deleteButton,Constraint.setPosition(2,9));
+        add(rollNoLabel,Constraint.setPosition(1,5,Constraint.LEFT));
+        add(fatherFirstnameLabel,Constraint.setPosition(1,6,Constraint.LEFT));
+        add(fatherLastnameLabel,Constraint.setPosition(2,6,Constraint.LEFT));
+        add(fatherPhoneLabel,Constraint.setPosition(1,7,Constraint.LEFT));
+        add(fatherEmailLabel,Constraint.setPosition(2,7,Constraint.LEFT));
+        add(motherFirstnameLabel,Constraint.setPosition(1,8,Constraint.LEFT));
+        add(motherLastnameLabel,Constraint.setPosition(2,8,Constraint.LEFT));
+        add(motherPhoneLabel,Constraint.setPosition(1,9,Constraint.LEFT));
+        add(motherEmailLabel,Constraint.setPosition(2,9,Constraint.LEFT));
+        add(updateButton,Constraint.setPosition(1,10));
+        add(deleteButton,Constraint.setPosition(2,10));
     }
 
     private ImageIcon getImage(){
