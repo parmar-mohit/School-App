@@ -17,6 +17,15 @@ public class Subject {
         phone = subjectJsonObject.getString("phone");
     }
 
+    public static String getSubjectName(String subjectName) {
+        String[] subjectNameArray = subjectName.split(" ");
+        String subjectNameString = new String();
+        for( int i = 0; i < subjectNameArray.length; i++ ){
+            subjectNameString += Character.toUpperCase(subjectNameArray[i].charAt(0)) + subjectNameArray[i].substring(1);
+        }
+        return subjectNameString;
+    }
+
     @Override
     public String toString() {
         String[] subjectNameArray = subjectName.split(" ");

@@ -36,12 +36,14 @@ public class GetClassroomListForPrincipal extends Thread {
                 JSONObject classroomJsonObject = new JSONObject();
                 classroomJsonObject.put("standard",resultSet.getInt("standard"));
                 classroomJsonObject.put("division",resultSet.getString("division"));
-                classroomJsonObject.put("teacher_incharge",resultSet.getBigDecimal("t_phone")+"");
 
-                ResultSet nameResultSet = db.getTeacherName(classroomJsonObject.getString("teacher_incharge"));
+                ResultSet nameResultSet = db.getTeacherName(resultSet.getBigDecimal("t_phone").toString());
                 nameResultSet.next();
-                classroomJsonObject.put("firstname",nameResultSet.getString("firstname"));
-                classroomJsonObject.put("lastname",nameResultSet.getString("lastname"));
+                JSONObject teacherJsonObject = new JSONObject();
+                teacherJsonObject.put("firstname",nameResultSet.getString("firstname"));
+                teacherJsonObject.put("lastname",nameResultSet.getString("lastname"));
+                teacherJsonObject.put("phone",resultSet.getBigDecimal("t_phone").toString());
+                classroomJsonObject.put("teacher",teacherJsonObject);
 
                 JSONArray subjectListJsonArray = new JSONArray();
                 ResultSet subjectListResultSet = db.getSubjectListOfClassroom(resultSet.getInt("standard"),resultSet.getString("division"));
@@ -49,12 +51,14 @@ public class GetClassroomListForPrincipal extends Thread {
                 while( subjectListResultSet.next() ){
                     JSONObject subjectJsonObject = new JSONObject();
                     subjectJsonObject.put("subject_name",subjectListResultSet.getString("subject_name"));
-                    subjectJsonObject.put("subject_incharge",subjectListResultSet.getBigDecimal("t_phone")+"");
 
-                    ResultSet subjectTeacherNameResultSet = db.getTeacherName(subjectJsonObject.getString("subject_incharge"));
+                    ResultSet subjectTeacherNameResultSet = db.getTeacherName(subjectListResultSet.getBigDecimal("t_phone").toString());
                     subjectTeacherNameResultSet.next();
-                    subjectJsonObject.put("firstname",subjectTeacherNameResultSet.getString("firstname"));
-                    subjectJsonObject.put("lastname",subjectTeacherNameResultSet.getString("lastname"));
+                    JSONObject subjectTeacherJsonObject = new JSONObject();
+                    subjectTeacherJsonObject.put("firstname",subjectTeacherNameResultSet.getString("firstname"));
+                    subjectTeacherJsonObject.put("lastname",subjectTeacherNameResultSet.getString("lastname"));
+                    subjectTeacherJsonObject.put("phone",subjectListResultSet.getBigDecimal("t_phone").toString());
+                    subjectJsonObject.put("teacher",subjectTeacherJsonObject);
 
                     subjectListJsonArray.put(subjectJsonObject);
                 }

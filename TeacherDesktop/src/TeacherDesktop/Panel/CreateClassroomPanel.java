@@ -1,5 +1,6 @@
 package TeacherDesktop.Panel;
 
+import TeacherDesktop.EntityClasses.Teacher;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
@@ -19,12 +20,12 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
     private ServerConnection serverConnection;
     private JLabel panelNameLabel,standardLabel,divisionLabel, teacherInchargeLabel,messageLabel;
     private JTextField standardTextField,divisionTextField;
+    private ArrayList<Teacher> teacherArrayList;
     private JComboBox teacherInchargeComboBox;
     private JScrollPane scrollPane;
     private JPanel subjectListPanel;
     private ArrayList<CreateSubjectPanel> subjectList;
     private JButton addSubjectButton,removeSubjectButton, createClassrooomButton;
-    private JSONArray teacherListJsonArray;
 
     public CreateClassroomPanel(ServerConnection serverConnection){
         //Initialising Members
@@ -57,7 +58,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
         //Adding 3 Subjects
         for( int i = 1; i <= 3; i++){
             //Adding SubjectPanel
-            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,i);
+            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherArrayList,i);
             subjectList.add(subjectPanel);
             subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
         }
@@ -105,7 +106,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
     public void actionPerformed(ActionEvent e) {
         if( e.getSource() == addSubjectButton ){
             //Adding SubjectPanel
-            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,subjectList.size()+1);
+            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherArrayList,subjectList.size()+1);
             subjectList.add(subjectPanel);
             subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
             revalidate();
@@ -138,7 +139,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            infoJsonObject.put("teacher_incharge",getPhone(teacherInchargeComboBox.getSelectedItem()+""));
+            infoJsonObject.put("teacher_incharge",((Teacher)teacherInchargeComboBox.getSelectedItem()).getPhone());
 
             //Getting Subject List
             if( subjectList.size() == 0 ){
@@ -164,7 +165,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
-                subjectJsonObject.put("subject_teacher",getPhone(subjectPanel.subjectTeacherComboBox.getSelectedItem()+""));
+                subjectJsonObject.put("subject_teacher",((Teacher)teacherInchargeComboBox.getSelectedItem()).getPhone());
                 subjectJsonArray.put(subjectJsonObject);
             }
 
@@ -189,7 +190,7 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
 
                 for( int i = 1; i <= 3; i++){
                     //Adding SubjectPanel
-                    CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,i);
+                    CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherArrayList,i);
                     subjectList.add(subjectPanel);
                     subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
                 }
@@ -203,29 +204,16 @@ public class CreateClassroomPanel extends JPanel implements KeyListener, ActionL
     }
 
     private void fillTeacherInchargeComboBox(){
-        teacherListJsonArray = serverConnection.getTeacherList();
+        JSONArray teacherListJsonArray = serverConnection.getTeacherList();
+        teacherArrayList = new ArrayList<>();
         for( int i = 0; i < teacherListJsonArray.length(); i++){
-            JSONObject jsonObject = teacherListJsonArray.getJSONObject(i);
-            String firstname = jsonObject.getString("firstname");
-            String lastname = jsonObject.getString("lastname");
-            String phone = jsonObject.getString("phone");
-
-            if(!phone.equals(Constant.PRINCIPAL_USERNAME+"")) {
-                String x = Character.toUpperCase(firstname.charAt(0)) + firstname.substring(1) + " ";
-                x += Character.toUpperCase(lastname.charAt(0)) + lastname.substring(1) + " ";
-                x += "(" + jsonObject.getString("phone") + ")";
-
-                teacherInchargeComboBox.insertItemAt(x, 0);
+            if( !teacherListJsonArray.getJSONObject(i).getString("phone").equals(Constant.PRINCIPAL_USERNAME) ) {
+                Teacher teacher = new Teacher(teacherListJsonArray.getJSONObject(i));
+                teacherArrayList.add(teacher);
+                teacherInchargeComboBox.insertItemAt(teacher, 0);
             }
         }
     }
-
-    private String getPhone(String teacher){
-        int last  = teacher.length()-1;
-        int start = last - 10;
-        return teacher.substring(start,last);
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {
         if( e.getSource() == standardTextField ){

@@ -226,42 +226,54 @@ Info Attribute of Response Message contains an JSON array, this array has JSON o
         {
             "standard" : $standard_1,
             "division" : $division_1,
-            "teacher_incharge" : $phone_no_of_teacherIncharge,
+            "teacher" : {
+                "phone" : $phone_no_of_teacherIncharge,
             "firstname" : $firstname_of_teacherIncharge,
             "lastname" : $lastname_of_teacherIncharge,
+            },
             "subject_list" : [
                 {
                     "subject_name" : $subjectname_1,
-                    "subject_incharge" : $phone_no_of_subjectIncharge,
+                    "teacher" : {
+                        "phone" : $phone_no_of_subjectIncharge,
                     "firstname" : $firstname_of_subjectIncharge,
                     "lastname" : $lastname_of_subjectIncharge
+                    }
                 },
                  {
                     "subject_name" : $subjectname_2,
-                    "subject_incharge" : $phone_no_of_subjectIncharge,
-                    "firstname" : $firstname_of_subjectIncharge,
-                    "lastname" : $lastname_of_subjectIncharge
+                    "teacher" : {
+                        "phone" : $phone_no_of_subjectIncharge,
+                        "firstname" : $firstname_of_subjectIncharge,
+                        "lastname" : $lastname_of_subjectIncharge
+                    }  
                 }
             ]
         },
         {
             "standard" : $standard_2,
             "division" : $division_2,
-            "teacher_incharge" : $phone_no_of_teacherIncharge,
+            "teacher" : {
+                "phone" : $phone_no_of_teacherIncharge,
             "firstname" : $firstname_of_teacherIncharge,
             "lastname" : $lastname_of_teacherIncharge,
+            },
             "subject_list" : [
                 {
                     "subject_name" : $subjectname_1,
-                    "subject_incharge" : $phone_no_of_subjectIncharge,
+                    "teacher" : {
+                        "phone" : $phone_no_of_subjectIncharge,
                     "firstname" : $firstname_of_subjectIncharge,
                     "lastname" : $lastname_of_subjectIncharge
+                    }
                 },
                  {
                     "subject_name" : $subjectname_2,
-                    "subject_incharge" : $phone_no_of_subjectIncharge,
-                    "firstname" : $firstname_of_subjectIncharge,
-                    "lastname" : $lastname_of_subjectIncharge
+                    "teacher" : {
+                        "phone" : $phone_no_of_subjectIncharge,
+                        "firstname" : $firstname_of_subjectIncharge,
+                        "lastname" : $lastname_of_subjectIncharge
+                    }  
                 }
             ]
         }

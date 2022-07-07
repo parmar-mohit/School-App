@@ -1,5 +1,6 @@
 package TeacherDesktop.Dialog;
 
+import TeacherDesktop.EntityClasses.Teacher;
 import TeacherDesktop.Panel.CreateSubjectPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
@@ -23,7 +24,7 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
     private JPanel subjectListPanel;
     private ArrayList<CreateSubjectPanel> subjectList;
     private JButton addSubjectButton,removeSubjectButton, updateClassrooomButton;
-    private JSONArray teacherListJsonArray;
+    private ArrayList<Teacher> teacherArrayList;
     public UpdateClassroomDialog(JFrame parent,JSONObject classroomJsonObject, ServerConnection serverConnection){
         super(parent);
         //Initialising Members
@@ -55,9 +56,6 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
         updateClassrooomButton.setPreferredSize(Constant.BUTTON_SIZE);
         removeSubjectButton.setPreferredSize(Constant.BUTTON_SIZE);
         removeSubjectButton.setBackground(Constant.BUTTON_BACKGROUND);
-
-        //Setting Value in Components
-        teacherInchargeComboBox.setSelectedItem(getTeacherInchargeString(classroomJsonObject.getString("firstname"),classroomJsonObject.getString("lastname"),classroomJsonObject.getString("teacher_incharge")));
 
         //Adding Listeners
         addSubjectButton.addActionListener(this);
@@ -97,11 +95,17 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
             JSONObject subjectJsonObject = subjectListJsonArray.getJSONObject(i-1);
 
             //Adding SubjectPanel
-            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,i);
+            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherArrayList,i);
             subjectPanel.oldSubjectName = subjectJsonObject.getString("subject_name");
-            subjectPanel.oldSubjectTeacher = subjectJsonObject.getString("subject_incharge");
+            subjectPanel.oldSubjectTeacher = subjectJsonObject.getJSONObject("teacher").getString("phone");
             subjectPanel.subjectNameTextField.setText(subjectJsonObject.getString("subject_name"));
-            subjectPanel.subjectTeacherComboBox.setSelectedItem(getTeacherInchargeString(subjectJsonObject.getString("firstname"),subjectJsonObject.getString("lastname"),subjectJsonObject.getString("subject_incharge")));
+            Teacher subjectTeacher = new Teacher(subjectJsonObject.getJSONObject("teacher"));
+            for( int j = 0; j < teacherArrayList.size(); j++) {
+                if( subjectTeacher.toString().equals(teacherArrayList.get(j).toString()) ){
+                    subjectPanel.subjectTeacherComboBox.setSelectedItem(teacherArrayList.get(j));
+                    break;
+                }
+            }
             subjectList.add(subjectPanel);
             subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
         }
@@ -110,19 +114,17 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
     }
 
     private void fillTeacherInchargeComboBox(){
-        teacherListJsonArray = serverConnection.getTeacherList();
+        JSONArray teacherListJsonArray = serverConnection.getTeacherList();
+        teacherArrayList = new ArrayList<>();
         for( int i = 0; i < teacherListJsonArray.length(); i++){
-            JSONObject jsonObject = teacherListJsonArray.getJSONObject(i);
-            String firstname = jsonObject.getString("firstname");
-            String lastname = jsonObject.getString("lastname");
-            String phone = jsonObject.getString("phone");
-
-            if(!phone.equals(Constant.PRINCIPAL_USERNAME+"")) {
-                String x = Character.toUpperCase(firstname.charAt(0)) + firstname.substring(1) + " ";
-                x += Character.toUpperCase(lastname.charAt(0)) + lastname.substring(1) + " ";
-                x += "(" + jsonObject.getString("phone") + ")";
-
-                teacherInchargeComboBox.insertItemAt(x, 0);
+            if( !teacherListJsonArray.getJSONObject(i).getString("phone").equals(Constant.PRINCIPAL_USERNAME) ) {
+                Teacher teacher = new Teacher(teacherListJsonArray.getJSONObject(i));
+                teacherArrayList.add(teacher);
+                if( teacher.toString().equals(new Teacher(classroomJsonObject.getJSONObject("teacher")).toString()) ){
+                    teacherInchargeComboBox.addItem(teacher);
+                }else {
+                    teacherInchargeComboBox.insertItemAt(teacher, 0);
+                }
             }
         }
     }
@@ -131,7 +133,7 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if( e.getSource() == addSubjectButton ){
             //Adding SubjectPanel
-            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherListJsonArray,subjectList.size()+1);
+            CreateSubjectPanel subjectPanel = new CreateSubjectPanel(teacherArrayList,subjectList.size()+1);
             subjectList.add(subjectPanel);
             subjectListPanel.add(subjectPanel,Constraint.setPosition(0,subjectList.size()));
             revalidate();
@@ -154,7 +156,7 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            infoJsonObject.put("teacher_incharge",getPhone(teacherInchargeComboBox.getSelectedItem()+""));
+            infoJsonObject.put("teacher_incharge",((Teacher)teacherInchargeComboBox.getSelectedItem()).getPhone());
 
             //Getting Subject List
             if( subjectList.size() == 0 ){
@@ -182,7 +184,7 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
                     return;
                 }
                 subjectJsonObject.put("old_subject_teacher",subjectPanel.oldSubjectTeacher);
-                subjectJsonObject.put("new_subject_teacher",getPhone(subjectPanel.subjectTeacherComboBox.getSelectedItem()+""));
+                subjectJsonObject.put("new_subject_teacher",((Teacher)subjectPanel.subjectTeacherComboBox.getSelectedItem()).getPhone());
                 subjectJsonArray.put(subjectJsonObject);
             }
 
@@ -197,18 +199,5 @@ public class UpdateClassroomDialog extends JDialog implements ActionListener {
                 Constraint.labelDeleteAfterTime(messageLabel);
             }
         }
-    }
-
-    private String getTeacherInchargeString(String firstname, String lastname, String phone){
-        String teacherIncharge = Character.toUpperCase(firstname.charAt(0))+firstname.substring(1)+" ";
-        teacherIncharge += Character.toUpperCase(lastname.charAt(0))+lastname.substring(1)+" ";
-        teacherIncharge += "("+phone+")";
-        return teacherIncharge;
-    }
-
-    private String getPhone(String teacher){
-        int last  = teacher.length()-1;
-        int start = last - 10;
-        return teacher.substring(start,last);
     }
 }

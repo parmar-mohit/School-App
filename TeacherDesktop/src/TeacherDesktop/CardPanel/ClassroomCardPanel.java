@@ -1,6 +1,8 @@
 package TeacherDesktop.CardPanel;
 
 import TeacherDesktop.Dialog.UpdateClassroomDialog;
+import TeacherDesktop.EntityClasses.Subject;
+import TeacherDesktop.EntityClasses.Teacher;
 import TeacherDesktop.Panel.ClassroomPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
@@ -31,8 +33,8 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
         this.parent = parent;
         standardLabel = new JLabel("Standard : "+classroomJsonObject.getInt("standard"));
         divisionLabel = new JLabel("Division : "+classroomJsonObject.getString("division"));
-        String teacherIncharge = getTeacherInchargeString(classroomJsonObject.getString("firstname"),classroomJsonObject.getString("lastname"),classroomJsonObject.getString("teacher_incharge"));
-        teacherInchargeLabel = new JLabel("Teacher Incharge : "+teacherIncharge);
+        Teacher classroomTeacher = new Teacher(classroomJsonObject.getJSONObject("teacher"));
+        teacherInchargeLabel = new JLabel("Teacher Incharge : "+classroomTeacher);
         Image img = new ImageIcon(Constant.EXPAND_ICON).getImage();
         img = img.getScaledInstance(15,15,Image.SCALE_DEFAULT);
         expandButton = new JButton(new ImageIcon(img));
@@ -87,10 +89,9 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
             JSONArray subjectListJsonArray = classroomJsonObject.getJSONArray("subject_list");
             for( int i = 0; i < subjectListJsonArray.length(); i++ ){
                 JSONObject subjectJsonObject = subjectListJsonArray.getJSONObject(i);
-                String subjectName = subjectJsonObject.getString("subject_name");
-                JLabel subjectNameLabel = new JLabel("Subject Name : "+Character.toUpperCase(subjectName.charAt(0))+subjectName.substring(1));
-                String teacherIncharge = getTeacherInchargeString(subjectJsonObject.getString("firstname"),subjectJsonObject.getString("lastname"),subjectJsonObject.getString("subject_incharge"));
-                JLabel subjectInchargeLabel = new JLabel("Subject Incharge : "+teacherIncharge);
+                JLabel subjectNameLabel = new JLabel("Subject Name : "+Subject.getSubjectName(subjectJsonObject.getString("subject_name")));
+                Teacher subjectTeacher = new Teacher(subjectJsonObject.getJSONObject("teacher"));
+                JLabel subjectInchargeLabel = new JLabel("Subject Incharge : "+subjectTeacher);
 
                 //Adding Components to Frame
                 subjectListPanel.add(subjectNameLabel,Constraint.setPosition(0,i,Constraint.LEFT));
@@ -133,13 +134,6 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
                 }
             }
         }
-    }
-
-    private String getTeacherInchargeString(String firstname, String lastname, String phone){
-        String teacherIncharge = Character.toUpperCase(firstname.charAt(0))+firstname.substring(1)+" ";
-        teacherIncharge += Character.toUpperCase(lastname.charAt(0))+lastname.substring(1)+" ";
-        teacherIncharge += "("+phone+")";
-        return teacherIncharge;
     }
 
     @Override
