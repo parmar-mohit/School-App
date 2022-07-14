@@ -24,6 +24,7 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
     private ServerConnection serverConnection;
     private String phone;
     private JSONArray classroomJsonArray;
+    private Thread fillStudentCardThread;
 
     public MyClassroomPanel(ServerConnection serverConnection,String phone,JSONArray classroomJsonArray){
         //Initialising Members
@@ -45,9 +46,6 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
         scrollPane.setPreferredSize(Constant.SCROLLPANE_SIZE);
         studentListPanel.setLayout(new GridBagLayout());
 
-        //Filling Student Card
-        fillStudentCard();
-
         //Adding Listeners
         createStudentIdButton.addActionListener(this);
 
@@ -59,22 +57,56 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
         add(panelNameLabel, Constraint.setPosition(0,0,2,1));
         add(createStudentIdButton,Constraint.setPosition(1,1,Constraint.RIGHT));
         add(scrollPane,Constraint.setPosition(0,2,2,1));
+        revalidate();
+        repaint();
+
+        //Filling Student Card
+        fillStudentCard();
     }
-
     public void fillStudentCard(){
-        if( studentCardPanelArrayList.size() >  0 ){
-            studentListPanel.removeAll();
-            studentCardPanelArrayList = new ArrayList<>();
-        }
+        fillStudentCardThread = new Thread() {
+            @Override
+            public void run() {
+                if (studentCardPanelArrayList.size() > 0) {
+                    studentListPanel.removeAll();
+                    studentCardPanelArrayList = new ArrayList<>();
+                }
 
-        JSONArray studentListJsonArray = serverConnection.getStudentListForClassroomIncharge(phone);
-        for( int i = 0; i < studentListJsonArray.length(); i++ ){
-            JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
-            StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject,serverConnection,classroomJsonArray,this);
-            studentCardPanel.setPreferredSize(new Dimension(900,350));
-            studentListPanel.add(studentCardPanel,Constraint.setPosition(0,studentCardPanelArrayList.size()));
-            studentCardPanelArrayList.add(studentCardPanel);
-        }
+                JLabel messageLabel = new JLabel("Getting Student Details, Please Wait..");
+                JProgressBar progressBar = new JProgressBar(0, 100);
+
+                //removing Scrollpane from panel and adding progressbar to show progress while getting data
+                remove(scrollPane);
+                createStudentIdButton.setVisible(false);
+                add(messageLabel, Constraint.setPosition(0, 2, 2, 1));
+                add(progressBar, Constraint.setPosition(0, 3, 2, 1));
+                progressBar.setPreferredSize(new Dimension(500, 30));
+                progressBar.setStringPainted(true);
+                revalidate();
+                repaint();
+
+                JSONArray studentListJsonArray = serverConnection.getStudentListForClassroomIncharge(phone, progressBar);
+
+                //Removing progressBar and adding ScrollPane
+                remove(messageLabel);
+                remove(progressBar);
+                createStudentIdButton.setVisible(true);
+                add(scrollPane, Constraint.setPosition(0, 2, 2, 1));
+                revalidate();
+                repaint();
+
+                for (int i = 0; i < studentListJsonArray.length(); i++) {
+                    JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
+                    StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject, serverConnection, classroomJsonArray, MyClassroomPanel.this);
+                    studentCardPanel.setPreferredSize(new Dimension(900, 350));
+                    studentListPanel.add(studentCardPanel, Constraint.setPosition(0, studentCardPanelArrayList.size()));
+                    studentCardPanelArrayList.add(studentCardPanel);
+                    revalidate();
+                    repaint();
+                }
+            }
+        };
+        fillStudentCardThread.start();
     }
 
     @Override
@@ -99,7 +131,6 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
             add(backButton, Constraint.setPosition(1, 1, Constraint.RIGHT));
             add(studentPanel, Constraint.setPosition(0, 2, 2, 1));
         }else if( e.getSource() == backButton ){
-            fillStudentCard();
             //Setting Components Visible
             createStudentIdButton.setVisible(true);
             scrollPane.setVisible(true);
@@ -107,8 +138,16 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
             //Removing Components from panel
             remove(backButton);
             remove(studentPanel);
+
+            fillStudentCard();
         }
         revalidate();
         repaint();
+    }
+
+    protected void finalize(){
+        if( fillStudentCardThread != null ){
+            fillStudentCardThread.stop();
+        }
     }
 }

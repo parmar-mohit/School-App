@@ -30,7 +30,40 @@ public class GetStudentInfoForPrincipal extends Thread {
 
         try{
             db = new DatabaseCon();
-            JSONArray studentListJsonArray = new JSONArray();
+
+            JSONObject responseJsonObject = new JSONObject();
+            responseJsonObject.put("id",jsonObject.getLong("id"));
+
+            JSONObject responseInfoJsonObject = new JSONObject();
+
+            JSONArray classroomListJsonArray = new JSONArray();
+            ResultSet standardResultSet = db.getDistinctStandard();
+            while( standardResultSet.next() ){
+                int standard = standardResultSet.getInt(1);
+                JSONObject standardJsonObject = new JSONObject();
+                standardJsonObject.put("standard",standard);
+
+                JSONArray divisionArray = new JSONArray();
+
+                ResultSet divisionResultSet = db.getDistinctDivision(standard);
+                while( divisionResultSet.next() ){
+                    divisionArray.put(divisionResultSet.getString(1));
+                }
+                standardJsonObject.put("division",divisionArray);
+                classroomListJsonArray.put(standardJsonObject);
+            }
+            responseInfoJsonObject.put("classroom_list",classroomListJsonArray);
+            responseInfoJsonObject.put("total_students",db.getTotalStudentsForPrincipal());
+
+            responseJsonObject.put("info",responseInfoJsonObject);
+
+            //Sending First Message with classroom list and total students
+            client.sendMessage(responseJsonObject);
+
+            //Removing Info from responseJsonObject
+            responseJsonObject.remove("info");
+
+
             ResultSet studentResultSet = db.getStudentListForPrincipal();
             while( studentResultSet.next() ){
                 JSONObject studentJsonObject = new JSONObject();
@@ -93,35 +126,13 @@ public class GetStudentInfoForPrincipal extends Thread {
                 }
                 studentJsonObject.put("img",getImageString(studentResultSet.getInt("sid")));
 
-                studentListJsonArray.put(studentJsonObject);
+                //Sending Message with Student Info
+                responseJsonObject.put("info",studentJsonObject);
+                client.sendMessage(responseJsonObject);
+
+                //Removing Info Attribute from responseJsonObject
+                responseJsonObject.remove("info");
             }
-
-            JSONArray classroomListJsonArray = new JSONArray();
-            ResultSet standardResultSet = db.getDistinctStandard();
-            while( standardResultSet.next() ){
-                int standard = standardResultSet.getInt(1);
-                JSONObject standardJsonObject = new JSONObject();
-                standardJsonObject.put("standard",standard);
-
-                JSONArray divisionArray = new JSONArray();
-
-                ResultSet divisionResultSet = db.getDistinctDivision(standard);
-                while( divisionResultSet.next() ){
-                    divisionArray.put(divisionResultSet.getString(1));
-                }
-                standardJsonObject.put("division",divisionArray);
-                classroomListJsonArray.put(standardJsonObject);
-            }
-
-            JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
-
-            JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("student_list",studentListJsonArray);
-            responseInfoJsonObject.put("classroom_list",classroomListJsonArray);
-
-            responseJsonObject.put("info",responseInfoJsonObject);
-            client.sendMessage(responseJsonObject);
         }catch (Exception e){
             Log.error(e.toString());
         }finally {

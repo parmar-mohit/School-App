@@ -3,7 +3,6 @@ package ServerProgram.ActionCode;
 import ServerProgram.Client.Client;
 import ServerProgram.DatabaseCon;
 import ServerProgram.Log;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -35,7 +34,17 @@ public class GetStudentListForSubjectTeacher extends Thread {
 
             JSONObject responseJsonObject = new JSONObject();
             responseJsonObject.put("id",jsonObject.getLong("id"));
-            JSONArray responseInfoJsonArray = new JSONArray();
+
+            JSONObject responseInfoJsonObject = new JSONObject();
+            responseInfoJsonObject.put("total_students",db.getTotalStudentsForSubjectTeacher(phone));
+            responseJsonObject.put("info",responseInfoJsonObject);
+
+            //Sending First message Containint total no of students
+            client.sendMessage(responseJsonObject);
+
+            //Removing info atrribute from responseJsonObject
+            responseJsonObject.remove("info");
+
             ResultSet studentResultSet = db.getStudentListForSubjectTeacher(phone);
             while( studentResultSet.next() ){
                 JSONObject studentJsonObject = new JSONObject();
@@ -98,11 +107,13 @@ public class GetStudentListForSubjectTeacher extends Thread {
                 }
                 studentJsonObject.put("img",getImageString(studentResultSet.getInt("sid")));
 
-                responseInfoJsonArray.put(studentJsonObject);
-            }
+                //Sending Message with Student Info
+                responseJsonObject.put("info",studentJsonObject);
+                client.sendMessage(responseJsonObject);
 
-            responseJsonObject.put("info",responseInfoJsonArray);
-            client.sendMessage(responseJsonObject);
+                //Removing Info Attribute from responseJsonObject
+                responseJsonObject.remove("info");
+            }
         }catch(Exception e){
             Log.error(e.toString());
         }finally {

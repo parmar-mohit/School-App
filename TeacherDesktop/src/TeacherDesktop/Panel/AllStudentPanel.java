@@ -21,8 +21,8 @@ public class AllStudentPanel extends JPanel implements ActionListener {
     private JPanel studentListPanel;
     private ArrayList<StudentCardPanel> studentCardPanelArrayList;
     private ServerConnection serverConnection;
-    private String phone;
     private JSONArray classroomJsonArray,studentListJsonArray;
+    private Thread fillStudentCardThread;
 
     public AllStudentPanel(ServerConnection serverConnection){
         //Initialising Members
@@ -58,29 +58,57 @@ public class AllStudentPanel extends JPanel implements ActionListener {
         add(scrollPane,Constraint.setPosition(0,2,2,1));
     }
 
-    private void getInfo(){
-        JSONObject jsonObject = serverConnection.getStudentInfoForPrincipal();
+    private void getInfo(JProgressBar progressBar){
+        JSONObject jsonObject = serverConnection.getStudentInfoForPrincipal(progressBar);
         this.classroomJsonArray = jsonObject.getJSONArray("classroom_list");
         this.studentListJsonArray = jsonObject.getJSONArray("student_list");
     }
 
     public void fillStudentCard(){
-        createStudentIdButton.setVisible(false);
-        getInfo();
-        createStudentIdButton.setVisible(true);
+        fillStudentCardThread = new Thread() {
+            @Override
+            public void run() {
 
-        if( studentCardPanelArrayList.size() >  0 ){
-            studentListPanel.removeAll();
-            studentCardPanelArrayList = new ArrayList<>();
-        }
+                if (studentCardPanelArrayList.size() > 0) {
+                    studentListPanel.removeAll();
+                    studentCardPanelArrayList = new ArrayList<>();
+                }
 
-        for( int i = 0; i < studentListJsonArray.length(); i++ ){
-            JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
-            StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject,serverConnection,classroomJsonArray,this);
-            studentCardPanel.setPreferredSize(new Dimension(900,350));
-            studentListPanel.add(studentCardPanel,Constraint.setPosition(0,studentCardPanelArrayList.size()));
-            studentCardPanelArrayList.add(studentCardPanel);
-        }
+                JLabel messageLabel = new JLabel("Getting Student Details, Please Wait..");
+                JProgressBar progressBar = new JProgressBar(0, 100);
+
+                //removing Scrollpane from panel and adding progressbar to show progress while getting data
+                remove(scrollPane);
+                createStudentIdButton.setVisible(false);
+                add(messageLabel,Constraint.setPosition(0,2,2,1));
+                add(progressBar, Constraint.setPosition(0, 3, 2, 1));
+                progressBar.setPreferredSize(new Dimension(500,30));
+                progressBar.setStringPainted(true);
+                revalidate();
+                repaint();
+
+                getInfo(progressBar);
+
+                //Removing progressBar and adding ScrollPane
+                remove(messageLabel);
+                remove(progressBar);
+                createStudentIdButton.setVisible(true);
+                add(scrollPane, Constraint.setPosition(0, 2, 2, 1));
+                revalidate();
+                repaint();
+
+                for (int i = 0; i < studentListJsonArray.length(); i++) {
+                    JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
+                    StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject, serverConnection, classroomJsonArray, AllStudentPanel.this);
+                    studentCardPanel.setPreferredSize(new Dimension(900, 350));
+                    studentListPanel.add(studentCardPanel, Constraint.setPosition(0, studentCardPanelArrayList.size()));
+                    studentCardPanelArrayList.add(studentCardPanel);
+                    revalidate();
+                    repaint();
+                }
+            }
+        };
+        fillStudentCardThread.start();
     }
 
     @Override
@@ -116,5 +144,11 @@ public class AllStudentPanel extends JPanel implements ActionListener {
         }
         revalidate();
         repaint();
+    }
+
+    protected void finalize(){
+        if( fillStudentCardThread != null ){
+            fillStudentCardThread.stop();
+        }
     }
 }

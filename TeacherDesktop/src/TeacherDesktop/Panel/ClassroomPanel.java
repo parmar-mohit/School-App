@@ -21,6 +21,7 @@ public class ClassroomPanel extends JPanel implements ActionListener  {
     private JButton createClassroomButton,backButton;
     private CreateClassroomPanel createClassroomPanel;
     private ServerConnection serverConnection;
+    private Thread fillClassroomCardThread;
 
     public ClassroomPanel(ServerConnection serverConnection){
         //Initialisng Members
@@ -93,17 +94,53 @@ public class ClassroomPanel extends JPanel implements ActionListener  {
     }
 
     public void fillClassroomCard(){
-        if( classroomCardPanelArrayList.size() > 0 ){
-            classroomListPanel.removeAll();
-            classroomCardPanelArrayList = new ArrayList<>();
-        }
+        fillClassroomCardThread = new Thread() {
+            @Override
+            public void run() {
+                if (classroomCardPanelArrayList.size() > 0) {
+                    classroomListPanel.removeAll();
+                    classroomCardPanelArrayList = new ArrayList<>();
+                }
 
-        JSONArray classroomJsonArray = serverConnection.getClassroomListForPrincipal();
-        for( int i = 0; i < classroomJsonArray.length(); i++){
-            ClassroomCardPanel classroomCardPanel = new ClassroomCardPanel(classroomJsonArray.getJSONObject(i),serverConnection,this);
-            classroomCardPanel.setPreferredSize(new Dimension(900,100));
-            classroomListPanel.add(classroomCardPanel,Constraint.setPosition(0,classroomCardPanelArrayList.size()));
-            classroomCardPanelArrayList.add(classroomCardPanel);
+                JLabel messageLabel = new JLabel("Getting Student Details, Please Wait..");
+                JProgressBar progressBar = new JProgressBar(0, 100);
+
+                //removing Scrollpane from panel and adding progressbar to show progress while getting data
+                remove(scrollPane);
+                createClassroomButton.setVisible(false);
+                add(messageLabel,Constraint.setPosition(0,2,2,1));
+                add(progressBar, Constraint.setPosition(0, 3, 2, 1));
+                progressBar.setPreferredSize(new Dimension(500,30));
+                progressBar.setStringPainted(true);
+                revalidate();
+                repaint();
+
+                JSONArray classroomJsonArray = serverConnection.getClassroomListForPrincipal(progressBar);
+
+                //Removing progressBar and adding ScrollPane
+                remove(messageLabel);
+                remove(progressBar);
+                createClassroomButton.setVisible(true);
+                add(scrollPane, Constraint.setPosition(0, 2, 2, 1));
+                revalidate();
+                repaint();
+
+                for (int i = 0; i < classroomJsonArray.length(); i++) {
+                    ClassroomCardPanel classroomCardPanel = new ClassroomCardPanel(classroomJsonArray.getJSONObject(i), serverConnection, ClassroomPanel.this);
+                    classroomCardPanel.setPreferredSize(new Dimension(900, 100));
+                    classroomListPanel.add(classroomCardPanel, Constraint.setPosition(0, classroomCardPanelArrayList.size()));
+                    classroomCardPanelArrayList.add(classroomCardPanel);
+                    revalidate();
+                    repaint();
+                }
+            }
+        };
+        fillClassroomCardThread.start();
+    }
+
+    protected void finalize(){
+        if( fillClassroomCardThread != null ){
+            fillClassroomCardThread.stop();
         }
     }
 }

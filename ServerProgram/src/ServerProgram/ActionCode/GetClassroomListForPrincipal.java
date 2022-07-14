@@ -29,9 +29,18 @@ public class GetClassroomListForPrincipal extends Thread {
             JSONObject responseJsonObject = new JSONObject();
             responseJsonObject.put("id",jsonObject.getLong("id"));
 
-            JSONArray infoJsonArray = new JSONArray();
-            ResultSet resultSet = db.getClassroomListForPrincipal();
+            JSONObject responseInfoJsonObject = new JSONObject();
+            responseInfoJsonObject.put("total_classrooms",db.getTotalClassroom());
 
+            responseJsonObject.put("info",responseInfoJsonObject);
+
+            //Sending first message containing total classroom count
+            client.sendMessage(responseJsonObject);
+
+            //removing info from responseJsonObject
+            responseJsonObject.remove("info");
+
+            ResultSet resultSet = db.getClassroomListForPrincipal();
             while(resultSet.next()){
                 JSONObject classroomJsonObject = new JSONObject();
                 classroomJsonObject.put("standard",resultSet.getInt("standard"));
@@ -64,11 +73,10 @@ public class GetClassroomListForPrincipal extends Thread {
                 }
                 classroomJsonObject.put("subject_list",subjectListJsonArray);
 
-                infoJsonArray.put(classroomJsonObject);
+                responseJsonObject.put("info",classroomJsonObject);
+                client.sendMessage(responseJsonObject); //Sending Classroom Object
+                responseJsonObject.remove("info");
             }
-
-            responseJsonObject.put("info",infoJsonArray);
-            client.sendMessage(responseJsonObject);
         }catch(Exception e){
             Log.error(e.toString());
         }finally {

@@ -42,13 +42,6 @@ public class ServerConnection {
         //Sending Message
         long id = sendMessage(jsonObject);
 
-        //Sleep Sometime before checking for response
-        try {
-            sleep(300);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
         //Waiting till message is received
         JSONObject recvMessage = getResponseMessage(id);
         String password = recvMessage.getJSONObject("info").getString("password");
@@ -75,6 +68,26 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
+    public JSONArray getTeacherList(JProgressBar progressBar){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",3);
+
+        //sending message;
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseMessage = getResponseMessage(id);
+        int total = responseMessage.getJSONObject("info").getInt("total_teachers");
+
+        JSONArray teacherListJsonArray = new JSONArray();
+        for( int i = 1; i <= total; i++){
+            responseMessage = getResponseMessage(id);
+            teacherListJsonArray.put(responseMessage.getJSONObject("info"));
+            progressBar.setValue(i*100/total);
+            progressBar.setString((i*100/total)+"%");
+        }
+        return teacherListJsonArray;
+    }
+
     public JSONArray getTeacherList(){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",3);
@@ -82,16 +95,15 @@ public class ServerConnection {
         //sending message;
         long id = sendMessage(jsonObject);
 
-        //waiting before checking for response
-        try {
-            sleep(300);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        JSONObject responseMessage = getResponseMessage(id);
+        int total = responseMessage.getJSONObject("info").getInt("total_teachers");
 
-        jsonObject = getResponseMessage(id);
-        JSONArray infoJsonArray = jsonObject.getJSONArray("info");
-        return infoJsonArray;
+        JSONArray teacherListJsonArray = new JSONArray();
+        for( int i = 1; i <= total; i++){
+            responseMessage = getResponseMessage(id);
+            teacherListJsonArray.put(responseMessage.getJSONObject("info"));
+        }
+        return teacherListJsonArray;
     }
 
     public int createClassroom(JSONObject infoJsonObject){
@@ -133,7 +145,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
-    public JSONArray getClassroomListForPrincipal(){
+    public JSONArray getClassroomListForPrincipal(JProgressBar progressBar){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",7);
 
@@ -141,7 +153,17 @@ public class ServerConnection {
         long id = sendMessage(jsonObject);
 
         JSONObject responseJsonObject = getResponseMessage(id);
-        return responseJsonObject.getJSONArray("info");
+        int total = responseJsonObject.getJSONObject("info").getInt("total_classrooms");
+
+        JSONArray classroomJsonArray = new JSONArray();
+        for(int i = 1; i <= total; i++){
+            responseJsonObject = getResponseMessage(id);
+            classroomJsonArray.put(responseJsonObject.getJSONObject("info"));
+            progressBar.setValue(i*100/total);
+            progressBar.setString((i*100/total)+"%");
+        }
+
+        return classroomJsonArray;
     }
 
     public int deleteTeacher(String phone){
@@ -217,7 +239,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("sid");
     }
 
-    public JSONArray getStudentListForClassroomIncharge(String phone){
+    public JSONArray getStudentListForClassroomIncharge(String phone,JProgressBar progressBar){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",13);
 
@@ -230,10 +252,22 @@ public class ServerConnection {
         long id = sendMessage(jsonObject);
 
         JSONObject responseJsonObject = getResponseMessage(id);
-        return responseJsonObject.getJSONArray("info");
+        int totalStudents = responseJsonObject.getJSONObject("info").getInt("total_students");
+
+        JSONArray studentJsonArray = new JSONArray();
+        //Getting Student Objects
+        int total = totalStudents;
+        for( int i = 1; i <= total; i++ ){
+            JSONObject studentJsonObject = getResponseMessage(id).getJSONObject("info");
+            studentJsonArray.put(studentJsonObject);
+            progressBar.setValue(i*100/totalStudents);
+            progressBar.setString((i*100/totalStudents)+"%");
+        }
+
+        return studentJsonArray;
     }
 
-    public JSONArray getStudentListForSubjectTeacher(String phone){
+    public JSONArray getStudentListForSubjectTeacher(String phone,JProgressBar progressBar){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",14);
 
@@ -246,7 +280,19 @@ public class ServerConnection {
         long id = sendMessage(jsonObject);
 
         JSONObject responseJsonObject = getResponseMessage(id);
-        return responseJsonObject.getJSONArray("info");
+        int totalStudents = responseJsonObject.getJSONObject("info").getInt("total_students");
+
+        JSONArray studentJsonArray = new JSONArray();
+        //Getting Student Objects
+        int total = totalStudents;
+        for( int i = 1; i <= total; i++ ){
+            JSONObject studentJsonObject = getResponseMessage(id).getJSONObject("info");
+            studentJsonArray.put(studentJsonObject);
+            progressBar.setValue(i*100/totalStudents);
+            progressBar.setString((i*100/totalStudents)+"%");
+        }
+
+        return studentJsonArray;
     }
 
     public int deleteStudentId(int sid){
@@ -277,7 +323,7 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
-    public JSONObject getStudentInfoForPrincipal(){
+    public JSONObject getStudentInfoForPrincipal(JProgressBar progressBar){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action_code",17);
 
@@ -285,7 +331,22 @@ public class ServerConnection {
         long id = sendMessage(jsonObject);
 
         JSONObject responseJsonObject = getResponseMessage(id);
-        return responseJsonObject.getJSONObject("info");
+
+        JSONObject studentInfoJsonObject = new JSONObject();
+        studentInfoJsonObject.put("classroom_list",responseJsonObject.getJSONObject("info").getJSONArray("classroom_list"));
+
+        int totalStudents = responseJsonObject.getJSONObject("info").getInt("total_students");
+
+        JSONArray studentJsonArray = new JSONArray();
+        for( int i = 1; i <= totalStudents; i++){
+            JSONObject studentJsonObject = getResponseMessage(id).getJSONObject("info");
+            studentJsonArray.put(studentJsonObject);
+            progressBar.setValue(i*100/totalStudents);
+            progressBar.setString((i*100/totalStudents)+"%");
+        }
+
+        studentInfoJsonObject.put("student_list",studentJsonArray);
+        return studentInfoJsonObject;
     }
 
     public JSONObject getExamAndSubjectList(String phone){

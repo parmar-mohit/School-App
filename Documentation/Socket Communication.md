@@ -88,33 +88,27 @@ The Client is asking server to give a list of all teachers in database. There is
     "action_code" : 3
 }
 ``` 
-Info attribute of response message contains an array of JSONObject where each Object contains attribuutes of teacher.Example is as follows
+
+There will be mutliple response messages.Info attribute of first response message will contain no of teacher.Example is as follows
 ```
 {
     "id" : $messageId,
-    "info" : [
-        {
-            "firstname" : $firstname_of_teacher1,
-            "lastname" : $lastname_of_teacher1,
-            "phone" : $phone_of_teacher1,
-            "email" : $email_of_teacher1,
-            "gender" : $gender_of_teacher1
-        },
-        {
-            "firstname" : $firstname_of_teacher2,
-            "lastname" : $lastname_of_teacher2,
-            "phone" : $phone_of_teacher2,
-            "email" : $email_of_teacher2,
-            "gender" : $gender_of_teacher2
-        },
-        {
-            "firstname" : $firstname_of_teacher3,
-            "lastname" : $lastname_of_teacher3,
-            "phone" : $phone_of_teacher3,
-            "email" : $email_of_teacher3,
-            "gender" : $gender_of_teacher3
-        }
-    ]
+    "info" : {
+        "total_teachers" : $total_teachers
+    }
+}
+```
+After that many responses messages will be sent where info attribute of each of theese message contain attribute of one teacher.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "firstname" : $firstname_of_teacher1,
+        "lastname" : $lastname_of_teacher1,
+        "phone" : $phone_of_teacher1,
+        "email" : $email_of_teacher1,
+        "gender" : $gender_of_teacher1
+    }
 }
 ```
 
@@ -217,67 +211,46 @@ The Client is requesting server to given details of all classroom available in d
     "action_code" : 7
 }
 ```
-
-Info Attribute of Response Message contains an JSON array, this array has JSON object containing information about each classroom, Example is as follows
+There will be mutliple response messages.The Info Attribute of first response message wil conatain number of classrooms.Example is as follows
 ```
 {
     "id" : $messageId,
-    "info" : [
-        {
-            "standard" : $standard_1,
-            "division" : $division_1,
-            "teacher" : {
-                "phone" : $phone_no_of_teacherIncharge,
+    "info" : {
+        "total_classrooms" : $totalClassrooms
+    }
+}
+```
+After the first message is sent many response messages will be sent where info attribute of each response message will contain details about one classroom.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "standard" : $standard,
+        "division" : $division,
+        "teacher" : {
+            "phone" : $phone_no_of_teacherIncharge,
             "firstname" : $firstname_of_teacherIncharge,
             "lastname" : $lastname_of_teacherIncharge,
-            },
-            "subject_list" : [
-                {
-                    "subject_name" : $subjectname_1,
-                    "teacher" : {
-                        "phone" : $phone_no_of_subjectIncharge,
-                    "firstname" : $firstname_of_subjectIncharge,
-                    "lastname" : $lastname_of_subjectIncharge
-                    }
-                },
-                 {
-                    "subject_name" : $subjectname_2,
-                    "teacher" : {
-                        "phone" : $phone_no_of_subjectIncharge,
-                        "firstname" : $firstname_of_subjectIncharge,
-                        "lastname" : $lastname_of_subjectIncharge
-                    }  
-                }
-            ]
         },
-        {
-            "standard" : $standard_2,
-            "division" : $division_2,
-            "teacher" : {
-                "phone" : $phone_no_of_teacherIncharge,
-            "firstname" : $firstname_of_teacherIncharge,
-            "lastname" : $lastname_of_teacherIncharge,
-            },
-            "subject_list" : [
-                {
-                    "subject_name" : $subjectname_1,
-                    "teacher" : {
-                        "phone" : $phone_no_of_subjectIncharge,
+        "subject_list" : [
+            {
+                "subject_name" : $subjectname_1,
+                "teacher" : {
+                    "phone" : $phone_no_of_subjectIncharge,
                     "firstname" : $firstname_of_subjectIncharge,
                     "lastname" : $lastname_of_subjectIncharge
-                    }
-                },
-                 {
-                    "subject_name" : $subjectname_2,
-                    "teacher" : {
-                        "phone" : $phone_no_of_subjectIncharge,
-                        "firstname" : $firstname_of_subjectIncharge,
-                        "lastname" : $lastname_of_subjectIncharge
-                    }  
                 }
-            ]
-        }
-    ]
+            },
+            {
+                "subject_name" : $subjectname_2,
+                "teacher" : {
+                    "phone" : $phone_no_of_subjectIncharge,
+                    "firstname" : $firstname_of_subjectIncharge,
+                    "lastname" : $lastname_of_subjectIncharge
+                }  
+            }
+        ]
+    }
 }
 ```
 
@@ -457,22 +430,23 @@ The Client is requesting server to provide list of student who are in classroom 
     }
 }
 ```
-
-Info attribute of response message contains an JSON array with details of all students.Example is as follows
+This will not send not only one response message but will send multiple response message.The Info Attribute of first response message will contain the no of students.Example is as follows
 ```
 {
     "id" : $messageId,
-    "info" : [
-        {
-            $info_about_student1
-        },
-        {
-            $info_about_student2
-        },
-        {
-            $info_about_student3
-        }
-    ]
+    "info" : {
+        "total_students" : $no_of_students
+    }
+}
+```
+
+After First message is sent,no of messages will be sent and no of message sent will be equal to total no of students.And Info attribute of each response message will contain information about one student.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        $student_info (Refer Action Code 12)
+    }
 }
 
 Info of student contains all the attributes that were sent while creating student id,Refer Action Code 12
@@ -491,7 +465,27 @@ The Client is requesting server to provide list of all students that are being t
 }
 ```
 
-Info Attribute of response message contains all the attribute that were sent while creating student id, Refer Action Code 12.
+This will not send not only one response message but will send multiple response message.The Info Attribute of first response message will contain the no of students.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "total_students" : $no_of_students
+    }
+}
+```
+
+After First message is sent,no of messages will be sent and no of message sent will be equal to total no of students.And Info attribute of each response message will contain information about one student.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        $student_info (Refer Action Code 12)
+    }
+}
+
+Info of student contains all the attributes that were sent while creating student id,Refer Action Code 12
+```
 
 * Action Code 15
 
@@ -567,15 +561,27 @@ The Client is requestint server to provide information of all students as well a
 }
 ```
 
-Info attribute of response message contains 2 array one array containing list of student as in action code 13 and second array will contain list of classrooms as in action code 11.Example is as follows
+This will not send not only one response message but will send multiple response message.The Info Attribute of first response message will contain a list of classrooms and total no of students.Example is as follows
 ```
 {
     "id" : $messageId,
     "info" : {
-        "student_list" : $studentListArray
-        "classroom_list" : $classroomListArray
+        "classroom_list" : $classroomListArray,
+        "total_students" : $no_of_students
     }
 }
+```
+
+After First message is sent,no of messages will be sent and no of message sent will be equal to total no of students.And Info attribute of each response message will contain information about one student.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        $student_info (Refer Action Code 12)
+    }
+}
+
+Info of student contains all the attributes that were sent while creating student id,Refer Action Code 12
 ```
 
 * Action Code 18

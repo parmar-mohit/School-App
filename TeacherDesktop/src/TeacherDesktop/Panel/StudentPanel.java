@@ -20,6 +20,7 @@ public class StudentPanel extends JPanel {
     private ArrayList<StudentCardPanel> studentCardPanelArrayList;
     private ServerConnection serverConnection;
     private String phone;
+    private Thread fillStudentCardThread;
 
     public StudentPanel(ServerConnection serverConnection,String phone){
         //Initialising Members
@@ -48,19 +49,54 @@ public class StudentPanel extends JPanel {
         add(scrollPane,Constraint.setPosition(0,2));
     }
 
-    private void fillStudentCard(){
-        if( studentCardPanelArrayList.size() >  0 ){
-            studentListPanel.removeAll();
-            studentCardPanelArrayList = new ArrayList<>();
-        }
+    private void fillStudentCard() {
+        fillStudentCardThread = new Thread() {
+            @Override
+            public void run() {
 
-        JSONArray studentListJsonArray = serverConnection.getStudentListForSubjectTeacher(phone);
-        for( int i = 0; i < studentListJsonArray.length(); i++ ){
-            JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
-            StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject);
-            studentCardPanel.setPreferredSize(new Dimension(900,350));
-            studentListPanel.add(studentCardPanel,Constraint.setPosition(0,studentCardPanelArrayList.size()));
-            studentCardPanelArrayList.add(studentCardPanel);
+                if (studentCardPanelArrayList.size() > 0) {
+                    studentListPanel.removeAll();
+                    studentCardPanelArrayList = new ArrayList<>();
+                }
+
+                JLabel messageLabel = new JLabel("Getting Student Details, Please Wait..");
+                JProgressBar progressBar = new JProgressBar(0, 100);
+
+                //removing Scrollpane from panel and adding progressbar to show progress while getting data
+                remove(scrollPane);
+                add(messageLabel, Constraint.setPosition(0, 2));
+                add(progressBar, Constraint.setPosition(0, 3));
+                progressBar.setPreferredSize(new Dimension(500, 30));
+                progressBar.setStringPainted(true);
+                revalidate();
+                repaint();
+
+                JSONArray studentListJsonArray = serverConnection.getStudentListForSubjectTeacher(phone, progressBar);
+
+                //Removing progressBar and adding ScrollPane
+                remove(messageLabel);
+                remove(progressBar);
+                add(scrollPane, Constraint.setPosition(0, 2));
+                revalidate();
+                repaint();
+
+                for (int i = 0; i < studentListJsonArray.length(); i++) {
+                    JSONObject studentJsonObject = studentListJsonArray.getJSONObject(i);
+                    StudentCardPanel studentCardPanel = new StudentCardPanel(studentJsonObject);
+                    studentCardPanel.setPreferredSize(new Dimension(900, 350));
+                    studentListPanel.add(studentCardPanel, Constraint.setPosition(0, studentCardPanelArrayList.size()));
+                    studentCardPanelArrayList.add(studentCardPanel);
+                    revalidate();
+                    repaint();
+                }
+            }
+        };
+        fillStudentCardThread.start();
+    }
+
+    protected void finalize(){
+        if( fillStudentCardThread != null ){
+            fillStudentCardThread.stop();
         }
     }
 }

@@ -18,17 +18,18 @@ public class TeacherPanel extends JPanel implements ActionListener {
     private JLabel panelNameLabel;
     private JScrollPane scrollPane;
     private JPanel teacherListPanel;
-    private ArrayList<TeacherCardPanel> teacherCardPanelList;
+    private ArrayList<TeacherCardPanel> teacherCardPanelArrayList;
     private JButton createTeacherIdButton,backButton;
     private CreateTeacherPanel createTeacherPanel;
     private ServerConnection serverConnection;
+    private Thread fillTeacherCardThread;
 
     public TeacherPanel(ServerConnection serverConnection){
         //Initialising Member Variables
         this.serverConnection = serverConnection;
         panelNameLabel = new JLabel("Teachers");
         teacherListPanel = new JPanel();
-        teacherCardPanelList = new ArrayList<>();
+        teacherCardPanelArrayList = new ArrayList<>();
         scrollPane = new JScrollPane(teacherListPanel);
         Image img = new ImageIcon(Constant.ADD_ICON).getImage();
         img = img.getScaledInstance(30,30,Image.SCALE_DEFAULT);
@@ -44,9 +45,6 @@ public class TeacherPanel extends JPanel implements ActionListener {
         //Adding Listeners
         createTeacherIdButton.addActionListener(this);
 
-        //Filling TeacherCards
-        fillTeacherCard();
-
         //Editing Panel Details
         setLayout(new GridBagLayout());
         setBackground(Constant.PANEL_BACKGROUND);
@@ -55,6 +53,9 @@ public class TeacherPanel extends JPanel implements ActionListener {
         add(panelNameLabel,Constraint.setPosition(0,0,2,1));
         add(createTeacherIdButton,Constraint.setPosition(1,1,Constraint.RIGHT));
         add(scrollPane, Constraint.setPosition(0,2,2,1));
+
+        //Filling TeacherCards
+        fillTeacherCard();
     }
 
     @Override
@@ -93,21 +94,56 @@ public class TeacherPanel extends JPanel implements ActionListener {
         repaint();
     }
 
-    public void fillTeacherCard(){
-        if( teacherCardPanelList.size() > 0 ){
-            teacherListPanel.removeAll();
-            teacherCardPanelList = new ArrayList<>();
-        }
+    public void fillTeacherCard() {
+        fillTeacherCardThread = new Thread() {
+            @Override
+            public void run() {
+                if (teacherCardPanelArrayList.size() > 0) {
+                    teacherListPanel.removeAll();
+                    teacherCardPanelArrayList = new ArrayList<>();
+                }
 
-        JSONArray teacherJsonArray = serverConnection.getTeacherList();
-        for( int i = 0; i < teacherJsonArray.length(); i++ ){
-            JSONObject teacherJsonObject = teacherJsonArray.getJSONObject(i);
-            if( !teacherJsonObject.getString("phone").equals(Constant.PRINCIPAL_USERNAME) ){
-                TeacherCardPanel teacherCardPanel = new TeacherCardPanel(teacherJsonObject,serverConnection,this);
-                teacherCardPanel.setPreferredSize(new Dimension(900,220));
-                teacherListPanel.add(teacherCardPanel,Constraint.setPosition(0,teacherCardPanelList.size()));
-                teacherCardPanelList.add(teacherCardPanel);
+                JLabel messageLabel = new JLabel("Getting Teacher Details, Please Wait...");
+                JProgressBar progressBar = new JProgressBar(0,100);
+                //removing Scrollpane from panel and adding progressbar to show progress while getting data
+                remove(scrollPane);
+                createTeacherIdButton.setVisible(false);
+                add(messageLabel, Constraint.setPosition(0, 2,2,1));
+                add(progressBar, Constraint.setPosition(0, 3,2,1));
+                progressBar.setPreferredSize(new Dimension(500, 30));
+                progressBar.setStringPainted(true);
+                revalidate();
+                repaint();
+
+                JSONArray teacherJsonArray = serverConnection.getTeacherList(progressBar);
+
+                //Removing progressBar and adding ScrollPane
+                remove(messageLabel);
+                remove(progressBar);
+                createTeacherIdButton.setVisible(true);
+                add(scrollPane, Constraint.setPosition(0, 2,2,1));
+                revalidate();
+                repaint();
+
+                for (int i = 0; i < teacherJsonArray.length(); i++) {
+                    JSONObject teacherJsonObject = teacherJsonArray.getJSONObject(i);
+                    if (!teacherJsonObject.getString("phone").equals(Constant.PRINCIPAL_USERNAME)) {
+                        TeacherCardPanel teacherCardPanel = new TeacherCardPanel(teacherJsonObject, serverConnection, TeacherPanel.this);
+                        teacherCardPanel.setPreferredSize(new Dimension(900, 220));
+                        teacherListPanel.add(teacherCardPanel, Constraint.setPosition(0, teacherCardPanelArrayList.size()));
+                        teacherCardPanelArrayList.add(teacherCardPanel);
+                        revalidate();
+                        repaint();
+                    }
+                }
             }
+        };
+        fillTeacherCardThread.start();
+    }
+
+    protected void finalize(){
+        if( fillTeacherCardThread != null ){
+            fillTeacherCardThread.stop();
         }
     }
 }

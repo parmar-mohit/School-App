@@ -50,6 +50,12 @@ public class DatabaseCon {
         preparedStatement.executeUpdate();
     }
 
+    public int getTotalTeachers() throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM teacher;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
     public ResultSet getTeacherList() throws Exception {
         PreparedStatement preparedStatement = db.prepareStatement("SELECT t_phone,firstname,lastname,email,gender FROM teacher;");
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -107,6 +113,14 @@ public class DatabaseCon {
         preparedStatement.setString(4,gender);
         preparedStatement.setBigDecimal(5,new BigDecimal(phone));
         preparedStatement.executeUpdate();
+    }
+
+
+    public int getTotalClassroom() throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM classroom;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
     }
 
     public ResultSet getClassroomListForPrincipal() throws Exception{
@@ -297,8 +311,17 @@ public class DatabaseCon {
         db.commit();
     }
 
+    public int getTotalStudentsForClassroomIncharge(String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM student WHERE standard IN (SELECT DISTINCT(standard) FROM classroom WHERE t_phone = ?) AND division IN (SELECT DISTINCT(division) FROM classroom WHERE t_phone =?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        ResultSet  resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
     public ResultSet getStudentListForClassroomIncharge(String phone) throws Exception{
-        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student WHERE standard = ( SELECT DISTINCT(standard) FROM classroom WHERE t_phone = ? ) AND division IN (SELECT DISTINCT(division) FROM classroom WHERE t_phone = ?);");
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student WHERE standard IN ( SELECT DISTINCT(standard) FROM classroom WHERE t_phone = ? ) AND division IN (SELECT DISTINCT(division) FROM classroom WHERE t_phone = ?);");
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         preparedStatement.setBigDecimal(2,new BigDecimal(phone));
         return preparedStatement.executeQuery();
@@ -308,6 +331,15 @@ public class DatabaseCon {
         PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM parent WHERE phone IN ( SELECT phone FROM parent_child WHERE sid = ? );");
         preparedStatement.setInt(1,sid);
         return preparedStatement.executeQuery();
+    }
+
+    public int getTotalStudentsForSubjectTeacher(String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM student WHERE standard IN (SELECT DISTINCT(standard) FROM subject WHERE t_phone = ?) AND division IN (SELECT DISTINCT(division) FROM subject WHERE t_phone =?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        ResultSet  resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
     }
 
     public ResultSet getStudentListForSubjectTeacher(String phone) throws Exception{
@@ -416,6 +448,12 @@ public class DatabaseCon {
         }
     }
 
+    public int getTotalStudentsForPrincipal()throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM student;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
     public ResultSet getStudentListForPrincipal() throws Exception {
         PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM student;");
         return preparedStatement.executeQuery();

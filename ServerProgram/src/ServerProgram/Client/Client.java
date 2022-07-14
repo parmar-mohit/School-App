@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class Client extends Thread{
     private Socket socket;
     private ArrayList<Client> clientList;
+    private Thread currentWorkingThread;
     public Client(Socket socket,ArrayList<Client> clientList) {
         this.socket = socket;
         this.clientList = clientList;
@@ -37,83 +39,91 @@ public class Client extends Thread{
 
                 switch(jsonObject.getInt("action_code")){
                     case 1:
-                        new GetCredentials(jsonObject,this).start();
+                        currentWorkingThread = new GetCredentials(jsonObject,this);
                         break;
 
                     case 2:
-                        new CreateTeacherId(jsonObject,this).start();
+                        currentWorkingThread = new CreateTeacherId(jsonObject,this);
                         break;
 
                     case 3:
-                        new GetTeacherList(jsonObject,this).start();
+                        currentWorkingThread = new GetTeacherList(jsonObject,this);
                         break;
 
                     case 4:
-                        new CreateClassroom(jsonObject,this).start();
+                        currentWorkingThread = new CreateClassroom(jsonObject,this);
                         break;
 
                     case 5:
-                        new ChangePassword(jsonObject,this).start();
+                        currentWorkingThread = new ChangePassword(jsonObject,this);
                         break;
 
                     case 6:
-                        new UpdateTeacherAttributes(jsonObject,this).start();
+                        currentWorkingThread = new UpdateTeacherAttributes(jsonObject,this);
                         break;
 
                     case 7:
-                        new GetClassroomListForPrincipal(jsonObject,this).start();
+                        currentWorkingThread = new GetClassroomListForPrincipal(jsonObject,this);
                         break;
 
                     case 8:
-                        new DeleteTeacherId(jsonObject,this).start();
+                        currentWorkingThread = new DeleteTeacherId(jsonObject,this);
                         break;
 
                     case 9:
-                        new UpdateClassroom(jsonObject,this).start();
+                        currentWorkingThread = new UpdateClassroom(jsonObject,this);
                         break;
 
                     case 10:
-                        new DeleteClassroom(jsonObject,this).start();
+                        currentWorkingThread = new DeleteClassroom(jsonObject,this);
                         break;
 
                     case 11:
-                        new GetStandardDivisionOfTeacher(jsonObject,this).start();
+                        currentWorkingThread = new GetStandardDivisionOfTeacher(jsonObject,this);
                         break;
 
                     case 12:
-                        new CreateStudentId(jsonObject,this).start();
+                        currentWorkingThread = new CreateStudentId(jsonObject,this);
                         break;
 
                     case 13:
-                        new GetStudentListForClassroomIncharge(jsonObject,this).start();
+                        currentWorkingThread = new GetStudentListForClassroomIncharge(jsonObject,this);
                         break;
 
                     case 14:
-                        new GetStudentListForSubjectTeacher(jsonObject,this).start();
+                        currentWorkingThread = new GetStudentListForSubjectTeacher(jsonObject,this);
                         break;
 
                     case 15:
-                        new DeleteStudentId(jsonObject,this).start();
+                        currentWorkingThread = new DeleteStudentId(jsonObject,this);
                         break;
 
                     case 16:
-                        new UpdateStudentId(jsonObject,this).start();
+                        currentWorkingThread = new UpdateStudentId(jsonObject,this);
                         break;
 
                     case 17:
-                        new GetStudentInfoForPrincipal(jsonObject,this).start();
+                        currentWorkingThread = new GetStudentInfoForPrincipal(jsonObject,this);
                         break;
 
                     case 18:
-                        new GetExamAndSubjectList(jsonObject,this).start();
+                        currentWorkingThread = new GetExamAndSubjectList(jsonObject,this);
                         break;
                 }
+                currentWorkingThread.start();
             }
         }catch(SocketException e){
             Log.info("Connection Closed with Client at "+socket.getInetAddress().getHostAddress());
             clientList.remove(this);
+        }catch(EOFException e){
+            Log.info("Connection Closed with Client at "+socket.getInetAddress().getHostAddress());
+            clientList.remove(this);
         }catch(Exception e){
             Log.error(e.toString());
+        }finally{
+            if( currentWorkingThread != null ){
+                currentWorkingThread.stop();
+            }
         }
     }
 
@@ -122,16 +132,16 @@ public class Client extends Thread{
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             int i = 0;
-            while( i < jsonObject.toString().length() ) {
-                if( jsonObject.toString().length() < i + 65535 ) {
+            while (i < jsonObject.toString().length()) {
+                if (jsonObject.toString().length() < i + 65535) {
                     dataOutputStream.writeUTF(jsonObject.toString().substring(i));
-                }else{
-                    dataOutputStream.writeUTF(jsonObject.toString().substring(i,i+65535));
+                } else {
+                    dataOutputStream.writeUTF(jsonObject.toString().substring(i, i + 65535));
                 }
                 i += 65535;
             }
             dataOutputStream.flush();
-        }catch(Exception e){
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }

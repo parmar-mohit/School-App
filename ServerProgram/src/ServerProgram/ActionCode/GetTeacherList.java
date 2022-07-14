@@ -25,11 +25,22 @@ public class GetTeacherList extends Thread {
 
         try{
             db = new DatabaseCon();
-            ResultSet resultSet = db.getTeacherList();
+
             JSONObject responseJsonObject = new JSONObject();
             responseJsonObject.put("id",jsonObject.getLong("id"));
 
-            JSONArray jsonArray = new JSONArray();
+            JSONObject responseInfoJsonObject = new JSONObject();
+            responseInfoJsonObject.put("total_teachers",db.getTotalTeachers());
+
+            responseJsonObject.put("info",responseInfoJsonObject);
+
+            //Sending first message containing total teachers
+            client.sendMessage(responseJsonObject);
+
+            //removing info
+            responseJsonObject.remove("info");
+
+            ResultSet resultSet = db.getTeacherList();
             while(resultSet.next()){
                 JSONObject teacherJsonObject = new JSONObject();
                 teacherJsonObject.put("phone",resultSet.getBigDecimal("t_phone")+"");
@@ -37,11 +48,11 @@ public class GetTeacherList extends Thread {
                 teacherJsonObject.put("lastname",resultSet.getString("lastname"));
                 teacherJsonObject.put("email",resultSet.getString("email"));
                 teacherJsonObject.put("gender",resultSet.getString("gender"));
-                jsonArray.put(teacherJsonObject);
-            }
 
-            responseJsonObject.put("info",jsonArray);
-            client.sendMessage(responseJsonObject);
+                responseJsonObject.put("info",teacherJsonObject);
+                client.sendMessage(responseJsonObject); //sending Teacher Object
+                responseJsonObject.remove("info");
+            }
         }catch (Exception  e){
             Log.error(e.toString());
         }finally {

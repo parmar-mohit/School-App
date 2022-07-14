@@ -4,3 +4,6 @@ TeacherDesktop.iml
 
 # Output Files
 out/*
+
+#Test Files
+src/TeacherDesktop/Test.java
