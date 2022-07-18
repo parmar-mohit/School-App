@@ -480,4 +480,47 @@ public class DatabaseCon {
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         return preparedStatement.executeQuery();
     }
+
+    public int getTotalStudentsInClassroom(int standard,String division) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM student WHERE standard = ? and division =?;");
+        preparedStatement.setInt(1,standard);
+        preparedStatement.setString(2,division);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    public ResultSet getStudentListForExam(int standard,String division) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT sid,firstname,lastname,roll_no FROM student WHERE standard = ? and division = ? ORDER BY roll_no;");
+        preparedStatement.setInt(1,standard);
+        preparedStatement.setString(2,division);
+        return preparedStatement.executeQuery();
+    }
+
+    public void addNewExam(JSONObject examJsonObject) throws Exception {
+        //Inserting Exam details into exam table
+        PreparedStatement preparedStatement = db.prepareStatement("INSERT INTO exam(exam_name,exam_date,sub_id,total_marks) VALUES(?,?,?,?);");
+        preparedStatement.setString(1,examJsonObject.getString("exam_name"));
+        preparedStatement.setDate(2,new Date(examJsonObject.getLong("date")));
+        preparedStatement.setInt(3,examJsonObject.getInt("subject_id"));
+        preparedStatement.setInt(4,examJsonObject.getInt("total_marks"));
+        preparedStatement.executeUpdate();
+
+        //Getting Exam id
+        preparedStatement = db.prepareStatement("SELECT LAST_INSERT_ID();");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        int examid = resultSet.getInt(1);
+
+        //Inserting marks
+        preparedStatement = db.prepareStatement("INSERT INTO score VALUES(?,?,?);");
+        preparedStatement.setInt(2,examid);
+        JSONArray studentMarksJsonArray = examJsonObject.getJSONArray("score");
+        for( int i = 0; i < studentMarksJsonArray.length(); i++){
+            JSONObject studentMarksJsonObject = studentMarksJsonArray.getJSONObject(i);
+            preparedStatement.setInt(1,studentMarksJsonObject.getInt("sid"));
+            preparedStatement.setInt(3,studentMarksJsonObject.getInt("marks"));
+            preparedStatement.executeUpdate();
+        }
+    }
 }

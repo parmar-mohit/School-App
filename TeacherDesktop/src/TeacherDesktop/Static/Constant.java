@@ -31,4 +31,5 @@ public class Constant {
     public static final String FEMALE_AVATAR = "Images/Female Avatar.png";
     public static final String EXPAND_ICON = "Images/Expand Icon.png";
     public static final String COLLAPSE_ICON = "Images/Collapse Icon.png";
+    public static final String SWAP_ICON = "Images/Swap Icon.png";
 }

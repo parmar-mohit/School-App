@@ -109,6 +109,14 @@ public class Client extends Thread{
                     case 18:
                         currentWorkingThread = new GetExamAndSubjectList(jsonObject,this);
                         break;
+
+                    case 19:
+                        currentWorkingThread = new GetStudentListForExam(jsonObject,this);
+                        break;
+
+                    case 20:
+                        currentWorkingThread = new AddNewExam(jsonObject,this);
+                        break;
                 }
                 currentWorkingThread.start();
             }

@@ -26,6 +26,18 @@ public class Subject {
         return subjectNameString;
     }
 
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public int getStandard() {
+        return standard;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
     @Override
     public String toString() {
         String[] subjectNameArray = subjectName.split(" ");

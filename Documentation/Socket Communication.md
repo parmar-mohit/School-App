@@ -629,3 +629,78 @@ Info attribute of response message contains list of all distinct exam names and 
     }
 }
 ```
+
+* Action Code 19
+The Client is requesting server to provide SID,Name and Roll No of students to specified classroom.This Data is required while addding new Exam data.Info attribute of message contains standard and division of classroom.Example is as Follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 19,
+    "info" : {
+        "standard" : $standard,
+        "division" : $division
+    }
+}
+```
+There will be mutiple response messages.Info attribute of first response message contains total no of studens in that classroom.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "total_students" : $totalStudentsInClassroom
+    }
+}
+```
+
+After first message number of messages will be sent where info attribute of each message will contain data about each student.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "sid" : $sid,
+        "firstname" : $firstname,
+        "lastname" : $lastname,
+        "roll_no" : $rollNo
+    }
+}
+```
+
+* Action Code 20
+
+The Client is requesting server to add details of New Exam in Database.Info Attribute contains details about exam and score of students.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 20,
+    "info" : {
+        "exam_name" : $examName,
+        "date" : $examDate,
+        "subject_id" : $subjectId,
+        "total_marks" : $totalMarks,
+        "score" : [
+            {
+                "sid" : $sid,
+                "marks" : $marks
+            },
+            {
+                "sid" : $sid,
+                "marks" : $marks
+            },
+            {
+                "sid" : $sid,
+                "marks" : $marks
+            }
+        ]
+    }
+}
+```
+
+Info attribute of response message contains response code which is set 0 indicating that details has been added to database.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
+    }
+}
+```
