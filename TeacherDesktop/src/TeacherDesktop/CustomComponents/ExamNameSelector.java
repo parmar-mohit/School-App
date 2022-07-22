@@ -1,10 +1,9 @@
 package TeacherDesktop.CustomComponents;
 
+import TeacherDesktop.EntityClasses.Subject;
 import TeacherDesktop.Static.Constant;
-import TeacherDesktop.Static.Constraint;
 
 import javax.swing.*;
-import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -27,10 +26,10 @@ public class ExamNameSelector extends JPanel implements ActionListener {
         examNameTextField.setMinimumSize(new Dimension(150,25));
         examNameTextField.setPreferredSize(new Dimension(150,25));
         examNameTextField.setMaximumSize(new Dimension(150,25));
+        examNameTextField.setVisible(false);
         examNameComboBox.setMinimumSize(new Dimension(150,25));
         examNameComboBox.setPreferredSize(new Dimension(150,25));
         examNameComboBox.setMaximumSize(new Dimension(150,25));
-        examNameComboBox.setVisible(false);
         swapButton.setMinimumSize(new Dimension(25,25));
         swapButton.setPreferredSize(new Dimension(25,25));
         swapButton.setMaximumSize(new Dimension(25,25));
@@ -38,7 +37,6 @@ public class ExamNameSelector extends JPanel implements ActionListener {
         //Adding Listeners
         examNameComboBox.addActionListener(this);
         swapButton.addActionListener(this);
-
 
         //Editing Panel Details
         setLayout(new GridBagLayout());
@@ -61,13 +59,20 @@ public class ExamNameSelector extends JPanel implements ActionListener {
     public String getExamName(){
         return examNameTextField.getText();
     }
+    public void setExamName(String examName){
+        for( int i = 0; i < examNameComboBox.getItemCount(); i++ ){
+            if( examNameComboBox.getItemAt(i).toString().equals(formatExamName(examName)) ){
+                examNameComboBox.setSelectedIndex(i);
+            }
+        }
+    }
 
     public void clear(){
         examNameTextField.setText("");
         examNameComboBox.setSelectedItem(null);
     }
 
-    private String formatExamName(String examName){
+    public static String formatExamName(String examName){
         String examNameSplitArray[] = examName.split(" ");
         String exam = new String();
         for( int i = 0; i < examNameSplitArray.length; i++){

@@ -704,3 +704,145 @@ Info attribute of response message contains response code which is set 0 indicat
     }
 }
 ```
+
+* Action Code 21
+Client is requesting Server to provide details of exam for a particular teacher.Info attribute of message contains phone of teacher.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 21,
+    "info" {
+        "phone" : $phone_of_teacher
+    }
+}
+```
+
+There will be multiple response message.The First message will contains the total no of exam conducted by teacher.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "total_exams" : $total_exams
+    }
+}
+```
+
+After first message no of message will be sent where info attribute of each message will contain details about 1 exam.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "exam_id" : $examId,
+        "exam_name" : $exam_name,
+        "date" : $exam_date,
+        "total_marks" : $total_marks,
+        "subject" : {
+            "subject_id" : $subjectId,
+            "subject_name" : $subject_name,
+            "standard" : $standard",
+            "division" : $division,
+            "phone" : $phone_of_teacher
+        }
+    }
+}
+```
+
+* Action Code 22
+
+The Client is requesting server to provide score details of an exam.Info attribute of the message contains exam id of exam.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 21,
+    "info" : {
+        "exam_id" : $exam_id
+    }
+}
+```
+
+There will be mutiple response message the Info attribute of first response message will contains the total no of students who gave the exam.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "total_students" : $total_students
+    }
+}
+```
+
+After first message is sent many messages will be sent, Info attribute of theese message will contain data and score about 1 student.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "sid" : $sid
+        "firstname" : $firstname,
+        "lastname" : $lastname,
+        "roll_no" : $roll_no,
+        "score" : $score
+    }
+}
+```
+
+* Action Code 23
+
+The Client is requesting server to update details of an exam.Info attribute of exam contains details about exam.Example is as follows
+ ```
+{
+    "id" : $messageId,
+    "action_code" : 20,
+    "info" : {
+        "exam_id" : $examId,
+        "exam_name" : $examName,
+        "date" : $examDate,
+        "subject_id" : $subjectId,
+        "total_marks" : $totalMarks,
+        "score" : [
+            {
+                "sid" : $sid,
+                "marks" : $marks
+            },
+            {
+                "sid" : $sid,
+                "marks" : $marks
+            },
+            {
+                "sid" : $sid,
+                "marks" : $marks
+            }
+        ]
+    }
+}
+```
+
+The Info attribute of response message contains response code which is set to 0 indicating exam has been updated.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
+    }
+}
+```
+
+* Action Code 24 
+
+The Client is requesting server to delete exam data from database.Info attribute contains exam id.Example is as follows
+```
+{
+    "id" : $messageId,
+    "action_code" : 24,
+    "info" : {
+        "exam_id" : $exam_id
+    }
+}
+```
+Info attributes of response message contains response code which is set to 0 indicating the exam data has been deleted.Example is as follows
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : 0
+    }
+}
+```

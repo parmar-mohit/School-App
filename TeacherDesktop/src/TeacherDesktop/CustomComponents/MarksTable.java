@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -61,6 +60,22 @@ public class MarksTable {
         }
     }
 
+    public void setStudentListWithScore(JSONArray studentJsonArray){
+        while( tableModel.getRowCount() > 0 ){
+            tableModel.removeRow(0);
+        }
+
+        for( int i = 0; i < studentJsonArray.length(); i++ ){
+            JSONObject studentJsonObject = studentJsonArray.getJSONObject(i);
+            int sid = studentJsonObject.getInt("sid");
+            String firstname = studentJsonObject.getString("firstname");
+            String lastname = studentJsonObject.getString("lastname");
+            int rollNo = studentJsonObject.getInt("roll_no");
+            int marks = studentJsonObject.getInt("score");
+            tableModel.addRow(new Object[]{sid,formatName(firstname,lastname),rollNo,marks});
+        }
+    }
+
     public void clear(){
         while( tableModel.getRowCount() > 0 ){
             tableModel.removeRow(0);
@@ -95,7 +110,9 @@ class TableEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         final JTextField cellEdit = (JTextField) super.getTableCellEditorComponent(table,value,isSelected,row,column);
-        cellEdit.setText((String)value);
+        if( value != null ) {
+            cellEdit.setText(value.toString());
+        }
         table.setSurrendersFocusOnKeystroke(true);
 
         //Adding Listeners

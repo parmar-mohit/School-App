@@ -74,14 +74,14 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
 
                 JLabel messageLabel = new JLabel("Getting Student Details, Please Wait..");
                 JProgressBar progressBar = new JProgressBar(0, 100);
+                progressBar.setPreferredSize(new Dimension(500, 30));
+                progressBar.setStringPainted(true);
 
                 //removing Scrollpane from panel and adding progressbar to show progress while getting data
                 remove(scrollPane);
                 createStudentIdButton.setVisible(false);
                 add(messageLabel, Constraint.setPosition(0, 2, 2, 1));
                 add(progressBar, Constraint.setPosition(0, 3, 2, 1));
-                progressBar.setPreferredSize(new Dimension(500, 30));
-                progressBar.setStringPainted(true);
                 revalidate();
                 repaint();
 

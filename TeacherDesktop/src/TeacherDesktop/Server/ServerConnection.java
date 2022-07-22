@@ -404,6 +404,85 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info").getInt("response_code");
     }
 
+    public JSONArray getExamListForTeacher(String phone, JProgressBar progressBar){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",21);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        int total  = responseJsonObject.getJSONObject("info").getInt("total_exams");
+
+        JSONArray examJsonArray = new JSONArray();
+        for( int i = 0; i < total; i++ ){
+            responseJsonObject = getResponseMessage(id);
+            examJsonArray.put(responseJsonObject.getJSONObject("info"));
+            progressBar.setValue(i*100/total);
+            progressBar.setString((i*100/total)+"%");
+        };
+
+        return examJsonArray;
+    }
+
+    public JSONArray getScoreOfExam(int examId, JProgressBar progressBar){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",22);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("exam_id",examId);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        int total = responseJsonObject.getJSONObject("info").getInt("total_students");
+
+        JSONArray studentScoreJsonArray = new JSONArray();
+        for( int i = 0; i < total; i++){
+            responseJsonObject = getResponseMessage(id);
+            studentScoreJsonArray.put(responseJsonObject.getJSONObject("info"));
+            progressBar.setValue(i*100/total);
+            progressBar.setString((i*100/total)+"%");
+        }
+
+        return studentScoreJsonArray;
+    }
+
+    public int updateExam(JSONObject examJsonObject){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",23);
+        jsonObject.put("info",examJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
+
+    public int deleteExam(int examId){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",24);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("exam_id",examId);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info").getInt("response_code");
+    }
     private JSONObject getResponseMessage(long messageId){
         long startTime = System.currentTimeMillis();
         while ( System.currentTimeMillis() <= startTime + 60000 ){ // Loop for minute

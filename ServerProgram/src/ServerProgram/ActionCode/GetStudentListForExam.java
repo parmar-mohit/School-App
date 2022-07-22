@@ -20,7 +20,7 @@ public class GetStudentListForExam extends Thread {
 
     @Override
     public void run() {
-        Log.info("Action Code 19 started for Client at "+client.getIpAddress());
+        Log.info("Action Code 19 Started for Client at "+client.getIpAddress());
 
         try{
             db = new DatabaseCon();

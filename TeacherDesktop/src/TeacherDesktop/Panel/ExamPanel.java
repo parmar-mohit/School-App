@@ -1,22 +1,28 @@
 package TeacherDesktop.Panel;
 
+import TeacherDesktop.CardPanel.ExamCardPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
+import org.json.JSONArray;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class ExamPanel extends JPanel implements ActionListener {
 
     private JLabel panelNameLabel;
     private JButton newExamButton,backButton;
-    private ScrollPane scrollPane;
+    private JScrollPane scrollPane;
+    private JPanel examListPanel;
+    private ArrayList<ExamCardPanel> examCardPanelArrayList;
     private NewExamPanel newExamPanel;
     private ServerConnection serverConnection;
     private String phone;
+    private Thread fillExamCardThread;
 
     public ExamPanel(ServerConnection serverConnection,String phone){
         //Initialising Members
@@ -26,13 +32,16 @@ public class ExamPanel extends JPanel implements ActionListener {
         Image img = new ImageIcon(Constant.ADD_ICON).getImage();
         img = img.getScaledInstance(30,30,Image.SCALE_DEFAULT);
         newExamButton = new JButton("New Exam",new ImageIcon(img));
-        scrollPane = new ScrollPane();
+        examListPanel = new JPanel();
+        scrollPane = new JScrollPane(examListPanel);
+        examCardPanelArrayList = new ArrayList<>();
 
         //Editing Components
         panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
         newExamButton.setBackground(Constant.BUTTON_BACKGROUND);
         scrollPane.setMinimumSize(Constant.SCROLLPANE_SIZE);
         scrollPane.setPreferredSize(Constant.SCROLLPANE_SIZE);
+        examListPanel.setLayout(new GridBagLayout());
 
         //Adding Listeners
         newExamButton.addActionListener(this);
@@ -45,6 +54,53 @@ public class ExamPanel extends JPanel implements ActionListener {
         add(panelNameLabel, Constraint.setPosition(0,0,2,1));
         add(newExamButton,Constraint.setPosition(1,1,Constraint.RIGHT));
         add(scrollPane,Constraint.setPosition(0,2,2,1));
+
+        //Filling Exam Card
+        fillExamCard();
+    }
+
+    public void fillExamCard(){
+        fillExamCardThread = new Thread(){
+            @Override
+            public void run() {
+                if( examCardPanelArrayList.size() > 0 ){
+                    examListPanel.removeAll();
+                }
+                examCardPanelArrayList = new ArrayList<>();
+
+                JLabel messageLabel = new JLabel("Getting Exam Details,Please Wait...");
+                JProgressBar progressBar = new JProgressBar(0,100);
+                progressBar.setPreferredSize(new Dimension(500,30));
+                progressBar.setStringPainted(true);
+
+                //Removing ScrollPane and adding progressbar
+                remove(scrollPane);
+                newExamButton.setVisible(false);
+                add(messageLabel,Constraint.setPosition(0,2,2,1));
+                add(progressBar,Constraint.setPosition(0,3,2,1));
+                revalidate();
+                repaint();
+
+                JSONArray examJsonArray = serverConnection.getExamListForTeacher(phone,progressBar);
+
+                //Removing ProgressBar and adding scrollpane
+                remove(messageLabel);
+                remove(progressBar);
+                newExamButton.setVisible(true);
+                add(scrollPane,Constraint.setPosition(0,2,2,1));
+                revalidate();
+                repaint();
+
+                for( int i = 0; i < examJsonArray.length(); i++ ){
+                    ExamCardPanel examCardPanel = new ExamCardPanel(examJsonArray.getJSONObject(i),serverConnection,ExamPanel.this);
+                    examListPanel.add(examCardPanel,Constraint.setPosition(0,examCardPanelArrayList.size()));
+                    examCardPanelArrayList.add(examCardPanel);
+                    revalidate();
+                    repaint();
+                }
+            }
+        };
+        fillExamCardThread.start();
     }
 
     @Override
@@ -75,8 +131,14 @@ public class ExamPanel extends JPanel implements ActionListener {
             //Setting Components Visible
             newExamButton.setVisible(true);
             scrollPane.setVisible(true);
+
+            fillExamCard();
         }
         revalidate();
         repaint();
+    }
+
+    protected void finalize(){
+        fillExamCardThread.stop();
     }
 }

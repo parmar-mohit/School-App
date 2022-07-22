@@ -523,4 +523,72 @@ public class DatabaseCon {
             preparedStatement.executeUpdate();
         }
     }
+
+    public int getTotalExamCount(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM exam WHERE sub_id IN ( SELECT sub_id FROM subject WHERE t_phone =? );");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    public ResultSet getExamListForTeacher(String phone) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM exam WHERE sub_id IN ( SELECT sub_id FROM subject WHERE t_phone =? );");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        return preparedStatement.executeQuery();
+    }
+
+    public ResultSet getSubjectDetails(int subId) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM subject WHERE sub_id = ?;");
+        preparedStatement.setInt(1,subId);
+        return preparedStatement.executeQuery();
+    }
+
+    public int getTotalStudentForExam(int examId) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM student WHERE standard = ( SELECT standard FROM exam WHERE exam_id = ? ) AND division = ( SELECT division FROM exam WHERE exam_id = ? );");
+        preparedStatement.setInt(1,examId);
+        preparedStatement.setInt(2,examId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return  resultSet.getInt(1);
+    }
+
+    public ResultSet getStudentScoreOfExam(int examId) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT student.sid,firstname,lastname,roll_no,marks_obtained FROM student NATURAL JOIN score WHERE score.exam_id = ? ORDER BY roll_no;");
+        preparedStatement.setInt(1,examId);
+        return preparedStatement.executeQuery();
+    }
+
+    public void updateExam(JSONObject examJsonObject) throws Exception{
+        //Updating Exam Details
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE exam SET exam_name = ?, exam_date = ?, total_marks = ?, sub_id = ? WHERE exam_id = ?;");
+        preparedStatement.setString(1,examJsonObject.getString("exam_name"));
+        preparedStatement.setDate(2,new Date(examJsonObject.getLong("date")));
+        preparedStatement.setInt(3,examJsonObject.getInt("total_marks"));
+        preparedStatement.setInt(4,examJsonObject.getInt("subject_id"));
+        preparedStatement.setInt(5,examJsonObject.getInt("exam_id"));
+        preparedStatement.executeUpdate();
+
+        //Deleting Previous Score
+        preparedStatement = db.prepareStatement("DELETE FROM score WHERE exam_id = ?");
+        preparedStatement.setInt(1,examJsonObject.getInt("exam_id"));
+        preparedStatement.executeUpdate();
+
+        //Adding New Score
+        preparedStatement = db.prepareStatement("INSERT INTO score VALUES(?,?,?);");
+        preparedStatement.setInt(2,examJsonObject.getInt("exam_id"));
+        JSONArray studentMarksJsonArray = examJsonObject.getJSONArray("score");
+        for( int i = 0; i < studentMarksJsonArray.length(); i++){
+            JSONObject studentMarksJsonObject = studentMarksJsonArray.getJSONObject(i);
+            preparedStatement.setInt(1,studentMarksJsonObject.getInt("sid"));
+            preparedStatement.setInt(3,studentMarksJsonObject.getInt("marks"));
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public void deleteExam(int examId) throws Exception{
+        PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM exam WHERE exam_id = ?;");
+        preparedStatement.setInt(1,examId);
+        preparedStatement.executeUpdate();
+    }
 }

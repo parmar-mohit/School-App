@@ -40,11 +40,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        String[] subjectNameArray = subjectName.split(" ");
-        String subjectString = new String();
-        for( int i = 0;i < subjectNameArray.length; i++){
-            subjectString += Character.toUpperCase(subjectNameArray[i].charAt(0))+subjectNameArray[i].substring(1)+" ";
-        }
+        String subjectString = getSubjectName(subjectName);
         subjectString += "("+standard+":"+division+")";
         return subjectString;
     }
