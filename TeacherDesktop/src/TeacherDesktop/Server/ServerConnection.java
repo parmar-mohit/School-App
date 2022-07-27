@@ -17,6 +17,7 @@ import static java.lang.Thread.sleep;
 public class ServerConnection {
     private final Socket socket;
     private ArrayList<JSONObject> messagePool;
+    private ArrayList<JSONObject> packetList;
     private Thread receiverThread;
 
     private JFrame currentFrame;
@@ -24,6 +25,7 @@ public class ServerConnection {
     public ServerConnection(Socket socket){
         this.socket = socket;
         messagePool = new ArrayList<>();
+        packetList = new ArrayList<>();
         startReceivingMessage();
     }
 
@@ -512,18 +514,32 @@ public class ServerConnection {
     }
 
     private long sendMessage(JSONObject jsonObject){
+        packetList = new ArrayList<>();
         long messageId = new Date().getTime();
         jsonObject.put("id",messageId);
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            int i = 0;
-            while( i < jsonObject.toString().length() ) {
-                if( jsonObject.toString().length() < i + 65535 ) {
-                    dataOutputStream.writeUTF(jsonObject.toString().substring(i));
-                }else{
-                    dataOutputStream.writeUTF(jsonObject.toString().substring(i,i+65535));
+            if( jsonObject.toString().length() < 65535 ){
+                dataOutputStream.writeUTF(jsonObject.toString());
+            }else{
+                JSONObject packet = new JSONObject();
+                packet.put("packet_id",new Date().getTime());
+                int totalPackets = jsonObject.toString().length() / 65000;
+                if( jsonObject.toString().length() % 65000 > 0 ){
+                    totalPackets++;
                 }
-                i += 65535;
+                packet.put("total_packets",totalPackets );
+                for( int i = 0; i < totalPackets; i++){
+                    packet.put("packet_no",i+1);
+                    if( jsonObject.toString().length() > (i+1)*65000 ) {
+                        packet.put("data", jsonObject.toString().substring(i * 65000, (i + 1) * 65000));
+                    }else{
+                        packet.put("data",jsonObject.toString().substring(i*65000));
+                    }
+                    dataOutputStream.writeUTF(packet.toString());
+                    packet.remove("packet_no");
+                    packet.remove("data");
+                }
             }
             dataOutputStream.flush();
         }catch(Exception e){
@@ -543,16 +559,15 @@ public class ServerConnection {
                         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                         //Receiving and Storing  and Message in MessagePool
                         String recvString = dataInputStream.readUTF();
-                        JSONObject jsonObject;
-                        while(true) {
-                            try {
-                                jsonObject = new JSONObject(recvString);
-                                break;
-                            } catch (JSONException e) {
-                                recvString += dataInputStream.readUTF();
+                        JSONObject jsonObject = new JSONObject(recvString);
+                        if( jsonObject.has("packet_id") ){
+                            packetList.add(jsonObject);
+                            if( jsonObject.getInt("packet_no") == jsonObject.getInt("total_packets") ){
+                                joinPackets(jsonObject.getLong("packet_id"),jsonObject.getInt("total_packets"));
                             }
+                        }else {
+                            messagePool.add(jsonObject);
                         }
-                        messagePool.add(jsonObject);
                     }
                 }catch(Exception e){
                     e.printStackTrace();
@@ -562,5 +577,21 @@ public class ServerConnection {
             }
         };
         receiverThread.start();
+    }
+
+    private void joinPackets(long packetId,int totalPackets){
+        String jsonString = new String();
+        for(int i = 1; i <= totalPackets; i++){
+            for( int j = 0; j < packetList.size(); j++ ){
+                JSONObject packet = packetList.get(j);
+                if(packet.getLong("packet_id") == packetId && packet.getInt("packet_no") == i ){
+                    jsonString += packet.getString("data");
+                    packetList.remove(j);
+                    break;
+                }
+            }
+        }
+
+        messagePool.add(new JSONObject(jsonString) );
     }
 }

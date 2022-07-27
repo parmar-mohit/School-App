@@ -7,10 +7,9 @@ import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Client extends Thread{
     private Socket socket;
@@ -27,14 +26,36 @@ public class Client extends Thread{
             while(true){
                 DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                 String recvString = dataInputStream.readUTF();
-                JSONObject jsonObject;
-                while(true) {
-                    try {
-                        jsonObject = new JSONObject(recvString);
-                        break;
-                    } catch (JSONException e) {
-                        recvString += dataInputStream.readUTF();
+                JSONObject jsonObject = new JSONObject(recvString);
+
+                if( jsonObject.has("packet_id") ){
+                    ArrayList<JSONObject> packetList = new ArrayList<>();
+                    packetList.add(jsonObject);
+
+                    int totalPackets = jsonObject.getInt("total_packets");
+                    for( int i = 1; i < totalPackets; i++){
+                        recvString = dataInputStream.readUTF();
+                        packetList.add(new JSONObject(recvString));
                     }
+
+                    String jsonString = new String();
+                    for(int i = 1; i <= totalPackets; i++){
+                        for( int j = 0; j < packetList.size(); j++ ){
+                            JSONObject packet = packetList.get(j);
+                            if( packet.getInt("packet_no") == i ){
+                                jsonString += packet.getString("data");
+                                packetList.remove(j);
+                                break;
+                            }
+                        }
+                    }
+
+                    jsonObject = new JSONObject(jsonString);
+                }
+
+                if( currentWorkingThread != null && currentWorkingThread.isAlive() ){
+                    currentWorkingThread.stop();
+                    Log.info("Action Code Interrupted for Client at "+getIpAddress());
                 }
 
                 switch(jsonObject.getInt("action_code")){
@@ -136,14 +157,10 @@ public class Client extends Thread{
                 }
                 currentWorkingThread.start();
             }
-        }catch(SocketException e){
-            Log.info("Connection Closed with Client at "+socket.getInetAddress().getHostAddress());
-            clientList.remove(this);
-        }catch(EOFException e){
-            Log.info("Connection Closed with Client at "+socket.getInetAddress().getHostAddress());
-            clientList.remove(this);
-        }catch(Exception e){
+        } catch(Exception e){
             Log.error(e.toString());
+            Log.info("Connection Closed with Client at "+getIpAddress());
+            clientList.remove(this);
         }finally{
             if( currentWorkingThread != null ){
                 currentWorkingThread.stop();
@@ -155,14 +172,27 @@ public class Client extends Thread{
     public void sendMessage(JSONObject jsonObject){
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            int i = 0;
-            while (i < jsonObject.toString().length()) {
-                if (jsonObject.toString().length() < i + 65535) {
-                    dataOutputStream.writeUTF(jsonObject.toString().substring(i));
-                } else {
-                    dataOutputStream.writeUTF(jsonObject.toString().substring(i, i + 65535));
+            if( jsonObject.toString().length() < 65535 ){
+                dataOutputStream.writeUTF(jsonObject.toString());
+            }else{
+                JSONObject packet = new JSONObject();
+                packet.put("packet_id",new Date().getTime());
+                int totalPackets = jsonObject.toString().length() / 65000;
+                if( jsonObject.toString().length() % 65000 > 0 ){
+                    totalPackets++;
                 }
-                i += 65535;
+                packet.put("total_packets",totalPackets );
+                for( int i = 0; i < totalPackets; i++){
+                    packet.put("packet_no",i+1);
+                    if( jsonObject.toString().length() > (i+1)*65000 ) {
+                        packet.put("data", jsonObject.toString().substring(i * 65000, (i + 1) * 65000));
+                    }else{
+                        packet.put("data",jsonObject.toString().substring(i*65000));
+                    }
+                    dataOutputStream.writeUTF(packet.toString());
+                    packet.remove("packet_no");
+                    packet.remove("data");
+                }
             }
             dataOutputStream.flush();
         }catch (Exception e) {
