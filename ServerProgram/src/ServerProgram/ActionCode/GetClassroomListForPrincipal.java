@@ -14,25 +14,25 @@ public class GetClassroomListForPrincipal extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public GetClassroomListForPrincipal(JSONObject jsonObject, Client client){
+    public GetClassroomListForPrincipal(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 7 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 7 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("total_classrooms",db.getTotalClassroom());
+            responseInfoJsonObject.put("total_classrooms", db.getTotalClassroom());
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
 
             //Sending first message containing total classroom count
             client.sendMessage(responseJsonObject);
@@ -41,48 +41,48 @@ public class GetClassroomListForPrincipal extends Thread {
             responseJsonObject.remove("info");
 
             ResultSet resultSet = db.getClassroomListForPrincipal();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 JSONObject classroomJsonObject = new JSONObject();
-                classroomJsonObject.put("standard",resultSet.getInt("standard"));
-                classroomJsonObject.put("division",resultSet.getString("division"));
+                classroomJsonObject.put("standard", resultSet.getInt("standard"));
+                classroomJsonObject.put("division", resultSet.getString("division"));
 
                 ResultSet nameResultSet = db.getTeacherName(resultSet.getBigDecimal("t_phone").toString());
                 nameResultSet.next();
                 JSONObject teacherJsonObject = new JSONObject();
-                teacherJsonObject.put("firstname",nameResultSet.getString("firstname"));
-                teacherJsonObject.put("lastname",nameResultSet.getString("lastname"));
-                teacherJsonObject.put("phone",resultSet.getBigDecimal("t_phone").toString());
-                classroomJsonObject.put("teacher",teacherJsonObject);
+                teacherJsonObject.put("firstname", nameResultSet.getString("firstname"));
+                teacherJsonObject.put("lastname", nameResultSet.getString("lastname"));
+                teacherJsonObject.put("phone", resultSet.getBigDecimal("t_phone").toString());
+                classroomJsonObject.put("teacher", teacherJsonObject);
 
                 JSONArray subjectListJsonArray = new JSONArray();
-                ResultSet subjectListResultSet = db.getSubjectListOfClassroom(resultSet.getInt("standard"),resultSet.getString("division"));
+                ResultSet subjectListResultSet = db.getSubjectListOfClassroom(resultSet.getInt("standard"), resultSet.getString("division"));
 
-                while( subjectListResultSet.next() ){
+                while (subjectListResultSet.next()) {
                     JSONObject subjectJsonObject = new JSONObject();
-                    subjectJsonObject.put("subject_name",subjectListResultSet.getString("subject_name"));
+                    subjectJsonObject.put("subject_name", subjectListResultSet.getString("subject_name"));
 
                     ResultSet subjectTeacherNameResultSet = db.getTeacherName(subjectListResultSet.getBigDecimal("t_phone").toString());
                     subjectTeacherNameResultSet.next();
                     JSONObject subjectTeacherJsonObject = new JSONObject();
-                    subjectTeacherJsonObject.put("firstname",subjectTeacherNameResultSet.getString("firstname"));
-                    subjectTeacherJsonObject.put("lastname",subjectTeacherNameResultSet.getString("lastname"));
-                    subjectTeacherJsonObject.put("phone",subjectListResultSet.getBigDecimal("t_phone").toString());
-                    subjectJsonObject.put("teacher",subjectTeacherJsonObject);
+                    subjectTeacherJsonObject.put("firstname", subjectTeacherNameResultSet.getString("firstname"));
+                    subjectTeacherJsonObject.put("lastname", subjectTeacherNameResultSet.getString("lastname"));
+                    subjectTeacherJsonObject.put("phone", subjectListResultSet.getBigDecimal("t_phone").toString());
+                    subjectJsonObject.put("teacher", subjectTeacherJsonObject);
 
                     subjectListJsonArray.put(subjectJsonObject);
                 }
-                classroomJsonObject.put("subject_list",subjectListJsonArray);
+                classroomJsonObject.put("subject_list", subjectListJsonArray);
 
-                responseJsonObject.put("info",classroomJsonObject);
+                responseJsonObject.put("info", classroomJsonObject);
                 client.sendMessage(responseJsonObject); //Sending Classroom Object
                 responseJsonObject.remove("info");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 7 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 7 Completed for Client at " + client.getIpAddress());
     }
 }

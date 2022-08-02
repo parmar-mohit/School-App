@@ -10,21 +10,21 @@ public class Application {
     public static void main(String[] args) {
         Log.info("Program Started");
 
-        try{
+        try {
             ServerSocket serverSocket = new ServerSocket(6678);
             Log.info("Socket Created");
 
             ArrayList<Client> clientList = new ArrayList<>();
 
-            while(true){
+            while (true) {
                 Socket client = serverSocket.accept();
-                Log.info("Connection Accepted From Client at "+client.getInetAddress().getHostAddress());
-                Client newClient = new Client(client,clientList);
+                Log.info("Connection Accepted From Client at " + client.getInetAddress().getHostAddress());
+                Client newClient = new Client(client, clientList);
                 clientList.add(newClient);
                 newClient.start();
 
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
         }
     }

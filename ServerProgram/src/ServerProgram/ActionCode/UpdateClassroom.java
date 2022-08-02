@@ -12,16 +12,16 @@ public class UpdateClassroom extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public UpdateClassroom(JSONObject jsonObject,Client client){
+    public UpdateClassroom(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 9 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 9 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
 
             JSONObject infoJsonObject = jsonObject.getJSONObject("info");
@@ -30,36 +30,36 @@ public class UpdateClassroom extends Thread {
             String phone = infoJsonObject.getString("teacher_incharge");
 
             //Updating Classroom TeacherIncharge
-            db.updateClassroomTeacherIncharge(standard,division,phone);
+            db.updateClassroomTeacherIncharge(standard, division, phone);
 
             //Updating Subjects
             JSONArray subjectListJsonArray = infoJsonObject.getJSONArray("subject_list");
-            for( int i = 0; i < subjectListJsonArray.length(); i++ ){
+            for (int i = 0; i < subjectListJsonArray.length(); i++) {
                 JSONObject subjectJsonObject = subjectListJsonArray.getJSONObject(i);
-                if( subjectJsonObject.getString("old_subject_name").equals("null") ){
-                    db.insertSubject(standard,division,subjectJsonObject.getString("new_subject_name"),subjectJsonObject.getString("new_subject_teacher"));
-                }else{
-                    db.updateSubject(standard,division,subjectJsonObject);
+                if (subjectJsonObject.getString("old_subject_name").equals("null")) {
+                    db.insertSubject(standard, division, subjectJsonObject.getString("new_subject_name"), subjectJsonObject.getString("new_subject_teacher"));
+                } else {
+                    db.updateSubject(standard, division, subjectJsonObject);
                 }
             }
 
             //Deleting extraSubject
-            db.deleteExtraSubjects(standard,division,subjectListJsonArray);
+            db.deleteExtraSubjects(standard, division, subjectListJsonArray);
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("response_code",0);
+            responseInfoJsonObject.put("response_code", 0);
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 9 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 9 Completed for Client at " + client.getIpAddress());
     }
 }

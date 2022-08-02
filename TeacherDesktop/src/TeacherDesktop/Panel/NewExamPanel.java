@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,20 +21,25 @@ import java.util.Date;
 
 public class NewExamPanel extends JPanel implements KeyListener, ActionListener {
 
-    private JLabel panelNameLabel,examNameLabel,dateLabel,totalMarksLabel,subjectLabel,messageLabel;
-    private ExamNameSelector examNameSelector;
-    private JDateChooser examDateDateChooser;
-    private JTextField totalMarksTextField;
-    private JComboBox subjectComboBox;
-    private ServerConnection serverConnection;
-    private String phone;
+    private final JLabel panelNameLabel;
+    private final JLabel examNameLabel;
+    private final JLabel dateLabel;
+    private final JLabel totalMarksLabel;
+    private final JLabel subjectLabel;
+    private final JLabel messageLabel;
+    private final ExamNameSelector examNameSelector;
+    private final JDateChooser examDateDateChooser;
+    private final JTextField totalMarksTextField;
+    private final JComboBox subjectComboBox;
+    private final ServerConnection serverConnection;
+    private final String phone;
     private ArrayList<String> examNameArrayList;
     private ArrayList<Subject> subjectArrayList;
-    private MarksTable table;
-    private JButton addNewExamButton;
+    private final MarksTable table;
+    private final JButton addNewExamButton;
     private Thread getStudentListThread;
 
-    public NewExamPanel(ServerConnection serverConnection,String phone){
+    public NewExamPanel(ServerConnection serverConnection, String phone) {
         //Initialising Members
         this.serverConnection = serverConnection;
         this.phone = phone;
@@ -56,10 +60,10 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
         addNewExamButton = new JButton("Add New Exam");
 
         //Editing Components
-        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,18));
-        examNameSelector.setPreferredSize(new Dimension(180,25));
-        examDateDateChooser.setPreferredSize(new Dimension(180,25));
-        subjectComboBox.setPreferredSize(new Dimension(180,25));
+        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        examNameSelector.setPreferredSize(new Dimension(180, 25));
+        examDateDateChooser.setPreferredSize(new Dimension(180, 25));
+        subjectComboBox.setPreferredSize(new Dimension(180, 25));
         addNewExamButton.setBackground(Constant.BUTTON_BACKGROUND);
         addNewExamButton.setPreferredSize(Constant.BUTTON_SIZE);
 
@@ -73,54 +77,54 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
         setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding Components to Panel
-        add(panelNameLabel, Constraint.setPosition(0,0,4,1));
-        add(examNameLabel,Constraint.setPosition(0,1,Constraint.RIGHT));
-        add(examNameSelector,Constraint.setPosition(1,1,Constraint.LEFT));
-        add(dateLabel,Constraint.setPosition(2,1,Constraint.RIGHT));
-        add(examDateDateChooser,Constraint.setPosition(3,1,Constraint.LEFT));
-        add(totalMarksLabel,Constraint.setPosition(0,2,Constraint.RIGHT));
-        add(totalMarksTextField,Constraint.setPosition(1,2,Constraint.LEFT));
-        add(subjectLabel,Constraint.setPosition(2,2,Constraint.RIGHT));
-        add(subjectComboBox,Constraint.setPosition(3,2,Constraint.LEFT));
-        add(table.getScrollPane(),Constraint.setPosition(0,3,4,1));
-        add(messageLabel,Constraint.setPosition(0,4,4,1));
-        add(addNewExamButton,Constraint.setPosition(0,5,4,1));
+        add(panelNameLabel, Constraint.setPosition(0, 0, 4, 1));
+        add(examNameLabel, Constraint.setPosition(0, 1, Constraint.RIGHT));
+        add(examNameSelector, Constraint.setPosition(1, 1, Constraint.LEFT));
+        add(dateLabel, Constraint.setPosition(2, 1, Constraint.RIGHT));
+        add(examDateDateChooser, Constraint.setPosition(3, 1, Constraint.LEFT));
+        add(totalMarksLabel, Constraint.setPosition(0, 2, Constraint.RIGHT));
+        add(totalMarksTextField, Constraint.setPosition(1, 2, Constraint.LEFT));
+        add(subjectLabel, Constraint.setPosition(2, 2, Constraint.RIGHT));
+        add(subjectComboBox, Constraint.setPosition(3, 2, Constraint.LEFT));
+        add(table.getScrollPane(), Constraint.setPosition(0, 3, 4, 1));
+        add(messageLabel, Constraint.setPosition(0, 4, 4, 1));
+        add(addNewExamButton, Constraint.setPosition(0, 5, 4, 1));
     }
 
-    private void getInfo(){
+    private void getInfo() {
         JSONObject jsonObject = serverConnection.getExamAndSubjectList(phone);
         JSONArray examNameArray = jsonObject.getJSONArray("exam_name");
         examNameArrayList = new ArrayList<>();
-        for( int i = 0; i < examNameArray.length(); i++){
+        for (int i = 0; i < examNameArray.length(); i++) {
             examNameArrayList.add(examNameArray.getString(i));
         }
 
         JSONArray subjectListJsonArray = jsonObject.getJSONArray("subject_list");
         subjectArrayList = new ArrayList<>();
-        for( int i = 0; i < subjectListJsonArray.length(); i++){
+        for (int i = 0; i < subjectListJsonArray.length(); i++) {
             subjectArrayList.add(new Subject(subjectListJsonArray.getJSONObject(i)));
         }
     }
 
-    private void fillSubjectComboBox(){
-        for(int i = 0; i < subjectArrayList.size(); i++){
-            subjectComboBox.insertItemAt(subjectArrayList.get(i),0);
+    private void fillSubjectComboBox() {
+        for (int i = 0; i < subjectArrayList.size(); i++) {
+            subjectComboBox.insertItemAt(subjectArrayList.get(i), 0);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == subjectComboBox) {
+        if (e.getSource() == subjectComboBox) {
             getStudentListThread = new Thread() {
                 @Override
                 public void run() {
                     Subject selectedSubject = (Subject) subjectComboBox.getSelectedItem();
 
-                    if( selectedSubject != null ) {
+                    if (selectedSubject != null) {
                         JLabel messageLabel = new JLabel("Getting Student Details,Please Wait...");
                         JProgressBar progressBar = new JProgressBar(0, 100);
                         progressBar.setStringPainted(true);
-                        progressBar.setPreferredSize(new Dimension(500,300));
+                        progressBar.setPreferredSize(new Dimension(500, 300));
 
                         remove(table.getScrollPane());
                         remove(NewExamPanel.this.messageLabel);
@@ -144,11 +148,11 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
                 }
             };
             getStudentListThread.start();
-        }else if( e.getSource() == addNewExamButton ) {
+        } else if (e.getSource() == addNewExamButton) {
             JSONObject examJsonObject = new JSONObject();
 
             String examName = examNameSelector.getExamName();
-            if ( examName.equals("")) {
+            if (examName.equals("")) {
                 messageLabel.setText("Enter Exam Name");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
@@ -188,7 +192,7 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
                 JSONObject scoreJsonObject = new JSONObject();
                 scoreJsonObject.put("sid", (int) table.getValueAt(i, 0));
 
-                if ( table.getValueAt(i,3) == null || table.getValueAt(i, 3).toString().equals("") ) {
+                if (table.getValueAt(i, 3) == null || table.getValueAt(i, 3).toString().equals("")) {
                     messageLabel.setText("Enter Marks for Student with Roll No : " + table.getValueAt(i, 2));
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
@@ -197,8 +201,8 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
                 int marks;
                 try {
                     marks = Integer.parseInt(table.getValueAt(i, 3).toString());
-                }catch(Exception excp){
-                    messageLabel.setText("Marks for Roll No : "+table.getValueAt(i,2)+" should be a Number");
+                } catch (Exception excp) {
+                    messageLabel.setText("Marks for Roll No : " + table.getValueAt(i, 2) + " should be a Number");
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
@@ -215,7 +219,7 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
             examJsonObject.put("score", scoreJsonArray);
 
             int response = serverConnection.addNewExam(examJsonObject);
-            if( response == 0 ){
+            if (response == 0) {
                 messageLabel.setText("Exam Data added to Database");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 examNameSelector.clear();
@@ -229,7 +233,7 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if( !Character.isDigit(e.getKeyChar()) ){
+        if (!Character.isDigit(e.getKeyChar())) {
             e.consume();
         }
     }
@@ -244,7 +248,7 @@ public class NewExamPanel extends JPanel implements KeyListener, ActionListener 
 
     }
 
-    protected void finalize(){
+    protected void finalize() {
         getStudentListThread.stop();
     }
 }

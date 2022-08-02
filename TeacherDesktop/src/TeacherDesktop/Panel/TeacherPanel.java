@@ -15,16 +15,17 @@ import java.util.ArrayList;
 
 public class TeacherPanel extends JPanel implements ActionListener {
 
-    private JLabel panelNameLabel;
-    private JScrollPane scrollPane;
-    private JPanel teacherListPanel;
+    private final JLabel panelNameLabel;
+    private final JScrollPane scrollPane;
+    private final JPanel teacherListPanel;
     private ArrayList<TeacherCardPanel> teacherCardPanelArrayList;
-    private JButton createTeacherIdButton,backButton;
+    private final JButton createTeacherIdButton;
+    private JButton backButton;
     private CreateTeacherPanel createTeacherPanel;
-    private ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
     private Thread fillTeacherCardThread;
 
-    public TeacherPanel(ServerConnection serverConnection){
+    public TeacherPanel(ServerConnection serverConnection) {
         //Initialising Member Variables
         this.serverConnection = serverConnection;
         panelNameLabel = new JLabel("Teachers");
@@ -32,11 +33,11 @@ public class TeacherPanel extends JPanel implements ActionListener {
         teacherCardPanelArrayList = new ArrayList<>();
         scrollPane = new JScrollPane(teacherListPanel);
         Image img = new ImageIcon(Constant.ADD_ICON).getImage();
-        img = img.getScaledInstance(30,30,Image.SCALE_DEFAULT);
-        createTeacherIdButton = new JButton("Create Teacher Id",new ImageIcon(img));
+        img = img.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+        createTeacherIdButton = new JButton("Create Teacher Id", new ImageIcon(img));
 
         //Editing Members
-        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD,22));
+        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
         createTeacherIdButton.setBackground(Constant.BUTTON_BACKGROUND);
         teacherListPanel.setLayout(new GridBagLayout());
         scrollPane.setMinimumSize(Constant.SCROLLPANE_SIZE);
@@ -50,9 +51,9 @@ public class TeacherPanel extends JPanel implements ActionListener {
         setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding Components to Panel
-        add(panelNameLabel,Constraint.setPosition(0,0,2,1));
-        add(createTeacherIdButton,Constraint.setPosition(1,1,Constraint.RIGHT));
-        add(scrollPane, Constraint.setPosition(0,2,2,1));
+        add(panelNameLabel, Constraint.setPosition(0, 0, 2, 1));
+        add(createTeacherIdButton, Constraint.setPosition(1, 1, Constraint.RIGHT));
+        add(scrollPane, Constraint.setPosition(0, 2, 2, 1));
 
         //Filling TeacherCards
         fillTeacherCard();
@@ -60,7 +61,7 @@ public class TeacherPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == createTeacherIdButton ){
+        if (e.getSource() == createTeacherIdButton) {
             //Setting Components to Invisible
             scrollPane.setVisible(false);
             createTeacherIdButton.setVisible(false);
@@ -76,9 +77,9 @@ public class TeacherPanel extends JPanel implements ActionListener {
             backButton.addActionListener(this);
 
             //Adding Components to Frame
-            add(backButton,Constraint.setPosition(1,1,Constraint.RIGHT));
-            add(createTeacherPanel,Constraint.setPosition(0,2,2,1));
-        }else if( e.getSource() == backButton ){
+            add(backButton, Constraint.setPosition(1, 1, Constraint.RIGHT));
+            add(createTeacherPanel, Constraint.setPosition(0, 2, 2, 1));
+        } else if (e.getSource() == backButton) {
             //Setting Components to Visible
             scrollPane.setVisible(true);
             createTeacherIdButton.setVisible(true);
@@ -104,12 +105,12 @@ public class TeacherPanel extends JPanel implements ActionListener {
                 }
 
                 JLabel messageLabel = new JLabel("Getting Teacher Details, Please Wait...");
-                JProgressBar progressBar = new JProgressBar(0,100);
+                JProgressBar progressBar = new JProgressBar(0, 100);
                 //removing Scrollpane from panel and adding progressbar to show progress while getting data
                 remove(scrollPane);
                 createTeacherIdButton.setVisible(false);
-                add(messageLabel, Constraint.setPosition(0, 2,2,1));
-                add(progressBar, Constraint.setPosition(0, 3,2,1));
+                add(messageLabel, Constraint.setPosition(0, 2, 2, 1));
+                add(progressBar, Constraint.setPosition(0, 3, 2, 1));
                 progressBar.setPreferredSize(new Dimension(500, 30));
                 progressBar.setStringPainted(true);
                 revalidate();
@@ -121,7 +122,7 @@ public class TeacherPanel extends JPanel implements ActionListener {
                 remove(messageLabel);
                 remove(progressBar);
                 createTeacherIdButton.setVisible(true);
-                add(scrollPane, Constraint.setPosition(0, 2,2,1));
+                add(scrollPane, Constraint.setPosition(0, 2, 2, 1));
                 revalidate();
                 repaint();
 
@@ -141,8 +142,8 @@ public class TeacherPanel extends JPanel implements ActionListener {
         fillTeacherCardThread.start();
     }
 
-    protected void finalize(){
-        if( fillTeacherCardThread != null ){
+    protected void finalize() {
+        if (fillTeacherCardThread != null) {
             fillTeacherCardThread.stop();
         }
     }

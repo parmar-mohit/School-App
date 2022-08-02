@@ -23,17 +23,51 @@ import java.util.Date;
 
 public class CreateStudentPanel extends JPanel implements KeyListener, ActionListener {
 
-    private JLabel panelNameLabel,imageLabel,firstnameLabel,lastnameLabel,emailLabel,phoneLabel,genderLabel,dobLabel,standardLabel,divisionLabel,rollNoLabel,fatherFirstnameLabel,fatherLastnameLabel,fatherPhoneLabel,fatherEmailLabel,motherFirstnameLabel,motherLastnameLabel,motherPhoneLabel,motherEmailLabel,messageLabel;
-    private JTextField firstnameTextField,lastnameTextField,emailTextField,phoneTextField,rollNoTextField,fatherFirstnameTextField,fatherLastnameTextField,fatherPhoneTextField,fatherEmailTextField,motherFirstnameTextField,motherLastnameTextField,motherPhoneTextField,motherEmailTextField;
-    private JComboBox genderComboBox,standardComboBox,divisionComboBox;
-    private JDateChooser dobDateChooser;
-    private JButton selectImageButton,createStudentButton;
-    private JPanel imagePanel;
+    private final JLabel panelNameLabel;
+    private final JLabel imageLabel;
+    private final JLabel firstnameLabel;
+    private final JLabel lastnameLabel;
+    private final JLabel emailLabel;
+    private final JLabel phoneLabel;
+    private final JLabel genderLabel;
+    private final JLabel dobLabel;
+    private final JLabel standardLabel;
+    private final JLabel divisionLabel;
+    private final JLabel rollNoLabel;
+    private final JLabel fatherFirstnameLabel;
+    private final JLabel fatherLastnameLabel;
+    private final JLabel fatherPhoneLabel;
+    private final JLabel fatherEmailLabel;
+    private final JLabel motherFirstnameLabel;
+    private final JLabel motherLastnameLabel;
+    private final JLabel motherPhoneLabel;
+    private final JLabel motherEmailLabel;
+    private final JLabel messageLabel;
+    private final JTextField firstnameTextField;
+    private final JTextField lastnameTextField;
+    private final JTextField emailTextField;
+    private final JTextField phoneTextField;
+    private final JTextField rollNoTextField;
+    private final JTextField fatherFirstnameTextField;
+    private final JTextField fatherLastnameTextField;
+    private final JTextField fatherPhoneTextField;
+    private final JTextField fatherEmailTextField;
+    private final JTextField motherFirstnameTextField;
+    private final JTextField motherLastnameTextField;
+    private final JTextField motherPhoneTextField;
+    private final JTextField motherEmailTextField;
+    private final JComboBox genderComboBox;
+    private final JComboBox standardComboBox;
+    private final JComboBox divisionComboBox;
+    private final JDateChooser dobDateChooser;
+    private final JButton selectImageButton;
+    private final JButton createStudentButton;
+    private final JPanel imagePanel;
     private String studentImgLocation;
-    private ServerConnection serverConnection;
-    private JSONArray classroomArray;
+    private final ServerConnection serverConnection;
+    private final JSONArray classroomArray;
 
-    public CreateStudentPanel(ServerConnection serverConnection, JSONArray classroomArray){
+    public CreateStudentPanel(ServerConnection serverConnection, JSONArray classroomArray) {
         //Initialising Members
         this.serverConnection = serverConnection;
         this.classroomArray = classroomArray;
@@ -48,7 +82,7 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
         phoneLabel = new JLabel("Phone : ");
         phoneTextField = new JTextField(20);
         genderLabel = new JLabel("Gender : ");
-        genderComboBox = new JComboBox(new String[]{"Male","Female","Other"});
+        genderComboBox = new JComboBox(new String[]{"Male", "Female", "Other"});
         dobLabel = new JLabel("Date of Birth : ");
         dobDateChooser = new JDateChooser();
         standardLabel = new JLabel("Standard : ");
@@ -84,19 +118,19 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
         imagePanel.setBackground(Constant.PANEL_BACKGROUND);
         studentImgLocation = Constant.MALE_AVATAR;
         Image img = new ImageIcon(studentImgLocation).getImage();
-        img = img.getScaledInstance(150,150,Image.SCALE_DEFAULT);
+        img = img.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
         imageLabel = new JLabel(new ImageIcon(img));
         selectImageButton = new JButton("Select Image");
 
         //Adding Components to ImagePanel
-        imagePanel.add(imageLabel,Constraint.setPosition(0,0));
-        imagePanel.add(selectImageButton,Constraint.setPosition(0,1));
+        imagePanel.add(imageLabel, Constraint.setPosition(0, 0));
+        imagePanel.add(selectImageButton, Constraint.setPosition(0, 1));
 
         //Editing Components
-        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,18));
-        dobDateChooser.setPreferredSize(new Dimension(120,25));
-        standardComboBox.setPreferredSize(new Dimension(120,25));
-        divisionComboBox.setPreferredSize(new Dimension(120,25));
+        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        dobDateChooser.setPreferredSize(new Dimension(120, 25));
+        standardComboBox.setPreferredSize(new Dimension(120, 25));
+        divisionComboBox.setPreferredSize(new Dimension(120, 25));
         createStudentButton.setBackground(Constant.BUTTON_BACKGROUND);
         createStudentButton.setPreferredSize(Constant.BUTTON_SIZE);
 
@@ -114,49 +148,49 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
         setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding Components to Frame
-        add(panelNameLabel, Constraint.setPosition(0,0,5,1));
-        add(imagePanel,Constraint.setPosition(0,1,1,9));
-        add(firstnameLabel,Constraint.setPosition(1,1,Constraint.LEFT));
-        add(firstnameTextField,Constraint.setPosition(2,1,Constraint.LEFT));
-        add(lastnameLabel,Constraint.setPosition(3,1,Constraint.LEFT));
-        add(lastnameTextField,Constraint.setPosition(4,1,Constraint.LEFT));
-        add(emailLabel,Constraint.setPosition(1,2,Constraint.LEFT));
-        add(emailTextField,Constraint.setPosition(2,2,Constraint.LEFT));
-        add(phoneLabel,Constraint.setPosition(3,2,Constraint.LEFT));
-        add(phoneTextField,Constraint.setPosition(4,2,Constraint.LEFT));
-        add(genderLabel,Constraint.setPosition(1,3,Constraint.LEFT));
-        add(genderComboBox,Constraint.setPosition(2,3,Constraint.LEFT));
-        add(dobLabel,Constraint.setPosition(3,3,Constraint.LEFT));
-        add(dobDateChooser,Constraint.setPosition(4,3,Constraint.LEFT));
-        add(standardLabel,Constraint.setPosition(1,4,Constraint.LEFT));
-        add(standardComboBox,Constraint.setPosition(2,4,Constraint.LEFT));
-        add(divisionLabel,Constraint.setPosition(3,4,Constraint.LEFT));
-        add(divisionComboBox,Constraint.setPosition(4,4,Constraint.LEFT));
-        add(rollNoLabel,Constraint.setPosition(1,5,Constraint.LEFT));
-        add(rollNoTextField,Constraint.setPosition(2,5,Constraint.LEFT));
-        add(fatherFirstnameLabel,Constraint.setPosition(1,6,Constraint.LEFT));
-        add(fatherFirstnameTextField,Constraint.setPosition(2,6,Constraint.LEFT));
-        add(fatherLastnameLabel,Constraint.setPosition(3,6,Constraint.LEFT));
-        add(fatherLastnameTextField,Constraint.setPosition(4,6,Constraint.LEFT));
-        add(fatherPhoneLabel,Constraint.setPosition(1,7,Constraint.LEFT));
-        add(fatherPhoneTextField,Constraint.setPosition(2,7,Constraint.LEFT));
-        add(fatherEmailLabel,Constraint.setPosition(3,7,Constraint.LEFT));
-        add(fatherEmailTextField,Constraint.setPosition(4,7,Constraint.LEFT));
-        add(motherFirstnameLabel,Constraint.setPosition(1,8,Constraint.LEFT));
-        add(motherFirstnameTextField,Constraint.setPosition(2,8,Constraint.LEFT));
-        add(motherLastnameLabel,Constraint.setPosition(3,8,Constraint.LEFT));
-        add(motherLastnameTextField,Constraint.setPosition(4,8,Constraint.LEFT));
-        add(motherPhoneLabel,Constraint.setPosition(1,9,Constraint.LEFT));
-        add(motherPhoneTextField,Constraint.setPosition(2,9,Constraint.LEFT));
-        add(motherEmailLabel,Constraint.setPosition(3,9,Constraint.LEFT));
-        add(motherEmailTextField,Constraint.setPosition(4,9,Constraint.LEFT));
-        add(messageLabel,Constraint.setPosition(0,10,5,1));
-        add(createStudentButton,Constraint.setPosition(0,11,5,1));
+        add(panelNameLabel, Constraint.setPosition(0, 0, 5, 1));
+        add(imagePanel, Constraint.setPosition(0, 1, 1, 9));
+        add(firstnameLabel, Constraint.setPosition(1, 1, Constraint.LEFT));
+        add(firstnameTextField, Constraint.setPosition(2, 1, Constraint.LEFT));
+        add(lastnameLabel, Constraint.setPosition(3, 1, Constraint.LEFT));
+        add(lastnameTextField, Constraint.setPosition(4, 1, Constraint.LEFT));
+        add(emailLabel, Constraint.setPosition(1, 2, Constraint.LEFT));
+        add(emailTextField, Constraint.setPosition(2, 2, Constraint.LEFT));
+        add(phoneLabel, Constraint.setPosition(3, 2, Constraint.LEFT));
+        add(phoneTextField, Constraint.setPosition(4, 2, Constraint.LEFT));
+        add(genderLabel, Constraint.setPosition(1, 3, Constraint.LEFT));
+        add(genderComboBox, Constraint.setPosition(2, 3, Constraint.LEFT));
+        add(dobLabel, Constraint.setPosition(3, 3, Constraint.LEFT));
+        add(dobDateChooser, Constraint.setPosition(4, 3, Constraint.LEFT));
+        add(standardLabel, Constraint.setPosition(1, 4, Constraint.LEFT));
+        add(standardComboBox, Constraint.setPosition(2, 4, Constraint.LEFT));
+        add(divisionLabel, Constraint.setPosition(3, 4, Constraint.LEFT));
+        add(divisionComboBox, Constraint.setPosition(4, 4, Constraint.LEFT));
+        add(rollNoLabel, Constraint.setPosition(1, 5, Constraint.LEFT));
+        add(rollNoTextField, Constraint.setPosition(2, 5, Constraint.LEFT));
+        add(fatherFirstnameLabel, Constraint.setPosition(1, 6, Constraint.LEFT));
+        add(fatherFirstnameTextField, Constraint.setPosition(2, 6, Constraint.LEFT));
+        add(fatherLastnameLabel, Constraint.setPosition(3, 6, Constraint.LEFT));
+        add(fatherLastnameTextField, Constraint.setPosition(4, 6, Constraint.LEFT));
+        add(fatherPhoneLabel, Constraint.setPosition(1, 7, Constraint.LEFT));
+        add(fatherPhoneTextField, Constraint.setPosition(2, 7, Constraint.LEFT));
+        add(fatherEmailLabel, Constraint.setPosition(3, 7, Constraint.LEFT));
+        add(fatherEmailTextField, Constraint.setPosition(4, 7, Constraint.LEFT));
+        add(motherFirstnameLabel, Constraint.setPosition(1, 8, Constraint.LEFT));
+        add(motherFirstnameTextField, Constraint.setPosition(2, 8, Constraint.LEFT));
+        add(motherLastnameLabel, Constraint.setPosition(3, 8, Constraint.LEFT));
+        add(motherLastnameTextField, Constraint.setPosition(4, 8, Constraint.LEFT));
+        add(motherPhoneLabel, Constraint.setPosition(1, 9, Constraint.LEFT));
+        add(motherPhoneTextField, Constraint.setPosition(2, 9, Constraint.LEFT));
+        add(motherEmailLabel, Constraint.setPosition(3, 9, Constraint.LEFT));
+        add(motherEmailTextField, Constraint.setPosition(4, 9, Constraint.LEFT));
+        add(messageLabel, Constraint.setPosition(0, 10, 5, 1));
+        add(createStudentButton, Constraint.setPosition(0, 11, 5, 1));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == selectImageButton ){
+        if (e.getSource() == selectImageButton) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
             fileChooser.setDialogTitle("Select Image of Student");
@@ -164,131 +198,131 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
             fileChooser.setFileFilter(new ImageFilter());
 
             int result = fileChooser.showOpenDialog(this);
-            if( result == JFileChooser.APPROVE_OPTION ){
+            if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 studentImgLocation = selectedFile.getPath();
                 Image img = new ImageIcon(studentImgLocation).getImage();
-                img = img.getScaledInstance(150,150,Image.SCALE_DEFAULT);
+                img = img.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
                 imageLabel.setIcon(new ImageIcon(img));
             }
-        }else if( e.getSource() == standardComboBox ){
+        } else if (e.getSource() == standardComboBox) {
             fillDivisionComboBox();
-        }else if( e.getSource() == createStudentButton ){
+        } else if (e.getSource() == createStudentButton) {
             String firstname = firstnameTextField.getText();
-            if( firstname.equals("") ){
+            if (firstname.equals("")) {
                 messageLabel.setText("Enter Firstname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
             JSONObject studentJsonObject = new JSONObject();
-            studentJsonObject.put("firstname",firstname.toLowerCase());
+            studentJsonObject.put("firstname", firstname.toLowerCase());
 
             String lastname = lastnameTextField.getText();
-            if( lastname.equals("") ){
+            if (lastname.equals("")) {
                 messageLabel.setText("Enter Lastname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            studentJsonObject.put("lastname",lastname.toLowerCase());
+            studentJsonObject.put("lastname", lastname.toLowerCase());
 
             String email = emailTextField.getText();
-            if( email.equals("") ){
-                studentJsonObject.put("email","null");
-            }else{
-                if( !Constraint.emailCheck(email) ){
+            if (email.equals("")) {
+                studentJsonObject.put("email", "null");
+            } else {
+                if (!Constraint.emailCheck(email)) {
                     messageLabel.setText("Enter a Valid Email");
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
-                }else{
-                    studentJsonObject.put("email",email);
+                } else {
+                    studentJsonObject.put("email", email);
                 }
             }
 
             String phone = phoneTextField.getText();
-            if( phone.equals("") ){
-                studentJsonObject.put("phone","null");
-            }else{
-                if( phone.length() < 10 ){
+            if (phone.equals("")) {
+                studentJsonObject.put("phone", "null");
+            } else {
+                if (phone.length() < 10) {
                     messageLabel.setText("Phone No should be 10 digits");
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
-                }else{
-                    studentJsonObject.put("phone",phone);
+                } else {
+                    studentJsonObject.put("phone", phone);
                 }
             }
 
-            String gender = (String)genderComboBox.getSelectedItem();
-            studentJsonObject.put("gender",gender);
+            String gender = (String) genderComboBox.getSelectedItem();
+            studentJsonObject.put("gender", gender);
 
 
             Date dob = dobDateChooser.getDate();
-            if( dob == null ){
+            if (dob == null) {
                 messageLabel.setText("Select Date of Birth");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            studentJsonObject.put("dob",dob.getTime());
+            studentJsonObject.put("dob", dob.getTime());
 
-            if( standardComboBox.getSelectedItem() == null ){
+            if (standardComboBox.getSelectedItem() == null) {
                 messageLabel.setText("Select Standard");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            studentJsonObject.put("standard",(int)standardComboBox.getSelectedItem());
+            studentJsonObject.put("standard", (int) standardComboBox.getSelectedItem());
 
-            if( divisionComboBox.getSelectedItem() == null ){
+            if (divisionComboBox.getSelectedItem() == null) {
                 messageLabel.setText("Select Division");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            studentJsonObject.put("division",(String)divisionComboBox.getSelectedItem());
+            studentJsonObject.put("division", divisionComboBox.getSelectedItem());
 
-            if( rollNoTextField.getText().equals("") ){
+            if (rollNoTextField.getText().equals("")) {
                 messageLabel.setText("Enter Roll No");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            studentJsonObject.put("roll_no",Integer.parseInt(rollNoTextField.getText()));
+            studentJsonObject.put("roll_no", Integer.parseInt(rollNoTextField.getText()));
 
             String fatherFirstname = fatherFirstnameTextField.getText();
             String fatherLastname = fatherLastnameTextField.getText();
             String fatherPhone = fatherPhoneTextField.getText();
             String fatherEmail = fatherEmailTextField.getText();
-            if( fatherFirstname.equals("") && fatherLastname.equals("") && fatherPhone.equals("") && fatherEmail.equals("") ){
-                studentJsonObject.put("father_firstname","null");
-                studentJsonObject.put("father_lastname","null");
-                studentJsonObject.put("father_phone","null");
-                studentJsonObject.put("father_email","null");
-            }else if( fatherFirstname.equals("") ){
+            if (fatherFirstname.equals("") && fatherLastname.equals("") && fatherPhone.equals("") && fatherEmail.equals("")) {
+                studentJsonObject.put("father_firstname", "null");
+                studentJsonObject.put("father_lastname", "null");
+                studentJsonObject.put("father_phone", "null");
+                studentJsonObject.put("father_email", "null");
+            } else if (fatherFirstname.equals("")) {
                 messageLabel.setText("Enter Father's Firstname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else if( fatherLastname.equals("") ){
+            } else if (fatherLastname.equals("")) {
                 messageLabel.setText("Enter Father's Lastname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else if( fatherPhone.equals("") ){
+            } else if (fatherPhone.equals("")) {
                 messageLabel.setText("Enter Father's Phone");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else if( fatherPhone.length() < 10 ){
+            } else if (fatherPhone.length() < 10) {
                 messageLabel.setText("Father's Phone must be 10 digits");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else {
+            } else {
                 studentJsonObject.put("father_firstname", fatherFirstname.toLowerCase());
                 studentJsonObject.put("father_lastname", fatherLastname.toLowerCase());
                 studentJsonObject.put("father_phone", fatherPhone);
 
-                if( fatherEmail.equals("") ){
-                    studentJsonObject.put("father_email","null");
-                }else{
-                    if( !Constraint.emailCheck(fatherEmail) ){
+                if (fatherEmail.equals("")) {
+                    studentJsonObject.put("father_email", "null");
+                } else {
+                    if (!Constraint.emailCheck(fatherEmail)) {
                         messageLabel.setText("Enter a valid Father Email");
                         Constraint.labelDeleteAfterTime(messageLabel);
                         return;
-                    }else{
-                        studentJsonObject.put("father_email",fatherEmail.toLowerCase());
+                    } else {
+                        studentJsonObject.put("father_email", fatherEmail.toLowerCase());
                     }
                 }
             }
@@ -298,58 +332,58 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
             String motherLastname = motherLastnameTextField.getText();
             String motherPhone = motherPhoneTextField.getText();
             String motherEmail = motherEmailTextField.getText();
-            if( motherFirstname.equals("") && motherLastname.equals("") && motherPhone.equals("") && motherEmail.equals("") ){
-                studentJsonObject.put("mother_firstname","null");
-                studentJsonObject.put("mother_lastname","null");
-                studentJsonObject.put("mother_phone","null");
-                studentJsonObject.put("mother_email","null");
-            }else if( motherFirstname.equals("") ){
+            if (motherFirstname.equals("") && motherLastname.equals("") && motherPhone.equals("") && motherEmail.equals("")) {
+                studentJsonObject.put("mother_firstname", "null");
+                studentJsonObject.put("mother_lastname", "null");
+                studentJsonObject.put("mother_phone", "null");
+                studentJsonObject.put("mother_email", "null");
+            } else if (motherFirstname.equals("")) {
                 messageLabel.setText("Enter Mother's Firstname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else if( motherLastname.equals("") ){
+            } else if (motherLastname.equals("")) {
                 messageLabel.setText("Enter Mother's Lastname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else if( motherPhone.equals("") ){
+            } else if (motherPhone.equals("")) {
                 messageLabel.setText("Enter Mother's Phone");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else if( motherPhone.length() < 10 ){
+            } else if (motherPhone.length() < 10) {
                 messageLabel.setText("Mother' Phone must be 10 digits");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else {
+            } else {
                 studentJsonObject.put("mother_firstname", motherFirstname.toLowerCase());
                 studentJsonObject.put("mother_lastname", motherLastname.toLowerCase());
                 studentJsonObject.put("mother_phone", motherPhone);
 
-                if( motherEmail.equals("") ){
-                    studentJsonObject.put("mother_email","null");
-                }else{
-                    if( !Constraint.emailCheck(motherEmail) ){
+                if (motherEmail.equals("")) {
+                    studentJsonObject.put("mother_email", "null");
+                } else {
+                    if (!Constraint.emailCheck(motherEmail)) {
                         messageLabel.setText("Enter a valid Mother Email");
                         Constraint.labelDeleteAfterTime(messageLabel);
                         return;
-                    }else{
-                        studentJsonObject.put("mother_email",motherEmail.toLowerCase());
+                    } else {
+                        studentJsonObject.put("mother_email", motherEmail.toLowerCase());
                     }
                 }
             }
 
-            if( studentImgLocation.substring(studentImgLocation.length()-Constant.MALE_AVATAR.length()).equals(Constant.MALE_AVATAR) ){
+            if (studentImgLocation.substring(studentImgLocation.length() - Constant.MALE_AVATAR.length()).equals(Constant.MALE_AVATAR)) {
                 messageLabel.setText("Select Student Image");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
-            }else{
+            } else {
                 try {
                     BufferedImage studentImg = ImageIO.read(new File(studentImgLocation));
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(studentImg,"jpg",baos);
+                    ImageIO.write(studentImg, "jpg", baos);
                     byte[] imgArray = baos.toByteArray();
                     String studentImgString = Base64.getEncoder().encodeToString(imgArray);
-                    studentJsonObject.put("img",studentImgString);
-                }catch(Exception excp){
+                    studentJsonObject.put("img", studentImgString);
+                } catch (Exception excp) {
                     messageLabel.setText("Some Error Occurred Please try Again");
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
@@ -359,13 +393,13 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
             messageLabel.setText("Creating Student Id,Please Wait");
             int sid = serverConnection.createStudent(studentJsonObject);
 
-            messageLabel.setText("Student with SID : "+sid+" Created");
+            messageLabel.setText("Student with SID : " + sid + " Created");
             Constraint.labelDeleteAfterTime(messageLabel);
 
             //Clearing TextFields after creating student id
             studentImgLocation = Constant.MALE_AVATAR;
             Image img = new ImageIcon(studentImgLocation).getImage();
-            img = img.getScaledInstance(150,150,Image.SCALE_DEFAULT);
+            img = img.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
             imageLabel.setIcon(new ImageIcon(img));
             firstnameTextField.setText(null);
             lastnameTextField.setText(null);
@@ -384,23 +418,23 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
         }
     }
 
-    private void fillStandardComboBox(){
-        for( int i = 0; i < classroomArray.length(); i++ ){
-            standardComboBox.insertItemAt(classroomArray.getJSONObject(i).getInt("standard"),i);
+    private void fillStandardComboBox() {
+        for (int i = 0; i < classroomArray.length(); i++) {
+            standardComboBox.insertItemAt(classroomArray.getJSONObject(i).getInt("standard"), i);
         }
     }
 
-    private void fillDivisionComboBox(){
-        int standard = (int)standardComboBox.getSelectedItem();
+    private void fillDivisionComboBox() {
+        int standard = (int) standardComboBox.getSelectedItem();
 
         divisionComboBox.removeAllItems();
 
-        for( int i = 0; i < classroomArray.length(); i++ ){
+        for (int i = 0; i < classroomArray.length(); i++) {
             JSONObject standardJsonObject = classroomArray.getJSONObject(i);
-            if( standardJsonObject.getInt("standard") == standard ){
+            if (standardJsonObject.getInt("standard") == standard) {
                 JSONArray divisionArray = standardJsonObject.getJSONArray("division");
-                for( int j = 0; j < divisionArray.length(); j++ ){
-                    divisionComboBox.insertItemAt(divisionArray.getString(j),j);
+                for (int j = 0; j < divisionArray.length(); j++) {
+                    divisionComboBox.insertItemAt(divisionArray.getString(j), j);
                 }
                 break;
             }
@@ -409,7 +443,7 @@ public class CreateStudentPanel extends JPanel implements KeyListener, ActionLis
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if( !Character.isDigit(e.getKeyChar()) || ((JTextField)e.getSource()).getText().length() > 9 ){
+        if (!Character.isDigit(e.getKeyChar()) || ((JTextField) e.getSource()).getText().length() > 9) {
             e.consume();
         }
     }

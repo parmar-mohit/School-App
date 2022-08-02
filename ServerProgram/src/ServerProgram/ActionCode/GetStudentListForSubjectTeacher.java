@@ -18,26 +18,26 @@ public class GetStudentListForSubjectTeacher extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public GetStudentListForSubjectTeacher(JSONObject jsonObject, Client client){
+    public GetStudentListForSubjectTeacher(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 14 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 14 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
             JSONObject infoJsonObject = jsonObject.getJSONObject("info");
             String phone = infoJsonObject.getString("phone");
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("total_students",db.getTotalStudentsForSubjectTeacher(phone));
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseInfoJsonObject.put("total_students", db.getTotalStudentsForSubjectTeacher(phone));
+            responseJsonObject.put("info", responseInfoJsonObject);
 
             //Sending First message Containint total no of students
             client.sendMessage(responseJsonObject);
@@ -46,91 +46,91 @@ public class GetStudentListForSubjectTeacher extends Thread {
             responseJsonObject.remove("info");
 
             ResultSet studentResultSet = db.getStudentListForSubjectTeacher(phone);
-            while( studentResultSet.next() ){
+            while (studentResultSet.next()) {
                 JSONObject studentJsonObject = new JSONObject();
-                studentJsonObject.put("sid",studentResultSet.getInt("sid"));
-                studentJsonObject.put("firstname",studentResultSet.getString("firstname"));
-                studentJsonObject.put("lastname",studentResultSet.getString("lastname"));
-                if( studentResultSet.getString("email") == null ){
-                    studentJsonObject.put("email","null");
-                }else{
-                    studentJsonObject.put("email",studentResultSet.getString("email"));
+                studentJsonObject.put("sid", studentResultSet.getInt("sid"));
+                studentJsonObject.put("firstname", studentResultSet.getString("firstname"));
+                studentJsonObject.put("lastname", studentResultSet.getString("lastname"));
+                if (studentResultSet.getString("email") == null) {
+                    studentJsonObject.put("email", "null");
+                } else {
+                    studentJsonObject.put("email", studentResultSet.getString("email"));
                 }
-                if( studentResultSet.getBigDecimal("phone") == null ){
-                    studentJsonObject.put("phone","null");
-                }else{
-                    studentJsonObject.put("phone",studentResultSet.getBigDecimal("phone").toString());
+                if (studentResultSet.getBigDecimal("phone") == null) {
+                    studentJsonObject.put("phone", "null");
+                } else {
+                    studentJsonObject.put("phone", studentResultSet.getBigDecimal("phone").toString());
                 }
-                studentJsonObject.put("gender",studentResultSet.getString("gender"));
-                studentJsonObject.put("dob",studentResultSet.getDate("dob").getTime());
-                studentJsonObject.put("standard",studentResultSet.getInt("standard"));
-                studentJsonObject.put("division",studentResultSet.getString("division"));
-                studentJsonObject.put("roll_no",studentResultSet.getInt("roll_no"));
+                studentJsonObject.put("gender", studentResultSet.getString("gender"));
+                studentJsonObject.put("dob", studentResultSet.getDate("dob").getTime());
+                studentJsonObject.put("standard", studentResultSet.getInt("standard"));
+                studentJsonObject.put("division", studentResultSet.getString("division"));
+                studentJsonObject.put("roll_no", studentResultSet.getInt("roll_no"));
 
                 ResultSet parentResultSet = db.getParents(studentResultSet.getInt("sid"));
-                while( parentResultSet.next() ){
-                    if( parentResultSet.getString("gender").equals("Male") ){
-                        studentJsonObject.put("father_firstname",parentResultSet.getString("firstname"));
-                        studentJsonObject.put("father_lastname",parentResultSet.getString("lastname"));
-                        studentJsonObject.put("father_phone",parentResultSet.getString("phone"));
-                        if( parentResultSet.getString("email") == null ){
-                            studentJsonObject.put("father_email","null");
-                        }else{
-                            studentJsonObject.put("father_email",parentResultSet.getString("email"));
+                while (parentResultSet.next()) {
+                    if (parentResultSet.getString("gender").equals("Male")) {
+                        studentJsonObject.put("father_firstname", parentResultSet.getString("firstname"));
+                        studentJsonObject.put("father_lastname", parentResultSet.getString("lastname"));
+                        studentJsonObject.put("father_phone", parentResultSet.getString("phone"));
+                        if (parentResultSet.getString("email") == null) {
+                            studentJsonObject.put("father_email", "null");
+                        } else {
+                            studentJsonObject.put("father_email", parentResultSet.getString("email"));
                         }
                     }
 
-                    if( parentResultSet.getString("gender").equals("Female") ){
-                        studentJsonObject.put("mother_firstname",parentResultSet.getString("firstname"));
-                        studentJsonObject.put("mother_lastname",parentResultSet.getString("lastname"));
-                        studentJsonObject.put("mother_phone",parentResultSet.getString("phone"));
-                        if( parentResultSet.getString("email") == null ){
-                            studentJsonObject.put("mother_email","null");
-                        }else{
-                            studentJsonObject.put("mother_email",parentResultSet.getString("email"));
+                    if (parentResultSet.getString("gender").equals("Female")) {
+                        studentJsonObject.put("mother_firstname", parentResultSet.getString("firstname"));
+                        studentJsonObject.put("mother_lastname", parentResultSet.getString("lastname"));
+                        studentJsonObject.put("mother_phone", parentResultSet.getString("phone"));
+                        if (parentResultSet.getString("email") == null) {
+                            studentJsonObject.put("mother_email", "null");
+                        } else {
+                            studentJsonObject.put("mother_email", parentResultSet.getString("email"));
                         }
                     }
                 }
 
                 //Checking and inserting null for parent details if parent details does not exist
-                if( !studentJsonObject.has("father_phone") ){
-                    studentJsonObject.put("father_firstname","null");
-                    studentJsonObject.put("father_lastname","null");
-                    studentJsonObject.put("father_phone","null");
-                    studentJsonObject.put("father_email","null");
+                if (!studentJsonObject.has("father_phone")) {
+                    studentJsonObject.put("father_firstname", "null");
+                    studentJsonObject.put("father_lastname", "null");
+                    studentJsonObject.put("father_phone", "null");
+                    studentJsonObject.put("father_email", "null");
                 }
-                if(!studentJsonObject.has("mother_phone") ){
-                    studentJsonObject.put("mother_firstname","null");
-                    studentJsonObject.put("mother_lastname","null");
-                    studentJsonObject.put("mother_phone","null");
-                    studentJsonObject.put("mother_email","null");
+                if (!studentJsonObject.has("mother_phone")) {
+                    studentJsonObject.put("mother_firstname", "null");
+                    studentJsonObject.put("mother_lastname", "null");
+                    studentJsonObject.put("mother_phone", "null");
+                    studentJsonObject.put("mother_email", "null");
                 }
-                studentJsonObject.put("img",getImageString(studentResultSet.getInt("sid")));
+                studentJsonObject.put("img", getImageString(studentResultSet.getInt("sid")));
 
                 //Sending Message with Student Info
-                responseJsonObject.put("info",studentJsonObject);
+                responseJsonObject.put("info", studentJsonObject);
                 client.sendMessage(responseJsonObject);
 
                 //Removing Info Attribute from responseJsonObject
                 responseJsonObject.remove("info");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 14 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 14 Completed for Client at " + client.getIpAddress());
     }
 
-    private String getImageString(int sid){
-        try{
-            BufferedImage bufferedImage = ImageIO.read(new File("Student Images/"+sid+".jpg"));
+    private String getImageString(int sid) {
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File("Student Images/" + sid + ".jpg"));
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage,"jpg",baos);
+            ImageIO.write(bufferedImage, "jpg", baos);
             byte[] imgArray = baos.toByteArray();
             return Base64.getEncoder().encodeToString(imgArray);
-        }catch( Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
         }
 

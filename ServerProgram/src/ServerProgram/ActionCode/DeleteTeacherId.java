@@ -11,35 +11,35 @@ public class DeleteTeacherId extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public DeleteTeacherId(JSONObject jsonObject,Client client){
+    public DeleteTeacherId(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 8 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 8 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
             String phone = jsonObject.getJSONObject("info").getString("phone");
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
             JSONObject responseInfoJsonObject = new JSONObject();
-            if( db.checkIfTeacherIncharge(phone) ){
-                responseInfoJsonObject.put("response_code",1);
-            }else{
+            if (db.checkIfTeacherIncharge(phone)) {
+                responseInfoJsonObject.put("response_code", 1);
+            } else {
                 db.deleteTeacherId(phone);
-                responseInfoJsonObject.put("response_code",0);
+                responseInfoJsonObject.put("response_code", 0);
             }
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 8 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 8 Completed for Client at " + client.getIpAddress());
     }
 }

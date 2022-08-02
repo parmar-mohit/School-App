@@ -22,7 +22,7 @@ The Principal user will be able to do following task
 
 ### ServerConnection
 
-ServerConnection is a class/module that allows this program to connect to serverSocket and request resources.Whenever a ServerConnection object is instantiated it creates a new receiver Thread. This receiver thread continously listen for incoming messages from server.When a message from server is received it first checks if client has to execute some module, otherwise it stores the message in messagepool. Whenever the program requires some data from server it first asks the serverConnection to send a message requesting the resource and when a response message is received from server it is stored in messagepool which is an arraylist of messages of String data type.From this messagepool we can get our response message which will contain requested data.
+[ServerConnection](./src/TeacherDesktop/Server/ServerConnection.java) is a class/module that allows this program to connect to serverSocket and request resources.Whenever a ServerConnection object is instantiated it creates a new receiver Thread. This receiver thread continously listen for incoming messages from server.When a message from server is received it first checks if client has to execute some module, otherwise it stores the message in messagepool. Whenever the program requires some data from server it first asks the serverConnection to send a message requesting the resource and when a response message is received from server it is stored in messagepool which is an arraylist of messages of String data type.From this messagepool we can get our response message which will contain requested data.All the communication with client program is handled by ServerConnection class
 
 ### Additional Resources Used
 
@@ -31,6 +31,22 @@ The Additional Resoruces that are required by the program are stored in Jar File
 * JCalendar has JDateChooser Class which helps in taking Date inputs.
 
 
-##### Main Function
+### Java Main Method
 
 [Application.java](./src/TeacherProgram/Application.java) contains the static main function to be called to start exection of Program
+
+### Interface
+
+Below are some snapshot of Interface of this program
+
+![](./Images/Login%20Interface.PNG)
+<p align="center">Fig 1. Login Interface</p>
+
+![](./Images/Principal%20Classroom%20Interface.PNG)
+<p align="center">Fig 2. Princiapal Classroom/p>
+
+![](./Images/My%20Classroom%20Interface.PNG)
+<p align="center">Fig 3. My Classroom Interface</p>
+
+![](./Images/New%20Exam%20Interface.PNG)
+<p align="center">Fig 4. New Exam Interface</p>

@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class NoConnectionInterface extends JFrame {
-    private JLabel messageLabel;
+    private final JLabel messageLabel;
 
     public NoConnectionInterface() {
         //Initialising Varibles
@@ -16,12 +16,12 @@ public class NoConnectionInterface extends JFrame {
         //Frame details
         setTitle(Constant.SCHOOL_NAME);
         setIconImage(Toolkit.getDefaultToolkit().getImage(Constant.SCHOOL_LOGO));
-        setSize(new Dimension(500,300));
+        setSize(new Dimension(500, 300));
         setLayout(new GridBagLayout());
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Adding Components to Frame
-        add(messageLabel, Constraint.setPosition(0,0));
+        add(messageLabel, Constraint.setPosition(0, 0));
     }
 }

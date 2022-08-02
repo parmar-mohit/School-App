@@ -13,16 +13,16 @@ import java.util.ArrayList;
 
 public class StudentPanel extends JPanel {
 
-    private JLabel panelNameLabel;
+    private final JLabel panelNameLabel;
     private CreateStudentPanel studentPanel;
-    private JScrollPane scrollPane;
-    private JPanel studentListPanel;
+    private final JScrollPane scrollPane;
+    private final JPanel studentListPanel;
     private ArrayList<StudentCardPanel> studentCardPanelArrayList;
-    private ServerConnection serverConnection;
-    private String phone;
+    private final ServerConnection serverConnection;
+    private final String phone;
     private Thread fillStudentCardThread;
 
-    public StudentPanel(ServerConnection serverConnection,String phone){
+    public StudentPanel(ServerConnection serverConnection, String phone) {
         //Initialising Members
         this.serverConnection = serverConnection;
         this.phone = phone;
@@ -32,9 +32,9 @@ public class StudentPanel extends JPanel {
         studentCardPanelArrayList = new ArrayList<>();
 
         //Editing Components
-        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
-        scrollPane.setMinimumSize(new Dimension(1000,500));
-        scrollPane.setPreferredSize(new Dimension(1000,500));
+        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        scrollPane.setMinimumSize(new Dimension(1000, 500));
+        scrollPane.setPreferredSize(new Dimension(1000, 500));
         studentListPanel.setLayout(new GridBagLayout());
 
         //Filling Student Card
@@ -45,8 +45,8 @@ public class StudentPanel extends JPanel {
         setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding Components to Frame
-        add(panelNameLabel, Constraint.setPosition(0,0));
-        add(scrollPane,Constraint.setPosition(0,2));
+        add(panelNameLabel, Constraint.setPosition(0, 0));
+        add(scrollPane, Constraint.setPosition(0, 2));
     }
 
     private void fillStudentCard() {
@@ -94,8 +94,8 @@ public class StudentPanel extends JPanel {
         fillStudentCardThread.start();
     }
 
-    protected void finalize(){
-        if( fillStudentCardThread != null ){
+    protected void finalize() {
+        if (fillStudentCardThread != null) {
             fillStudentCardThread.stop();
         }
     }

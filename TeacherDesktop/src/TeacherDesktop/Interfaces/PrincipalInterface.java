@@ -12,13 +12,13 @@ import java.awt.event.ActionListener;
 
 public class PrincipalInterface extends JFrame implements ActionListener {
 
-    private BrandingPanel brandingPanel;
-    private PrincipalButtonPanel buttonPanel;
+    private final BrandingPanel brandingPanel;
+    private final PrincipalButtonPanel buttonPanel;
     private JPanel optionPanel;
 
-    private ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
 
-    public PrincipalInterface(ServerConnection serverConnection){
+    public PrincipalInterface(ServerConnection serverConnection) {
         //Initialisng Member Variables
         this.serverConnection = serverConnection;
         serverConnection.setCurrentFrame(this);
@@ -33,10 +33,10 @@ public class PrincipalInterface extends JFrame implements ActionListener {
         buttonPanel.logoutButton.addActionListener(this);
 
         //Setting Size
-        brandingPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width,Constant.SCREEN_SIZE.height/5));
-        brandingPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width,Constant.SCREEN_SIZE.height/5));
-        buttonPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width/5,Constant.SCREEN_SIZE.height*4/5));
-        buttonPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width/5,Constant.SCREEN_SIZE.height*4/5));
+        brandingPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width, Constant.SCREEN_SIZE.height / 5));
+        brandingPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width, Constant.SCREEN_SIZE.height / 5));
+        buttonPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width / 5, Constant.SCREEN_SIZE.height * 4 / 5));
+        buttonPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width / 5, Constant.SCREEN_SIZE.height * 4 / 5));
 
         //Frame Details
         setTitle(Constant.SCHOOL_NAME);
@@ -49,25 +49,25 @@ public class PrincipalInterface extends JFrame implements ActionListener {
         setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         //Adding Components to Frame
-        add(brandingPanel,Constraint.setPosition(0,0,2,1));
-        add(buttonPanel,Constraint.setPosition(0,1));
+        add(brandingPanel, Constraint.setPosition(0, 0, 2, 1));
+        add(buttonPanel, Constraint.setPosition(0, 1));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( optionPanel != null ){
+        if (optionPanel != null) {
             remove(optionPanel);
         }
 
-        if( e.getSource() == buttonPanel.teacherButton){
+        if (e.getSource() == buttonPanel.teacherButton) {
             optionPanel = new TeacherPanel(serverConnection);
-        }else if( e.getSource() == buttonPanel.allStudentButton ){
+        } else if (e.getSource() == buttonPanel.allStudentButton) {
             optionPanel = new AllStudentPanel(serverConnection);
-        }else if( e.getSource() == buttonPanel.classroomButton){
+        } else if (e.getSource() == buttonPanel.classroomButton) {
             optionPanel = new ClassroomPanel(serverConnection);
-        }else if( e.getSource() == buttonPanel.securityButton ){
-            optionPanel = new ChangePasswordPanel(serverConnection,Constant.PRINCIPAL_USERNAME);
-        }else if( e.getSource() ==  buttonPanel.logoutButton ){
+        } else if (e.getSource() == buttonPanel.securityButton) {
+            optionPanel = new ChangePasswordPanel(serverConnection, Constant.PRINCIPAL_USERNAME);
+        } else if (e.getSource() == buttonPanel.logoutButton) {
             dispose();
             new LoginInterface(serverConnection);
             return;
@@ -79,12 +79,12 @@ public class PrincipalInterface extends JFrame implements ActionListener {
         buttonPanel.classroomButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.securityButton.setBackground(Constant.BUTTON_BACKGROUND);
 
-        JButton buttonClicked = (JButton)e.getSource();
+        JButton buttonClicked = (JButton) e.getSource();
         buttonClicked.setBackground(Constant.SELECTED_BUTTON);
 
-        optionPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width*4/5,Constant.SCREEN_SIZE.height*4/5));
-        optionPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width*4/5,Constant.SCREEN_SIZE.height*4/5));
-        add(optionPanel,Constraint.setPosition(1,1));
+        optionPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width * 4 / 5, Constant.SCREEN_SIZE.height * 4 / 5));
+        optionPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width * 4 / 5, Constant.SCREEN_SIZE.height * 4 / 5));
+        add(optionPanel, Constraint.setPosition(1, 1));
         optionPanel.setVisible(true);
         revalidate();
         repaint();
@@ -93,9 +93,9 @@ public class PrincipalInterface extends JFrame implements ActionListener {
 
 class PrincipalButtonPanel extends JPanel {
 
-    protected JButton teacherButton, allStudentButton, classroomButton,securityButton,logoutButton;
+    protected JButton teacherButton, allStudentButton, classroomButton, securityButton, logoutButton;
 
-    public PrincipalButtonPanel(){
+    public PrincipalButtonPanel() {
         //Initialising Member Variables
         teacherButton = new JButton("Teacher");
         allStudentButton = new JButton("All Students");
@@ -120,10 +120,10 @@ class PrincipalButtonPanel extends JPanel {
         setBackground(Constant.BUTTON_PANEL_BACKGROUND);
 
         //Adding Components to Frame
-        add(teacherButton,Constraint.setPosition(0,0));
-        add(allStudentButton,Constraint.setPosition(0,1));
-        add(classroomButton,Constraint.setPosition(0,2));
-        add(securityButton,Constraint.setPosition(0,3));
-        add(logoutButton,Constraint.setPosition(0,4));
+        add(teacherButton, Constraint.setPosition(0, 0));
+        add(allStudentButton, Constraint.setPosition(0, 1));
+        add(classroomButton, Constraint.setPosition(0, 2));
+        add(securityButton, Constraint.setPosition(0, 3));
+        add(logoutButton, Constraint.setPosition(0, 4));
     }
 }

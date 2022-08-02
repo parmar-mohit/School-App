@@ -17,53 +17,53 @@ public class CreateStudentId extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public CreateStudentId(JSONObject jsonObject,Client client){
+    public CreateStudentId(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 12 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 12 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
 
             JSONObject infoJsonObject = jsonObject.getJSONObject("info");
             db.setAutoCommit(false);
             int sid = db.createStudentId(infoJsonObject);
-            db.insertParent(sid,infoJsonObject);
-            storeImage(sid,infoJsonObject.getString("img"));
+            db.insertParent(sid, infoJsonObject);
+            storeImage(sid, infoJsonObject.getString("img"));
             db.commit();
             db.setAutoCommit(true);
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("sid",sid);
+            responseInfoJsonObject.put("sid", sid);
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 12 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 12 Completed for Client at " + client.getIpAddress());
     }
 
-    private void storeImage(int sid,String studentImgString) throws Exception{
+    private void storeImage(int sid, String studentImgString) throws Exception {
         byte[] imgArray = Base64.getDecoder().decode(studentImgString);
         ByteArrayInputStream bais = new ByteArrayInputStream(imgArray);
         BufferedImage studentImg = ImageIO.read(bais);
         File imageDirectory = new File("Student Images");
-        if( !imageDirectory.exists() ){
+        if (!imageDirectory.exists()) {
             imageDirectory.mkdir();
         }
-        File imageFile = new File("Student Images/"+sid+".jpg");
+        File imageFile = new File("Student Images/" + sid + ".jpg");
         imageFile.createNewFile();
-        ImageIO.write(studentImg,"jpg",imageFile);
+        ImageIO.write(studentImg, "jpg", imageFile);
     }
 }

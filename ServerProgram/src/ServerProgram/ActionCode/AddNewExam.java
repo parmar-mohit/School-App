@@ -3,7 +3,6 @@ package ServerProgram.ActionCode;
 import ServerProgram.Client.Client;
 import ServerProgram.DatabaseCon;
 import ServerProgram.Log;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class AddNewExam extends Thread {
@@ -12,35 +11,35 @@ public class AddNewExam extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public AddNewExam(JSONObject jsonObject, Client client){
+    public AddNewExam(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 20 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 20 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
 
             JSONObject examJsonObject = jsonObject.getJSONObject("info");
             db.addNewExam(examJsonObject);
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("response_code",0);
+            responseInfoJsonObject.put("response_code", 0);
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 20 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 20 Completed for Client at " + client.getIpAddress());
     }
 }

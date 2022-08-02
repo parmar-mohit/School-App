@@ -13,15 +13,23 @@ import java.awt.event.ActionListener;
 
 public class TeacherCardPanel extends JPanel implements ActionListener {
 
-    private JLabel imageLabel,firstnameLabel,lastnameLabel,phoneLabel,emailLabel,genderLabel,messageLabel;
-    private JTextField firstnameTextField,lastnameTextField,emailTextField;
+    private final JLabel imageLabel;
+    private final JLabel firstnameLabel;
+    private final JLabel lastnameLabel;
+    private final JLabel phoneLabel;
+    private final JLabel emailLabel;
+    private final JLabel genderLabel;
+    private JLabel messageLabel;
+    private JTextField firstnameTextField, lastnameTextField, emailTextField;
     private JComboBox genderComboBox;
-    private JButton updateButton,saveButton,deleteButton;
+    private final JButton updateButton;
+    private JButton saveButton;
+    private JButton deleteButton;
     private JSONObject teacherJsonObject;
-    private ServerConnection serverConnection;
-    private TeacherPanel parent;
+    private final ServerConnection serverConnection;
+    private final TeacherPanel parent;
 
-    public TeacherCardPanel(JSONObject teacherJsonObject, ServerConnection serverConnection,TeacherPanel parent){
+    public TeacherCardPanel(JSONObject teacherJsonObject, ServerConnection serverConnection, TeacherPanel parent) {
         //Initialising Member Variables
         this.teacherJsonObject = teacherJsonObject;
         this.serverConnection = serverConnection;
@@ -29,20 +37,20 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
 
         //Panel for Viewing
         Image img;
-        if( teacherJsonObject.getString("gender").equals("Male") ){
+        if (teacherJsonObject.getString("gender").equals("Male")) {
             img = new ImageIcon(Constant.MALE_AVATAR).getImage();
-        }else{
+        } else {
             img = new ImageIcon(Constant.FEMALE_AVATAR).getImage();
         }
-        img = img.getScaledInstance(100,100,Image.SCALE_DEFAULT);
+        img = img.getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         imageLabel = new JLabel(new ImageIcon(img));
         String firstname = teacherJsonObject.getString("firstname");
-        firstnameLabel = new JLabel("Firstname : "+Character.toUpperCase(firstname.charAt(0))+firstname.substring(1));
+        firstnameLabel = new JLabel("Firstname : " + Character.toUpperCase(firstname.charAt(0)) + firstname.substring(1));
         String lastname = teacherJsonObject.getString("lastname");
-        lastnameLabel = new JLabel("Lastname : "+Character.toUpperCase(lastname.charAt(0))+lastname.substring(1));
-        phoneLabel = new JLabel("Phone : "+teacherJsonObject.getString("phone"));
-        emailLabel = new JLabel("Email : "+teacherJsonObject.getString("email"));
-        genderLabel = new JLabel("Gender : "+teacherJsonObject.getString("gender"));
+        lastnameLabel = new JLabel("Lastname : " + Character.toUpperCase(lastname.charAt(0)) + lastname.substring(1));
+        phoneLabel = new JLabel("Phone : " + teacherJsonObject.getString("phone"));
+        emailLabel = new JLabel("Email : " + teacherJsonObject.getString("email"));
+        genderLabel = new JLabel("Gender : " + teacherJsonObject.getString("gender"));
         updateButton = new JButton("Update");
 
         //Editing Components
@@ -56,18 +64,18 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
         setBackground(Constant.CARD_PANEL);
 
         //Adding Components to Panel
-        add(imageLabel, Constraint.setPosition(0,0,1,5,Constraint.LEFT));
-        add(firstnameLabel,Constraint.setPosition(1,0,Constraint.LEFT));
-        add(lastnameLabel,Constraint.setPosition(1,1,Constraint.LEFT));
-        add(phoneLabel,Constraint.setPosition(1,2,Constraint.LEFT));
-        add(emailLabel,Constraint.setPosition(1,3,Constraint.LEFT));
-        add(genderLabel,Constraint.setPosition(1,4,Constraint.LEFT));
-        add(updateButton,Constraint.setPosition(3,0,1,5,Constraint.RIGHT));
+        add(imageLabel, Constraint.setPosition(0, 0, 1, 5, Constraint.LEFT));
+        add(firstnameLabel, Constraint.setPosition(1, 0, Constraint.LEFT));
+        add(lastnameLabel, Constraint.setPosition(1, 1, Constraint.LEFT));
+        add(phoneLabel, Constraint.setPosition(1, 2, Constraint.LEFT));
+        add(emailLabel, Constraint.setPosition(1, 3, Constraint.LEFT));
+        add(genderLabel, Constraint.setPosition(1, 4, Constraint.LEFT));
+        add(updateButton, Constraint.setPosition(3, 0, 1, 5, Constraint.RIGHT));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == updateButton ){
+        if (e.getSource() == updateButton) {
             //Making editButton Invisible
             updateButton.setVisible(false);
 
@@ -81,7 +89,7 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
             firstnameTextField = new JTextField(20);
             lastnameTextField = new JTextField(20);
             emailTextField = new JTextField(20);
-            genderComboBox = new JComboBox(new String[]{"Male","Female","Other"});
+            genderComboBox = new JComboBox(new String[]{"Male", "Female", "Other"});
             saveButton = new JButton("Save");
             deleteButton = new JButton("Delete");
             messageLabel = new JLabel();
@@ -101,47 +109,47 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
             genderComboBox.setSelectedItem(teacherJsonObject.getString("gender"));
 
             //Adding Components to Panel
-            add(firstnameTextField,Constraint.setPosition(2,0));
-            add(lastnameTextField,Constraint.setPosition(2,1));
-            add(emailTextField,Constraint.setPosition(2,3));
-            add(genderComboBox,Constraint.setPosition(2,4));
-            add(saveButton,Constraint.setPosition(3,0,Constraint.RIGHT));
-            add(deleteButton,Constraint.setPosition(3,1,Constraint.RIGHT));
-            add(messageLabel,Constraint.setPosition(0,5,3,1));
-        }else if ( e.getSource() == saveButton ){
+            add(firstnameTextField, Constraint.setPosition(2, 0));
+            add(lastnameTextField, Constraint.setPosition(2, 1));
+            add(emailTextField, Constraint.setPosition(2, 3));
+            add(genderComboBox, Constraint.setPosition(2, 4));
+            add(saveButton, Constraint.setPosition(3, 0, Constraint.RIGHT));
+            add(deleteButton, Constraint.setPosition(3, 1, Constraint.RIGHT));
+            add(messageLabel, Constraint.setPosition(0, 5, 3, 1));
+        } else if (e.getSource() == saveButton) {
             //Updating Changes
             JSONObject updateTeacherJsonObject = new JSONObject();
             String firstname = firstnameTextField.getText();
-            if( firstname.equals("") ){
+            if (firstname.equals("")) {
                 messageLabel.setText("Enter Firstname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            updateTeacherJsonObject.put("firstname",firstname);
+            updateTeacherJsonObject.put("firstname", firstname);
 
             String lastname = lastnameTextField.getText();
-            if( lastname.equals("") ){
+            if (lastname.equals("")) {
                 messageLabel.setText("Enter Lastname");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            updateTeacherJsonObject.put("lastname",lastname);
+            updateTeacherJsonObject.put("lastname", lastname);
 
-            updateTeacherJsonObject.put("phone",teacherJsonObject.getString("phone"));
+            updateTeacherJsonObject.put("phone", teacherJsonObject.getString("phone"));
 
             String email = emailTextField.getText();
-            if( !Constraint.emailCheck(email) ){
+            if (!Constraint.emailCheck(email)) {
                 messageLabel.setText("Enter a Valid Email");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
             }
-            updateTeacherJsonObject.put("email",email);
+            updateTeacherJsonObject.put("email", email);
 
-            String gender = (String)genderComboBox.getSelectedItem();
-            updateTeacherJsonObject.put("gender",gender);
+            String gender = (String) genderComboBox.getSelectedItem();
+            updateTeacherJsonObject.put("gender", gender);
 
             int response = serverConnection.updateTeacherId(updateTeacherJsonObject);
-            if( response == 0 ) {
+            if (response == 0) {
                 teacherJsonObject = updateTeacherJsonObject;
                 //Setting Image and Labels
                 Image img;
@@ -172,19 +180,19 @@ public class TeacherCardPanel extends JPanel implements ActionListener {
 
                 //Setting editButton Visible
                 updateButton.setVisible(true);
-            }else if( response == 1 ){
+            } else if (response == 1) {
                 messageLabel.setText("There was some problem updating.Please try again later");
                 Constraint.labelDeleteAfterTime(messageLabel);
             }
-        }else if( e.getSource() == deleteButton ){
-            int result = JOptionPane.showConfirmDialog(this,"Are you sure you want to delete Teacher Id?");
+        } else if (e.getSource() == deleteButton) {
+            int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete Teacher Id?");
 
-            if( result == JOptionPane.YES_OPTION ){
+            if (result == JOptionPane.YES_OPTION) {
                 int response = serverConnection.deleteTeacher(teacherJsonObject.getString("phone"));
-                if( response ==  1 ){
+                if (response == 1) {
                     messageLabel.setText("Teacher is Incharge of some Class or Subject and hence Id cannot be Deleted");
                     Constraint.labelDeleteAfterTime(messageLabel);
-                }else {
+                } else {
                     parent.fillTeacherCard();
                     parent.revalidate();
                     parent.repaint();

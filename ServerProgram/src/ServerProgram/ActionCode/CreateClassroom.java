@@ -12,48 +12,48 @@ public class CreateClassroom extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public CreateClassroom(JSONObject jsonObject, Client client){
+    public CreateClassroom(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 4 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 4 Started for Client at " + client.getIpAddress());
 
-        try{
-           db = new DatabaseCon();
+        try {
+            db = new DatabaseCon();
 
-           JSONObject infoJsonObject = jsonObject.getJSONObject("info");
-           int standard = infoJsonObject.getInt("standard");
-           String division = infoJsonObject.getString("division");
-           String teacherIncharge = infoJsonObject.getString("teacher_incharge");
+            JSONObject infoJsonObject = jsonObject.getJSONObject("info");
+            int standard = infoJsonObject.getInt("standard");
+            String division = infoJsonObject.getString("division");
+            String teacherIncharge = infoJsonObject.getString("teacher_incharge");
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-           if( db.checkClassroom(standard,division) ){
-               responseInfoJsonObject.put("response_code",1);
-           }else{
-               db.insertClassroom(standard,division,teacherIncharge);
+            if (db.checkClassroom(standard, division)) {
+                responseInfoJsonObject.put("response_code", 1);
+            } else {
+                db.insertClassroom(standard, division, teacherIncharge);
 
-               JSONArray subjectListJsonArray = infoJsonObject.getJSONArray("subject_list");
-               for( int i = 0; i < subjectListJsonArray.length(); i++){
-                   JSONObject subjectJsonObject = subjectListJsonArray.getJSONObject(i);
-                   String subjectName = subjectJsonObject.getString("subject_name");
-                   String phone = subjectJsonObject.getString("subject_teacher");
-                   db.insertSubject(standard,division,subjectName,phone);
-               }
-               responseInfoJsonObject.put("response_code",0);
-           }
-            responseJsonObject.put("info",responseInfoJsonObject);
+                JSONArray subjectListJsonArray = infoJsonObject.getJSONArray("subject_list");
+                for (int i = 0; i < subjectListJsonArray.length(); i++) {
+                    JSONObject subjectJsonObject = subjectListJsonArray.getJSONObject(i);
+                    String subjectName = subjectJsonObject.getString("subject_name");
+                    String phone = subjectJsonObject.getString("subject_teacher");
+                    db.insertSubject(standard, division, subjectName, phone);
+                }
+                responseInfoJsonObject.put("response_code", 0);
+            }
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch( Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
-        Log.info("Action Code 4 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 4 Completed for Client at " + client.getIpAddress());
     }
 }

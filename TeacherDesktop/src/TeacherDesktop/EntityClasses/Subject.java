@@ -3,13 +3,13 @@ package TeacherDesktop.EntityClasses;
 import org.json.JSONObject;
 
 public class Subject {
-    private int subjectId;
-    private String subjectName;
-    private int standard;
-    private String division;
-    private String phone;
+    private final int subjectId;
+    private final String subjectName;
+    private final int standard;
+    private final String division;
+    private final String phone;
 
-    public Subject(JSONObject subjectJsonObject){
+    public Subject(JSONObject subjectJsonObject) {
         subjectId = subjectJsonObject.getInt("subject_id");
         subjectName = subjectJsonObject.getString("subject_name");
         standard = subjectJsonObject.getInt("standard");
@@ -19,8 +19,8 @@ public class Subject {
 
     public static String getSubjectName(String subjectName) {
         String[] subjectNameArray = subjectName.split(" ");
-        String subjectNameString = new String();
-        for( int i = 0; i < subjectNameArray.length; i++ ){
+        String subjectNameString = "";
+        for (int i = 0; i < subjectNameArray.length; i++) {
             subjectNameString += Character.toUpperCase(subjectNameArray[i].charAt(0)) + subjectNameArray[i].substring(1);
         }
         return subjectNameString;
@@ -41,7 +41,7 @@ public class Subject {
     @Override
     public String toString() {
         String subjectString = getSubjectName(subjectName);
-        subjectString += "("+standard+":"+division+")";
+        subjectString += "(" + standard + ":" + division + ")";
         return subjectString;
     }
 }

@@ -14,50 +14,50 @@ public class GetStandardDivisionOfTeacher extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public GetStandardDivisionOfTeacher(JSONObject jsonObject, Client client){
+    public GetStandardDivisionOfTeacher(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 11 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 11 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
 
             String phone = jsonObject.getJSONObject("info").getString("phone");
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONArray infoJsonArray = new JSONArray();
 
             ResultSet standardResultSet = db.getDistinctStandard(phone);
-            while( standardResultSet.next() ){
+            while (standardResultSet.next()) {
                 int standard = standardResultSet.getInt(1);
                 JSONObject standardJsonObject = new JSONObject();
-                standardJsonObject.put("standard",standard);
+                standardJsonObject.put("standard", standard);
 
                 JSONArray divisionArray = new JSONArray();
 
-                ResultSet divisionResultSet = db.getDistinctDivision(standard,phone);
-                while( divisionResultSet.next() ){
+                ResultSet divisionResultSet = db.getDistinctDivision(standard, phone);
+                while (divisionResultSet.next()) {
                     divisionArray.put(divisionResultSet.getString(1));
                 }
-                standardJsonObject.put("division",divisionArray);
+                standardJsonObject.put("division", divisionArray);
                 infoJsonArray.put(standardJsonObject);
             }
 
-            responseJsonObject.put("info",infoJsonArray);
+            responseJsonObject.put("info", infoJsonArray);
 
             client.sendMessage(responseJsonObject);
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 11 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 11 Completed for Client at " + client.getIpAddress());
     }
 }

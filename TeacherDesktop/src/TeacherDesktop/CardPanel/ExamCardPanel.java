@@ -22,28 +22,34 @@ import java.util.Date;
 
 public class ExamCardPanel extends JPanel implements ActionListener, WindowListener {
 
-    private JLabel examNameLabel,examDateLabel,totalMarksLabel,subjectLabel;
-    private JButton expandButton,collapseButton,updateButton,deleteButton;
+    private final JLabel examNameLabel;
+    private final JLabel examDateLabel;
+    private final JLabel totalMarksLabel;
+    private final JLabel subjectLabel;
+    private final JButton expandButton;
+    private JButton collapseButton;
+    private JButton updateButton;
+    private JButton deleteButton;
     private ScoreViewMarksTable table;
-    private JSONObject examJsonObject;
+    private final JSONObject examJsonObject;
 
-    private ServerConnection serverConnection;
-    private ExamPanel parent;
+    private final ServerConnection serverConnection;
+    private final ExamPanel parent;
     private JSONArray studentScoreJsonArray;
 
-    public ExamCardPanel(JSONObject examJsonObject, ServerConnection serverConnection, ExamPanel parent){
+    public ExamCardPanel(JSONObject examJsonObject, ServerConnection serverConnection, ExamPanel parent) {
         //Initialising Member Variables
         this.examJsonObject = examJsonObject;
         this.serverConnection = serverConnection;
         this.parent = parent;
-        examNameLabel = new JLabel("Exam Name : "+ ExamNameSelector.formatExamName(examJsonObject.getString("exam_name")));
+        examNameLabel = new JLabel("Exam Name : " + ExamNameSelector.formatExamName(examJsonObject.getString("exam_name")));
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        examDateLabel = new JLabel("Exam Date : "+sdf.format(new Date(examJsonObject.getLong("date"))));
+        examDateLabel = new JLabel("Exam Date : " + sdf.format(new Date(examJsonObject.getLong("date"))));
         Image img = new ImageIcon(Constant.EXPAND_ICON).getImage();
-        img = img.getScaledInstance(15,15,Image.SCALE_DEFAULT);
+        img = img.getScaledInstance(15, 15, Image.SCALE_DEFAULT);
         expandButton = new JButton(new ImageIcon(img));
-        totalMarksLabel = new JLabel("Total Marks : "+examJsonObject.getInt("total_marks"));
-        subjectLabel = new JLabel("Subject : "+new Subject(examJsonObject.getJSONObject("subject")));
+        totalMarksLabel = new JLabel("Total Marks : " + examJsonObject.getInt("total_marks"));
+        subjectLabel = new JLabel("Subject : " + new Subject(examJsonObject.getJSONObject("subject")));
 
         //Editing Components
         expandButton.setBackground(Constant.CARD_PANEL);
@@ -54,19 +60,19 @@ public class ExamCardPanel extends JPanel implements ActionListener, WindowListe
         //Editing Panel Details
         setLayout(new GridBagLayout());
         setBackground(Constant.CARD_PANEL);
-        setPreferredSize(new Dimension(900,100));
+        setPreferredSize(new Dimension(900, 100));
 
         //Adding Components to Panel
-        add(examNameLabel, Constraint.setPosition(0,0,Constraint.LEFT));
-        add(examDateLabel,Constraint.setPosition(1,0,Constraint.LEFT));
-        add(expandButton,Constraint.setPosition(2,0,1,2));
-        add(totalMarksLabel,Constraint.setPosition(0,1,Constraint.LEFT));
-        add(subjectLabel,Constraint.setPosition(1,1,Constraint.LEFT));
+        add(examNameLabel, Constraint.setPosition(0, 0, Constraint.LEFT));
+        add(examDateLabel, Constraint.setPosition(1, 0, Constraint.LEFT));
+        add(expandButton, Constraint.setPosition(2, 0, 1, 2));
+        add(totalMarksLabel, Constraint.setPosition(0, 1, Constraint.LEFT));
+        add(subjectLabel, Constraint.setPosition(1, 1, Constraint.LEFT));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == expandButton ){
+        if (e.getSource() == expandButton) {
             new Thread() {
                 @Override
                 public void run() {
@@ -114,12 +120,12 @@ public class ExamCardPanel extends JPanel implements ActionListener, WindowListe
                     //Adding Components on Panel
                     add(collapseButton, Constraint.setPosition(2, 0, 1, 2));
                     add(table.getScrollPane(), Constraint.setPosition(0, 2, 2, 1));
-                    add(updateButton,Constraint.setPosition(0,3));
-                    add(deleteButton,Constraint.setPosition(1,3));
+                    add(updateButton, Constraint.setPosition(0, 3));
+                    add(deleteButton, Constraint.setPosition(1, 3));
                     setPreferredSize(new Dimension(900, 450));
                 }
             }.start();
-        }else if( e.getSource() == collapseButton ){
+        } else if (e.getSource() == collapseButton) {
             //Removing Components
             remove(collapseButton);
             remove(table.getScrollPane());
@@ -130,16 +136,16 @@ public class ExamCardPanel extends JPanel implements ActionListener, WindowListe
             expandButton.setVisible(true);
 
             //Other Changes
-            setPreferredSize(new Dimension(900,100));
-        }else if( e.getSource() == updateButton ){
-            JDialog dialog = new UpdateExamDialog((JFrame)SwingUtilities.getWindowAncestor(this),examJsonObject,studentScoreJsonArray,serverConnection);
+            setPreferredSize(new Dimension(900, 100));
+        } else if (e.getSource() == updateButton) {
+            JDialog dialog = new UpdateExamDialog((JFrame) SwingUtilities.getWindowAncestor(this), examJsonObject, studentScoreJsonArray, serverConnection);
             dialog.addWindowListener(this);
-        }else if( e.getSource() == deleteButton ){
-            int result = JOptionPane.showConfirmDialog(this,"Are you sure you want to delete this exam ?");
+        } else if (e.getSource() == deleteButton) {
+            int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this exam ?");
 
-            if( result == JOptionPane.YES_OPTION ){
+            if (result == JOptionPane.YES_OPTION) {
                 int response = serverConnection.deleteExam(examJsonObject.getInt("exam_id"));
-                if( response == 0 ){
+                if (response == 0) {
                     parent.fillExamCard();
                     parent.revalidate();
                     parent.repaint();

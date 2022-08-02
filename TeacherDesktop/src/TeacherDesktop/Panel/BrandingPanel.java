@@ -8,19 +8,20 @@ import java.awt.*;
 
 public class BrandingPanel extends JPanel {
 
-    private JLabel imageLabel,schoolNameLabel;
+    private final JLabel imageLabel;
+    private final JLabel schoolNameLabel;
 
-    public BrandingPanel(){
+    public BrandingPanel() {
         //Initialisng Members
         Image img = new ImageIcon(Constant.SCHOOL_LOGO).getImage();
-        img = img.getScaledInstance(120,120,Image.SCALE_DEFAULT);
+        img = img.getScaledInstance(120, 120, Image.SCALE_DEFAULT);
         imageLabel = new JLabel(new ImageIcon(img));
         schoolNameLabel = new JLabel(Constant.SCHOOL_NAME);
 
         //Editing Members
-        imageLabel.setMinimumSize(new Dimension(120,120));
-        imageLabel.setPreferredSize(new Dimension(120,120));
-        schoolNameLabel.setFont(new Font("SansSerif",Font.BOLD,30));
+        imageLabel.setMinimumSize(new Dimension(120, 120));
+        imageLabel.setPreferredSize(new Dimension(120, 120));
+        schoolNameLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
 
         //Panel details
         setVisible(true);
@@ -28,7 +29,7 @@ public class BrandingPanel extends JPanel {
         setLayout(new GridBagLayout());
 
         //Adding Components to Panel
-        add(imageLabel, Constraint.setPosition(0,0));
-        add(schoolNameLabel,Constraint.setPosition(1,0));
+        add(imageLabel, Constraint.setPosition(0, 0));
+        add(schoolNameLabel, Constraint.setPosition(1, 0));
     }
 }

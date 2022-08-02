@@ -13,26 +13,26 @@ public class GetScoreOfExam extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public GetScoreOfExam(JSONObject jsonObject,Client client){
+    public GetScoreOfExam(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 22 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 22 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
             int examId = jsonObject.getJSONObject("info").getInt("exam_id");
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("total_students",db.getTotalStudentForExam(examId));
+            responseInfoJsonObject.put("total_students", db.getTotalStudentForExam(examId));
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
 
             //Sending First message containing total no of students
             client.sendMessage(responseJsonObject);
@@ -41,27 +41,27 @@ public class GetScoreOfExam extends Thread {
             responseJsonObject.remove("info");
 
             ResultSet studentScoreResultSet = db.getStudentScoreOfExam(examId);
-            while(studentScoreResultSet.next()){
+            while (studentScoreResultSet.next()) {
                 JSONObject studentScoreJsonObject = new JSONObject();
-                studentScoreJsonObject.put("sid",studentScoreResultSet.getInt("sid"));
-                studentScoreJsonObject.put("firstname",studentScoreResultSet.getString("firstname"));
-                studentScoreJsonObject.put("lastname",studentScoreResultSet.getString("lastname"));
-                studentScoreJsonObject.put("roll_no",studentScoreResultSet.getInt("roll_no"));
-                studentScoreJsonObject.put("score",studentScoreResultSet.getInt("marks_obtained"));
+                studentScoreJsonObject.put("sid", studentScoreResultSet.getInt("sid"));
+                studentScoreJsonObject.put("firstname", studentScoreResultSet.getString("firstname"));
+                studentScoreJsonObject.put("lastname", studentScoreResultSet.getString("lastname"));
+                studentScoreJsonObject.put("roll_no", studentScoreResultSet.getInt("roll_no"));
+                studentScoreJsonObject.put("score", studentScoreResultSet.getInt("marks_obtained"));
 
-                responseJsonObject.put("info",studentScoreJsonObject);
+                responseJsonObject.put("info", studentScoreJsonObject);
 
                 //Sending Message
                 client.sendMessage(responseJsonObject);
 
                 responseJsonObject.remove("info");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 22 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 22 Completed for Client at " + client.getIpAddress());
     }
 }

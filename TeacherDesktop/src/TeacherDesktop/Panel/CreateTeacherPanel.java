@@ -10,13 +10,23 @@ import java.awt.event.*;
 
 public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListener, ActionListener {
 
-    private JLabel panelNameLabel,firstnameLabel,lastnameLabel,phoneLabel,emailLabel,passwordLabel,genderLabel,messageLabel;
-    private JTextField firstnameTextField,lastnameTextField,phoneTextField,emailTextField;
-    private JPasswordField passwordField;
-    private JCheckBox showPasswordCheckBox;
-    private JComboBox genderComboBox;
-    private JButton addTeacherButton;
-    private ServerConnection serverConnection;
+    private final JLabel panelNameLabel;
+    private final JLabel firstnameLabel;
+    private final JLabel lastnameLabel;
+    private final JLabel phoneLabel;
+    private final JLabel emailLabel;
+    private final JLabel passwordLabel;
+    private final JLabel genderLabel;
+    private final JLabel messageLabel;
+    private final JTextField firstnameTextField;
+    private final JTextField lastnameTextField;
+    private final JTextField phoneTextField;
+    private final JTextField emailTextField;
+    private final JPasswordField passwordField;
+    private final JCheckBox showPasswordCheckBox;
+    private final JComboBox genderComboBox;
+    private final JButton addTeacherButton;
+    private final ServerConnection serverConnection;
 
     public CreateTeacherPanel(ServerConnection serverConnection) {
         //Initialising Members
@@ -34,12 +44,12 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         passwordField = new JPasswordField(20);
         showPasswordCheckBox = new JCheckBox("Show Password");
         genderLabel = new JLabel("Gender : ");
-        genderComboBox = new JComboBox(new String[]{"Male","Female","Other"});
+        genderComboBox = new JComboBox(new String[]{"Male", "Female", "Other"});
         messageLabel = new JLabel();
         addTeacherButton = new JButton("Add Teacher");
 
         //Editing Components
-        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,18));
+        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         passwordField.setEchoChar('*');
         showPasswordCheckBox.setBackground(Constant.PANEL_BACKGROUND);
         addTeacherButton.setBackground(Constant.BUTTON_BACKGROUND);
@@ -54,41 +64,41 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding components to Panel
-        add(panelNameLabel,Constraint.setPosition(0,0,4,1));
-        add(firstnameLabel, Constraint.setPosition(0,1));
-        add(firstnameTextField,Constraint.setPosition(1,1));
-        add(lastnameLabel,Constraint.setPosition(2,1));
-        add(lastnameTextField,Constraint.setPosition(3,1));
-        add(phoneLabel,Constraint.setPosition(0,2));
-        add(phoneTextField,Constraint.setPosition(1,2));
-        add(emailLabel,Constraint.setPosition(2,2));
-        add(emailTextField,Constraint.setPosition(3,2));
-        add(passwordLabel,Constraint.setPosition(0,3));
-        add(passwordField,Constraint.setPosition(1,3));
-        add(showPasswordCheckBox,Constraint.setPosition(2,3));
-        add(genderLabel,Constraint.setPosition(0,4));
-        add(genderComboBox,Constraint.setPosition(1,4));
-        add(messageLabel,Constraint.setPosition(1,5,4,1));
-        add(addTeacherButton,Constraint.setPosition(0,6,4,1));
+        add(panelNameLabel, Constraint.setPosition(0, 0, 4, 1));
+        add(firstnameLabel, Constraint.setPosition(0, 1));
+        add(firstnameTextField, Constraint.setPosition(1, 1));
+        add(lastnameLabel, Constraint.setPosition(2, 1));
+        add(lastnameTextField, Constraint.setPosition(3, 1));
+        add(phoneLabel, Constraint.setPosition(0, 2));
+        add(phoneTextField, Constraint.setPosition(1, 2));
+        add(emailLabel, Constraint.setPosition(2, 2));
+        add(emailTextField, Constraint.setPosition(3, 2));
+        add(passwordLabel, Constraint.setPosition(0, 3));
+        add(passwordField, Constraint.setPosition(1, 3));
+        add(showPasswordCheckBox, Constraint.setPosition(2, 3));
+        add(genderLabel, Constraint.setPosition(0, 4));
+        add(genderComboBox, Constraint.setPosition(1, 4));
+        add(messageLabel, Constraint.setPosition(1, 5, 4, 1));
+        add(addTeacherButton, Constraint.setPosition(0, 6, 4, 1));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String firstname = firstnameTextField.getText();
-        if( firstname.equals("") ){
+        if (firstname.equals("")) {
             messageLabel.setText("Enter Firstname");
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         String lastname = lastnameTextField.getText();
-        if( lastname.equals("") ){
+        if (lastname.equals("")) {
             messageLabel.setText("Enter Lastname");
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
-        if( phoneTextField.getText().length() < 10 ){
+        if (phoneTextField.getText().length() < 10) {
             messageLabel.setText("Phone No should be of 10 Digit");
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
@@ -96,20 +106,20 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
         String phone = phoneTextField.getText();
 
         String email = emailTextField.getText();
-        if( !Constraint.emailCheck(email) ){
+        if (!Constraint.emailCheck(email)) {
             messageLabel.setText("Enter a Valid Email");
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
         String password = new String(passwordField.getPassword());
-        if(password.equals("")){
+        if (password.equals("")) {
             messageLabel.setText("Enter Password");
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
         }
 
-        if( !Constraint.isValidPassword(password) ){
+        if (!Constraint.isValidPassword(password)) {
             messageLabel.setText("Password Must contain 1 Uppercase, 1 Lowercase and 1 Digit");
             Constraint.labelDeleteAfterTime(messageLabel);
             return;
@@ -117,10 +127,10 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
 
         password = Constraint.hashPassword(password);
 
-        String gender = (String)genderComboBox.getSelectedItem();
+        String gender = (String) genderComboBox.getSelectedItem();
 
-        int response = serverConnection.addTeacherId(firstname,lastname,phone,email,password,gender);
-        if( response == 0 ){
+        int response = serverConnection.addTeacherId(firstname, lastname, phone, email, password, gender);
+        if (response == 0) {
             messageLabel.setText("Teacher Id Created");
             Constraint.labelDeleteAfterTime(messageLabel);
 
@@ -135,7 +145,7 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
 
             revalidate();
             repaint();
-        }else if( response == 1 ){
+        } else if (response == 1) {
             messageLabel.setText("Teacher with same phone already exist in Database");
             Constraint.labelDeleteAfterTime(messageLabel);
         }
@@ -143,16 +153,16 @@ public class CreateTeacherPanel extends JPanel implements KeyListener, ItemListe
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        if( showPasswordCheckBox.isSelected() ){
-            passwordField.setEchoChar((char)0);
-        }else{
+        if (showPasswordCheckBox.isSelected()) {
+            passwordField.setEchoChar((char) 0);
+        } else {
             passwordField.setEchoChar('*');
         }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if( !Character.isDigit(e.getKeyChar()) || phoneTextField.getText().length() > 9 ){
+        if (!Character.isDigit(e.getKeyChar()) || phoneTextField.getText().length() > 9) {
             e.consume();
         }
     }

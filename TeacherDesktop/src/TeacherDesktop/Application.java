@@ -10,11 +10,11 @@ import java.net.Socket;
 public class Application {
     public static void main(String[] args) {
         Socket socket;
-        try{
-            socket = new Socket(Constant.IP_ADDRESS,Constant.PORT);
+        try {
+            socket = new Socket(Constant.IP_ADDRESS, Constant.PORT);
             ServerConnection serverConnection = new ServerConnection(socket);
             new LoginInterface(serverConnection);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             new NoConnectionInterface();
         }

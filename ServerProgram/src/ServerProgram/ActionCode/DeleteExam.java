@@ -3,7 +3,6 @@ package ServerProgram.ActionCode;
 import ServerProgram.Client.Client;
 import ServerProgram.DatabaseCon;
 import ServerProgram.Log;
-import com.mysql.cj.jdbc.jmx.LoadBalanceConnectionGroupManager;
 import org.json.JSONObject;
 
 public class DeleteExam extends Thread {
@@ -12,35 +11,35 @@ public class DeleteExam extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public DeleteExam(JSONObject jsonObject,Client client){
+    public DeleteExam(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 24 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 24 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
 
             int examId = jsonObject.getJSONObject("info").getInt("exam_id");
             db.deleteExam(examId);
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
-            
-            JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("response_code",0);
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            JSONObject responseInfoJsonObject = new JSONObject();
+            responseInfoJsonObject.put("response_code", 0);
+
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 24 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 24 Completed for Client at " + client.getIpAddress());
     }
 }

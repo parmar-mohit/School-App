@@ -10,22 +10,22 @@ public class UpdateTeacherAttributes extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public UpdateTeacherAttributes(JSONObject jsonObject, Client client){
+    public UpdateTeacherAttributes(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 6 Started for Client at "+client.getIpAddress());
-        try{
+        Log.info("Action Code 6 Started for Client at " + client.getIpAddress());
+        try {
             db = new DatabaseCon();
 
             JSONObject infoJsonObject = jsonObject.getJSONObject("info");
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("response_code",0);
+            responseInfoJsonObject.put("response_code", 0);
 
             //Fetching values from JSON Objects
             String phone = infoJsonObject.getString("phone");
@@ -34,18 +34,18 @@ public class UpdateTeacherAttributes extends Thread {
             String email = infoJsonObject.getString("email");
             String gender = infoJsonObject.getString("gender");
 
-            db.updateTeacherId(phone,firstname,lastname,email,gender);
+            db.updateTeacherId(phone, firstname, lastname, email, gender);
 
-            responseInfoJsonObject.put("response_code",0);
+            responseInfoJsonObject.put("response_code", 0);
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 6 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 6 Completed for Client at " + client.getIpAddress());
     }
 }

@@ -60,29 +60,29 @@ public class Constraint {
         return (hasUpperCase && hasLowerCase && hasNumber);
     }
 
-    public static String hashPassword(String password){
+    public static String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] passwordBytes = password.getBytes(StandardCharsets.UTF_8);
             byte[] hashedByte = digest.digest(passwordBytes);
             String hash = Base64.getEncoder().encodeToString(hashedByte);
             return hash;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    public static boolean emailCheck(String email){
+    public static boolean emailCheck(String email) {
         String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
-    public static void labelDeleteAfterTime(JLabel label){
-        Timer t = new Timer(10000,new ActionListener(){
+    public static void labelDeleteAfterTime(JLabel label) {
+        Timer t = new Timer(10000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 label.setText(null);

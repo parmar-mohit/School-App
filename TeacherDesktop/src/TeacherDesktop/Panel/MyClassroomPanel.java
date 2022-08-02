@@ -15,32 +15,33 @@ import java.util.ArrayList;
 
 public class MyClassroomPanel extends JPanel implements ActionListener {
 
-    private JLabel panelNameLabel;
-    private JButton createStudentIdButton,backButton;
+    private final JLabel panelNameLabel;
+    private final JButton createStudentIdButton;
+    private JButton backButton;
     private CreateStudentPanel studentPanel;
-    private JScrollPane scrollPane;
-    private JPanel studentListPanel;
+    private final JScrollPane scrollPane;
+    private final JPanel studentListPanel;
     private ArrayList<StudentCardPanel> studentCardPanelArrayList;
-    private ServerConnection serverConnection;
-    private String phone;
-    private JSONArray classroomJsonArray;
+    private final ServerConnection serverConnection;
+    private final String phone;
+    private final JSONArray classroomJsonArray;
     private Thread fillStudentCardThread;
 
-    public MyClassroomPanel(ServerConnection serverConnection,String phone,JSONArray classroomJsonArray){
+    public MyClassroomPanel(ServerConnection serverConnection, String phone, JSONArray classroomJsonArray) {
         //Initialising Members
         this.serverConnection = serverConnection;
         this.phone = phone;
         this.classroomJsonArray = classroomJsonArray;
         panelNameLabel = new JLabel("My Classroom");
         Image img = new ImageIcon(Constant.ADD_ICON).getImage();
-        img = img.getScaledInstance(30,30,Image.SCALE_DEFAULT);
-        createStudentIdButton = new JButton("Create Student Id",new ImageIcon(img));
+        img = img.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+        createStudentIdButton = new JButton("Create Student Id", new ImageIcon(img));
         studentListPanel = new JPanel();
         scrollPane = new JScrollPane(studentListPanel);
         studentCardPanelArrayList = new ArrayList<>();
 
         //Editing Components
-        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,22));
+        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
         createStudentIdButton.setBackground(Constant.BUTTON_BACKGROUND);
         scrollPane.setMinimumSize(Constant.SCROLLPANE_SIZE);
         scrollPane.setPreferredSize(Constant.SCROLLPANE_SIZE);
@@ -54,16 +55,17 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
         setBackground(Constant.PANEL_BACKGROUND);
 
         //Adding Components to Frame
-        add(panelNameLabel, Constraint.setPosition(0,0,2,1));
-        add(createStudentIdButton,Constraint.setPosition(1,1,Constraint.RIGHT));
-        add(scrollPane,Constraint.setPosition(0,2,2,1));
+        add(panelNameLabel, Constraint.setPosition(0, 0, 2, 1));
+        add(createStudentIdButton, Constraint.setPosition(1, 1, Constraint.RIGHT));
+        add(scrollPane, Constraint.setPosition(0, 2, 2, 1));
         revalidate();
         repaint();
 
         //Filling Student Card
         fillStudentCard();
     }
-    public void fillStudentCard(){
+
+    public void fillStudentCard() {
         fillStudentCardThread = new Thread() {
             @Override
             public void run() {
@@ -111,14 +113,14 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == createStudentIdButton ){
+        if (e.getSource() == createStudentIdButton) {
             //Setting Components Invisible
             createStudentIdButton.setVisible(false);
             scrollPane.setVisible(false);
 
             //Creating new Components
             backButton = new JButton("Back");
-            studentPanel = new CreateStudentPanel(serverConnection,classroomJsonArray);
+            studentPanel = new CreateStudentPanel(serverConnection, classroomJsonArray);
 
             //Editing Components
             backButton.setBackground(Constant.BUTTON_BACKGROUND);
@@ -130,7 +132,7 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
             //Adding Components to Panel
             add(backButton, Constraint.setPosition(1, 1, Constraint.RIGHT));
             add(studentPanel, Constraint.setPosition(0, 2, 2, 1));
-        }else if( e.getSource() == backButton ){
+        } else if (e.getSource() == backButton) {
             //Setting Components Visible
             createStudentIdButton.setVisible(true);
             scrollPane.setVisible(true);
@@ -145,8 +147,8 @@ public class MyClassroomPanel extends JPanel implements ActionListener {
         repaint();
     }
 
-    protected void finalize(){
-        if( fillStudentCardThread != null ){
+    protected void finalize() {
+        if (fillStudentCardThread != null) {
             fillStudentCardThread.stop();
         }
     }

@@ -19,24 +19,29 @@ import java.awt.event.WindowListener;
 
 public class ClassroomCardPanel extends JPanel implements ActionListener, WindowListener {
 
-    private JLabel standardLabel,divisionLabel,teacherInchargeLabel;
-    private JButton expandButton,collapseButton, updateButton,deleteButton;
+    private final JLabel standardLabel;
+    private final JLabel divisionLabel;
+    private final JLabel teacherInchargeLabel;
+    private final JButton expandButton;
+    private JButton collapseButton;
+    private JButton updateButton;
+    private JButton deleteButton;
     private JPanel subjectListPanel;
-    private JSONObject classroomJsonObject;
-    private ServerConnection serverConnection;
-    private ClassroomPanel parent;
+    private final JSONObject classroomJsonObject;
+    private final ServerConnection serverConnection;
+    private final ClassroomPanel parent;
 
-    public ClassroomCardPanel(JSONObject classroomJsonObject,ServerConnection serverConnection,ClassroomPanel parent){
+    public ClassroomCardPanel(JSONObject classroomJsonObject, ServerConnection serverConnection, ClassroomPanel parent) {
         //Initialising Members
         this.classroomJsonObject = classroomJsonObject;
         this.serverConnection = serverConnection;
         this.parent = parent;
-        standardLabel = new JLabel("Standard : "+classroomJsonObject.getInt("standard"));
-        divisionLabel = new JLabel("Division : "+classroomJsonObject.getString("division"));
+        standardLabel = new JLabel("Standard : " + classroomJsonObject.getInt("standard"));
+        divisionLabel = new JLabel("Division : " + classroomJsonObject.getString("division"));
         Teacher classroomTeacher = new Teacher(classroomJsonObject.getJSONObject("teacher"));
-        teacherInchargeLabel = new JLabel("Teacher Incharge : "+classroomTeacher);
+        teacherInchargeLabel = new JLabel("Teacher Incharge : " + classroomTeacher);
         Image img = new ImageIcon(Constant.EXPAND_ICON).getImage();
-        img = img.getScaledInstance(15,15,Image.SCALE_DEFAULT);
+        img = img.getScaledInstance(15, 15, Image.SCALE_DEFAULT);
         expandButton = new JButton(new ImageIcon(img));
 
         //Editing Components
@@ -50,22 +55,22 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
         setBackground(Constant.CARD_PANEL);
 
         //Adding Components to Panel
-        add(standardLabel, Constraint.setPosition(0,0));
-        add(divisionLabel,Constraint.setPosition(1,0));
-        add(teacherInchargeLabel,Constraint.setPosition(2,0));
-        add(expandButton,Constraint.setPosition(3,0,Constraint.RIGHT));
+        add(standardLabel, Constraint.setPosition(0, 0));
+        add(divisionLabel, Constraint.setPosition(1, 0));
+        add(teacherInchargeLabel, Constraint.setPosition(2, 0));
+        add(expandButton, Constraint.setPosition(3, 0, Constraint.RIGHT));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == expandButton ){
+        if (e.getSource() == expandButton) {
             //Setting Components Invisible
             expandButton.setVisible(false);
 
             //Creating Components
             subjectListPanel = new JPanel();
             Image img = new ImageIcon(Constant.COLLAPSE_ICON).getImage();
-            img = img.getScaledInstance(15,15,Image.SCALE_DEFAULT);
+            img = img.getScaledInstance(15, 15, Image.SCALE_DEFAULT);
             collapseButton = new JButton(new ImageIcon(img));
             updateButton = new JButton("Update");
             deleteButton = new JButton("Delete");
@@ -87,15 +92,15 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
 
             //Adding Components to subjecListPanel
             JSONArray subjectListJsonArray = classroomJsonObject.getJSONArray("subject_list");
-            for( int i = 0; i < subjectListJsonArray.length(); i++ ){
+            for (int i = 0; i < subjectListJsonArray.length(); i++) {
                 JSONObject subjectJsonObject = subjectListJsonArray.getJSONObject(i);
-                JLabel subjectNameLabel = new JLabel("Subject Name : "+Subject.getSubjectName(subjectJsonObject.getString("subject_name")));
+                JLabel subjectNameLabel = new JLabel("Subject Name : " + Subject.getSubjectName(subjectJsonObject.getString("subject_name")));
                 Teacher subjectTeacher = new Teacher(subjectJsonObject.getJSONObject("teacher"));
-                JLabel subjectInchargeLabel = new JLabel("Subject Incharge : "+subjectTeacher);
+                JLabel subjectInchargeLabel = new JLabel("Subject Incharge : " + subjectTeacher);
 
                 //Adding Components to Frame
-                subjectListPanel.add(subjectNameLabel,Constraint.setPosition(0,i,Constraint.LEFT));
-                subjectListPanel.add(subjectInchargeLabel,Constraint.setPosition(1,i,Constraint.LEFT));
+                subjectListPanel.add(subjectNameLabel, Constraint.setPosition(0, i, Constraint.LEFT));
+                subjectListPanel.add(subjectInchargeLabel, Constraint.setPosition(1, i, Constraint.LEFT));
                 panelSize.height += 30;
             }
 
@@ -103,11 +108,11 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
             setPreferredSize(panelSize);
 
             //Adding Components to Panel
-            add(collapseButton,Constraint.setPosition(3,0,Constraint.RIGHT));
-            add(subjectListPanel,Constraint.setPosition(0,1,4,1));
-            add(updateButton,Constraint.setPosition(0,2,2,1));
-            add(deleteButton,Constraint.setPosition(2,2,2,1));
-        }else if( e.getSource() == collapseButton ){
+            add(collapseButton, Constraint.setPosition(3, 0, Constraint.RIGHT));
+            add(subjectListPanel, Constraint.setPosition(0, 1, 4, 1));
+            add(updateButton, Constraint.setPosition(0, 2, 2, 1));
+            add(deleteButton, Constraint.setPosition(2, 2, 2, 1));
+        } else if (e.getSource() == collapseButton) {
             //Setting Components Visible
             expandButton.setVisible(true);
 
@@ -118,16 +123,16 @@ public class ClassroomCardPanel extends JPanel implements ActionListener, Window
             remove(deleteButton);
 
             //Setting PanelSize
-            setPreferredSize(new Dimension(900,100));
-        }else if( e.getSource() == updateButton ){
-            JDialog dialog = new UpdateClassroomDialog((JFrame)SwingUtilities.getWindowAncestor(this),classroomJsonObject,serverConnection);
+            setPreferredSize(new Dimension(900, 100));
+        } else if (e.getSource() == updateButton) {
+            JDialog dialog = new UpdateClassroomDialog((JFrame) SwingUtilities.getWindowAncestor(this), classroomJsonObject, serverConnection);
             dialog.addWindowListener(this);
-        }else if( e.getSource() == deleteButton ){
-            int result = JOptionPane.showConfirmDialog(this,"Are you sure you want to delete this classroom? All data including data of students in this class will be deleted.");
+        } else if (e.getSource() == deleteButton) {
+            int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this classroom? All data including data of students in this class will be deleted.");
 
-            if( result == JOptionPane.YES_OPTION ){
+            if (result == JOptionPane.YES_OPTION) {
                 int response = serverConnection.deleteClassroom(classroomJsonObject);
-                if( response == 0 ){
+                if (response == 0) {
                     parent.fillClassroomCard();
                     parent.revalidate();
                     parent.repaint();

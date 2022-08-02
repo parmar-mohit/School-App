@@ -19,16 +19,12 @@ public class ImageFilter extends FileFilter {
 
         String extension = getExtension(f);
         if (extension != null) {
-            if (extension.equals(TIFF) ||
+            return extension.equals(TIFF) ||
                     extension.equals(TIF) ||
                     extension.equals(GIF) ||
                     extension.equals(JPEG) ||
                     extension.equals(JPG) ||
-                    extension.equals(PNG)) {
-                return true;
-            } else {
-                return false;
-            }
+                    extension.equals(PNG);
         }
         return false;
     }

@@ -13,40 +13,40 @@ public class DeleteStudentId extends Thread {
     private Client client;
     private DatabaseCon db;
 
-    public DeleteStudentId(JSONObject jsonObject,Client client){
+    public DeleteStudentId(JSONObject jsonObject, Client client) {
         this.jsonObject = jsonObject;
         this.client = client;
     }
 
     @Override
     public void run() {
-        Log.info("Action Code 15 Started for Client at "+client.getIpAddress());
+        Log.info("Action Code 15 Started for Client at " + client.getIpAddress());
 
-        try{
+        try {
             db = new DatabaseCon();
             int sid = jsonObject.getJSONObject("info").getInt("sid");
             db.deleteStudentId(sid);
             deleteImage(sid);
 
             JSONObject responseJsonObject = new JSONObject();
-            responseJsonObject.put("id",jsonObject.getLong("id"));
+            responseJsonObject.put("id", jsonObject.getLong("id"));
 
             JSONObject responseInfoJsonObject = new JSONObject();
-            responseInfoJsonObject.put("response_code",0);
+            responseInfoJsonObject.put("response_code", 0);
 
-            responseJsonObject.put("info",responseInfoJsonObject);
+            responseJsonObject.put("info", responseInfoJsonObject);
             client.sendMessage(responseJsonObject);
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.error(e.toString());
-        }finally {
+        } finally {
             db.closeConnection();
         }
 
-        Log.info("Action Code 15 Completed for Client at "+client.getIpAddress());
+        Log.info("Action Code 15 Completed for Client at " + client.getIpAddress());
     }
 
-    private void deleteImage(int sid){
-        File imageFile = new File("Student Images/"+sid+".jpg");
+    private void deleteImage(int sid) {
+        File imageFile = new File("Student Images/" + sid + ".jpg");
         imageFile.delete();
     }
 }

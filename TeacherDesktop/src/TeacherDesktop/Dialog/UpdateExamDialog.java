@@ -3,7 +3,6 @@ package TeacherDesktop.Dialog;
 import TeacherDesktop.CustomComponents.ExamNameSelector;
 import TeacherDesktop.CustomComponents.MarksTable;
 import TeacherDesktop.EntityClasses.Subject;
-import TeacherDesktop.Panel.NewExamPanel;
 import TeacherDesktop.Server.ServerConnection;
 import TeacherDesktop.Static.Constant;
 import TeacherDesktop.Static.Constraint;
@@ -21,20 +20,25 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class UpdateExamDialog extends JDialog implements ActionListener, KeyListener {
-    private JLabel panelNameLabel,examNameLabel,dateLabel,totalMarksLabel,subjectLabel,messageLabel;
-    private ExamNameSelector examNameSelector;
-    private JDateChooser examDateDateChooser;
-    private JTextField totalMarksTextField;
-    private JComboBox subjectComboBox;
-    private ServerConnection serverConnection;
+    private final JLabel panelNameLabel;
+    private final JLabel examNameLabel;
+    private final JLabel dateLabel;
+    private final JLabel totalMarksLabel;
+    private final JLabel subjectLabel;
+    private final JLabel messageLabel;
+    private final ExamNameSelector examNameSelector;
+    private final JDateChooser examDateDateChooser;
+    private final JTextField totalMarksTextField;
+    private final JComboBox subjectComboBox;
+    private final ServerConnection serverConnection;
     private ArrayList<String> examNameArrayList;
     private ArrayList<Subject> subjectArrayList;
-    private MarksTable table;
-    private JButton updateExam;
+    private final MarksTable table;
+    private final JButton updateExam;
     private Thread getStudentListThread;
-    private JSONObject examJsonObject;
+    private final JSONObject examJsonObject;
 
-    public UpdateExamDialog(JFrame parent,JSONObject examJsonObject,JSONArray studentScoreJsonArray,ServerConnection serverConnection){
+    public UpdateExamDialog(JFrame parent, JSONObject examJsonObject, JSONArray studentScoreJsonArray, ServerConnection serverConnection) {
         super(parent);
         //Initialising Members
         this.examJsonObject = examJsonObject;
@@ -56,19 +60,19 @@ public class UpdateExamDialog extends JDialog implements ActionListener, KeyList
         updateExam = new JButton("Update Exam");
 
         //Editing Components
-        panelNameLabel.setFont(new Font("SansSerif",Font.BOLD,18));
-        examNameSelector.setPreferredSize(new Dimension(180,25));
-        examDateDateChooser.setPreferredSize(new Dimension(180,25));
-        subjectComboBox.setPreferredSize(new Dimension(180,25));
+        panelNameLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        examNameSelector.setPreferredSize(new Dimension(180, 25));
+        examDateDateChooser.setPreferredSize(new Dimension(180, 25));
+        subjectComboBox.setPreferredSize(new Dimension(180, 25));
         updateExam.setBackground(Constant.BUTTON_BACKGROUND);
         updateExam.setPreferredSize(Constant.BUTTON_SIZE);
 
         //Setting Values
         examNameSelector.setExamName(examJsonObject.getString("exam_name"));
         examDateDateChooser.setDate(new Date(examJsonObject.getLong("date")));
-        totalMarksTextField.setText(examJsonObject.getInt("total_marks")+"");
-        for( int i = 0; i < subjectComboBox.getItemCount(); i++ ){
-            if( subjectComboBox.getItemAt(i).toString().equals(new Subject(examJsonObject.getJSONObject("subject")).toString()) ){
+        totalMarksTextField.setText(examJsonObject.getInt("total_marks") + "");
+        for (int i = 0; i < subjectComboBox.getItemCount(); i++) {
+            if (subjectComboBox.getItemAt(i).toString().equals(new Subject(examJsonObject.getJSONObject("subject")).toString())) {
                 subjectComboBox.setSelectedIndex(i);
                 break;
             }
@@ -84,62 +88,62 @@ public class UpdateExamDialog extends JDialog implements ActionListener, KeyList
         setTitle("Edit Student");
         setIconImage(Toolkit.getDefaultToolkit().getImage(Constant.SCHOOL_LOGO));
         setVisible(true);
-        setSize(new Dimension(1000,600));
+        setSize(new Dimension(1000, 600));
         setLayout(new GridBagLayout());
         getContentPane().setBackground(Constant.CARD_PANEL);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         //Adding Components to Panel
-        add(panelNameLabel, Constraint.setPosition(0,0,4,1));
-        add(examNameLabel,Constraint.setPosition(0,1,Constraint.RIGHT));
-        add(examNameSelector,Constraint.setPosition(1,1,Constraint.LEFT));
-        add(dateLabel,Constraint.setPosition(2,1,Constraint.RIGHT));
-        add(examDateDateChooser,Constraint.setPosition(3,1,Constraint.LEFT));
-        add(totalMarksLabel,Constraint.setPosition(0,2,Constraint.RIGHT));
-        add(totalMarksTextField,Constraint.setPosition(1,2,Constraint.LEFT));
-        add(subjectLabel,Constraint.setPosition(2,2,Constraint.RIGHT));
-        add(subjectComboBox,Constraint.setPosition(3,2,Constraint.LEFT));
-        add(table.getScrollPane(),Constraint.setPosition(0,3,4,1));
-        add(messageLabel,Constraint.setPosition(0,4,4,1));
-        add(updateExam,Constraint.setPosition(0,5,4,1));
+        add(panelNameLabel, Constraint.setPosition(0, 0, 4, 1));
+        add(examNameLabel, Constraint.setPosition(0, 1, Constraint.RIGHT));
+        add(examNameSelector, Constraint.setPosition(1, 1, Constraint.LEFT));
+        add(dateLabel, Constraint.setPosition(2, 1, Constraint.RIGHT));
+        add(examDateDateChooser, Constraint.setPosition(3, 1, Constraint.LEFT));
+        add(totalMarksLabel, Constraint.setPosition(0, 2, Constraint.RIGHT));
+        add(totalMarksTextField, Constraint.setPosition(1, 2, Constraint.LEFT));
+        add(subjectLabel, Constraint.setPosition(2, 2, Constraint.RIGHT));
+        add(subjectComboBox, Constraint.setPosition(3, 2, Constraint.LEFT));
+        add(table.getScrollPane(), Constraint.setPosition(0, 3, 4, 1));
+        add(messageLabel, Constraint.setPosition(0, 4, 4, 1));
+        add(updateExam, Constraint.setPosition(0, 5, 4, 1));
         revalidate();
         repaint();
     }
 
-    private void getInfo(){
+    private void getInfo() {
         JSONObject jsonObject = serverConnection.getExamAndSubjectList(examJsonObject.getJSONObject("subject").getString("phone"));
         JSONArray examNameArray = jsonObject.getJSONArray("exam_name");
         examNameArrayList = new ArrayList<>();
-        for( int i = 0; i < examNameArray.length(); i++){
+        for (int i = 0; i < examNameArray.length(); i++) {
             examNameArrayList.add(examNameArray.getString(i));
         }
 
         JSONArray subjectListJsonArray = jsonObject.getJSONArray("subject_list");
         subjectArrayList = new ArrayList<>();
-        for( int i = 0; i < subjectListJsonArray.length(); i++){
+        for (int i = 0; i < subjectListJsonArray.length(); i++) {
             subjectArrayList.add(new Subject(subjectListJsonArray.getJSONObject(i)));
         }
     }
 
-    private void fillSubjectComboBox(){
-        for(int i = 0; i < subjectArrayList.size(); i++){
-            subjectComboBox.insertItemAt(subjectArrayList.get(i),0);
+    private void fillSubjectComboBox() {
+        for (int i = 0; i < subjectArrayList.size(); i++) {
+            subjectComboBox.insertItemAt(subjectArrayList.get(i), 0);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( e.getSource() == subjectComboBox) {
+        if (e.getSource() == subjectComboBox) {
             getStudentListThread = new Thread() {
                 @Override
                 public void run() {
                     Subject selectedSubject = (Subject) subjectComboBox.getSelectedItem();
 
-                    if( selectedSubject != null ) {
+                    if (selectedSubject != null) {
                         JLabel messageLabel = new JLabel("Getting Student Details,Please Wait...");
                         JProgressBar progressBar = new JProgressBar(0, 100);
                         progressBar.setStringPainted(true);
-                        progressBar.setPreferredSize(new Dimension(500,300));
+                        progressBar.setPreferredSize(new Dimension(500, 300));
 
                         remove(table.getScrollPane());
                         remove(UpdateExamDialog.this.messageLabel);
@@ -163,12 +167,12 @@ public class UpdateExamDialog extends JDialog implements ActionListener, KeyList
                 }
             };
             getStudentListThread.start();
-        }else if( e.getSource() == updateExam) {
+        } else if (e.getSource() == updateExam) {
             JSONObject examJsonObject = new JSONObject();
-            examJsonObject.put("exam_id",this.examJsonObject.getInt("exam_id"));
+            examJsonObject.put("exam_id", this.examJsonObject.getInt("exam_id"));
 
             String examName = examNameSelector.getExamName();
-            if ( examName.equals("")) {
+            if (examName.equals("")) {
                 messageLabel.setText("Enter Exam Name");
                 Constraint.labelDeleteAfterTime(messageLabel);
                 return;
@@ -208,17 +212,17 @@ public class UpdateExamDialog extends JDialog implements ActionListener, KeyList
                 JSONObject scoreJsonObject = new JSONObject();
                 scoreJsonObject.put("sid", (int) table.getValueAt(i, 0));
 
-                if ( table.getValueAt(i, 3) == null || table.getValueAt(i,3).toString().equals("") ) {
+                if (table.getValueAt(i, 3) == null || table.getValueAt(i, 3).toString().equals("")) {
                     messageLabel.setText("Enter Marks for Student with Roll No : " + table.getValueAt(i, 2));
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
 
                 int marks;
-                try{
+                try {
                     marks = Integer.parseInt(table.getValueAt(i, 3).toString());
-                }catch(Exception excp){
-                    messageLabel.setText("Marks for Roll No : "+table.getValueAt(i,2)+" should be a Number");
+                } catch (Exception excp) {
+                    messageLabel.setText("Marks for Roll No : " + table.getValueAt(i, 2) + " should be a Number");
                     Constraint.labelDeleteAfterTime(messageLabel);
                     return;
                 }
@@ -236,7 +240,7 @@ public class UpdateExamDialog extends JDialog implements ActionListener, KeyList
             examJsonObject.put("score", scoreJsonArray);
 
             int response = serverConnection.updateExam(examJsonObject);
-            if( response == 0 ){
+            if (response == 0) {
                 messageLabel.setText("Exam Data Updated");
                 Constraint.labelDeleteAfterTime(messageLabel);
             }
@@ -245,7 +249,7 @@ public class UpdateExamDialog extends JDialog implements ActionListener, KeyList
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if( !Character.isDigit(e.getKeyChar()) ){
+        if (!Character.isDigit(e.getKeyChar())) {
             e.consume();
         }
     }
@@ -260,7 +264,7 @@ public class UpdateExamDialog extends JDialog implements ActionListener, KeyList
 
     }
 
-    protected void finalize(){
+    protected void finalize() {
         getStudentListThread.stop();
     }
 }

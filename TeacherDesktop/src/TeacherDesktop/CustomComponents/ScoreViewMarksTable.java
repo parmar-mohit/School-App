@@ -8,12 +8,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class ScoreViewMarksTable {
-    private DefaultTableModel tableModel;
-    private JTable table;
-    private JScrollPane scrollPane;
+    private final DefaultTableModel tableModel;
+    private final JTable table;
+    private final JScrollPane scrollPane;
 
     public ScoreViewMarksTable() {
-        String columns[] = {"SID", "Name", "Roll No", "Marks"};
+        String[] columns = {"SID", "Name", "Roll No", "Marks"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel) {
             @Override
@@ -28,7 +28,7 @@ public class ScoreViewMarksTable {
         setTableColumnWidths();
     }
 
-    private void setTableColumnWidths(){
+    private void setTableColumnWidths() {
         //Editing Table
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -37,25 +37,25 @@ public class ScoreViewMarksTable {
         table.getColumnModel().getColumn(3).setPreferredWidth(150);
     }
 
-    public void setStudentScoreList(JSONArray studentJsonArray){
-        while( tableModel.getRowCount() > 0 ){
+    public void setStudentScoreList(JSONArray studentJsonArray) {
+        while (tableModel.getRowCount() > 0) {
             tableModel.removeRow(0);
         }
 
-        for( int i = 0; i < studentJsonArray.length(); i++ ){
+        for (int i = 0; i < studentJsonArray.length(); i++) {
             JSONObject studentScoreJsonObject = studentJsonArray.getJSONObject(i);
             int sid = studentScoreJsonObject.getInt("sid");
             String firstname = studentScoreJsonObject.getString("firstname");
             String lastname = studentScoreJsonObject.getString("lastname");
             int rollNo = studentScoreJsonObject.getInt("roll_no");
             int marks = studentScoreJsonObject.getInt("score");
-            tableModel.addRow(new Object[]{sid,formatName(firstname,lastname),rollNo,marks});
+            tableModel.addRow(new Object[]{sid, formatName(firstname, lastname), rollNo, marks});
         }
     }
 
-    private String formatName(String firstname,String lastname){
-        String name = Character.toUpperCase(firstname.charAt(0))+firstname.substring(1)+" ";
-        name += Character.toUpperCase(lastname.charAt(0))+lastname.substring(1);
+    private String formatName(String firstname, String lastname) {
+        String name = Character.toUpperCase(firstname.charAt(0)) + firstname.substring(1) + " ";
+        name += Character.toUpperCase(lastname.charAt(0)) + lastname.substring(1);
         return name;
     }
 

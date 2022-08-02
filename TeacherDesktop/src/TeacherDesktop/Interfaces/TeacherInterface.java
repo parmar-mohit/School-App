@@ -13,13 +13,13 @@ import java.awt.event.ActionListener;
 
 public class TeacherInterface extends JFrame implements ActionListener {
 
-    private BrandingPanel brandingPanel;
-    private TeacherButtonPanel buttonPanel;
+    private final BrandingPanel brandingPanel;
+    private final TeacherButtonPanel buttonPanel;
     private JPanel optionPanel;
-    private ServerConnection serverConnection;
-    private String phone;
+    private final ServerConnection serverConnection;
+    private final String phone;
 
-    public TeacherInterface(ServerConnection serverConnection,String phone){
+    public TeacherInterface(ServerConnection serverConnection, String phone) {
         this.serverConnection = serverConnection;
         this.serverConnection.setCurrentFrame(this);
         this.phone = phone;
@@ -28,10 +28,10 @@ public class TeacherInterface extends JFrame implements ActionListener {
         buttonPanel = new TeacherButtonPanel();
 
         //Setting Size
-        brandingPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width,Constant.SCREEN_SIZE.height/5));
-        brandingPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width,Constant.SCREEN_SIZE.height/5));
-        buttonPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width/5,Constant.SCREEN_SIZE.height*4/5));
-        buttonPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width/5,Constant.SCREEN_SIZE.height*4/5));
+        brandingPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width, Constant.SCREEN_SIZE.height / 5));
+        brandingPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width, Constant.SCREEN_SIZE.height / 5));
+        buttonPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width / 5, Constant.SCREEN_SIZE.height * 4 / 5));
+        buttonPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width / 5, Constant.SCREEN_SIZE.height * 4 / 5));
 
         //Adding Listeners
         buttonPanel.myClassroomButton.addActionListener(this);
@@ -51,31 +51,31 @@ public class TeacherInterface extends JFrame implements ActionListener {
         setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         //Adding Components to Frame
-        add(brandingPanel,Constraint.setPosition(0,0,2,1));
-        add(buttonPanel,Constraint.setPosition(0,1));
+        add(brandingPanel, Constraint.setPosition(0, 0, 2, 1));
+        add(buttonPanel, Constraint.setPosition(0, 1));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if( optionPanel != null ){
+        if (optionPanel != null) {
             remove(optionPanel);
         }
 
-        if( e.getSource() == buttonPanel.myClassroomButton ){
+        if (e.getSource() == buttonPanel.myClassroomButton) {
             JSONArray classroomJsonArray = serverConnection.getStandardDivisionOfTeacher(phone);
-            if( classroomJsonArray.length() == 0 ){
-                JOptionPane.showMessageDialog(this,"You are not Incharge of any class and hence cannot access My Classroom","Alert",JOptionPane.WARNING_MESSAGE);
+            if (classroomJsonArray.length() == 0) {
+                JOptionPane.showMessageDialog(this, "You are not Incharge of any class and hence cannot access My Classroom", "Alert", JOptionPane.WARNING_MESSAGE);
                 return;
-            }else {
-                optionPanel = new MyClassroomPanel(serverConnection, phone,classroomJsonArray);
+            } else {
+                optionPanel = new MyClassroomPanel(serverConnection, phone, classroomJsonArray);
             }
-        }else if( e.getSource() == buttonPanel.studentButton ){
-            optionPanel = new StudentPanel(serverConnection,phone);
-        }else if( e.getSource() == buttonPanel.examButton ){
-            optionPanel = new ExamPanel(serverConnection,phone);
-        }else if( e.getSource() == buttonPanel.securityButton ){
-            optionPanel = new ChangePasswordPanel(serverConnection,phone);
-        }else if( e.getSource() ==  buttonPanel.logoutButton ){
+        } else if (e.getSource() == buttonPanel.studentButton) {
+            optionPanel = new StudentPanel(serverConnection, phone);
+        } else if (e.getSource() == buttonPanel.examButton) {
+            optionPanel = new ExamPanel(serverConnection, phone);
+        } else if (e.getSource() == buttonPanel.securityButton) {
+            optionPanel = new ChangePasswordPanel(serverConnection, phone);
+        } else if (e.getSource() == buttonPanel.logoutButton) {
             dispose();
             new LoginInterface(serverConnection);
             return;
@@ -87,23 +87,23 @@ public class TeacherInterface extends JFrame implements ActionListener {
         buttonPanel.examButton.setBackground(Constant.BUTTON_BACKGROUND);
         buttonPanel.securityButton.setBackground(Constant.BUTTON_BACKGROUND);
 
-        JButton buttonClicked = (JButton)e.getSource();
+        JButton buttonClicked = (JButton) e.getSource();
         buttonClicked.setBackground(Constant.SELECTED_BUTTON);
 
-        optionPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width*4/5,Constant.SCREEN_SIZE.height*4/5));
-        optionPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width*4/5,Constant.SCREEN_SIZE.height*4/5));
-        add(optionPanel,Constraint.setPosition(1,1));
+        optionPanel.setMinimumSize(new Dimension(Constant.SCREEN_SIZE.width * 4 / 5, Constant.SCREEN_SIZE.height * 4 / 5));
+        optionPanel.setPreferredSize(new Dimension(Constant.SCREEN_SIZE.width * 4 / 5, Constant.SCREEN_SIZE.height * 4 / 5));
+        add(optionPanel, Constraint.setPosition(1, 1));
         optionPanel.setVisible(true);
         revalidate();
         repaint();
     }
 }
 
-class TeacherButtonPanel extends JPanel{
+class TeacherButtonPanel extends JPanel {
 
-    public JButton myClassroomButton,studentButton,examButton,securityButton,logoutButton;
+    public JButton myClassroomButton, studentButton, examButton, securityButton, logoutButton;
 
-    public TeacherButtonPanel(){
+    public TeacherButtonPanel() {
         //Initialisng Members
         myClassroomButton = new JButton("My Classroom");
         studentButton = new JButton("Students");
@@ -128,10 +128,10 @@ class TeacherButtonPanel extends JPanel{
         setBackground(Constant.BUTTON_PANEL_BACKGROUND);
 
         //Adding Components to Panel
-        add(myClassroomButton,Constraint.setPosition(0,0));
-        add(studentButton, Constraint.setPosition(0,1));
-        add(examButton,Constraint.setPosition(0,2));
-        add(securityButton,Constraint.setPosition(0,3));
-        add(logoutButton,Constraint.setPosition(0,4));
+        add(myClassroomButton, Constraint.setPosition(0, 0));
+        add(studentButton, Constraint.setPosition(0, 1));
+        add(examButton, Constraint.setPosition(0, 2));
+        add(securityButton, Constraint.setPosition(0, 3));
+        add(logoutButton, Constraint.setPosition(0, 4));
     }
 }
