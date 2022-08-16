@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Parent Android App</string>
+    <string name="school_name">XYZ School</string>
+</resources>

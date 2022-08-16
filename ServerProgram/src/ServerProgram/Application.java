@@ -2,6 +2,7 @@ package ServerProgram;
 
 import ServerProgram.Client.Client;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -11,7 +12,8 @@ public class Application {
         Log.info("Program Started");
 
         try {
-            ServerSocket serverSocket = new ServerSocket(6678);
+            InetAddress serverAddr = InetAddress.getByName("192.168.1.6");
+            ServerSocket serverSocket = new ServerSocket(6678,50,serverAddr);
             Log.info("Socket Created");
 
             ArrayList<Client> clientList = new ArrayList<>();

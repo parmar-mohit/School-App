@@ -27,8 +27,8 @@ The Principal user will be able to do following task
 ### Additional Resources Used
 
 The Additional Resoruces that are required by the program are stored in Jar Files  directory.
-* JSON Parser files help to create,parse JSON Strings. 
-* JCalendar has JDateChooser Class which helps in taking Date inputs.
+* [JSON Parser](./Jar%20Files/JSON%20Parser.jar) files help to create,parse JSON Strings.[Download Link](https://repo1.maven.org/maven2/org/json/json/20220320/) 
+* [JCalendar](./Jar%20Files/JCalendar.jar) has JDateChooser Class which helps in taking Date inputs.
 
 
 ### Java Main Method

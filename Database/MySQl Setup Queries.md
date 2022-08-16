@@ -22,6 +22,7 @@ CREATE TABLE parent (
 		phone BIGINT PRIMARY KEY,
 		firstname VARCHAR(50),
 		lastname VARCHAR(50),
+		password VARCHAR(50),
 		email VARCHAR(50),
 		gender VARCHAR(6),
 		CHECK(gender IN('Male','Female','Other'))
@@ -104,5 +105,7 @@ ADD FOREIGN KEY(t_phone) REFERENCES teacher(t_phone) ON DELETE SET NULL;
 ```
 
 After these commands are executed successfully the mysql is setup and ready for the program.
+
+Read more about password field of parent entity in refer Authentication section of [Parent Android App](../ParentAndroidApp/README.md)
 
 NOTE : Images for students will be stored in a directory named "Student Images" and filename for each image would be same as "SID" of student.

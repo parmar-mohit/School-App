@@ -17,6 +17,8 @@ To Develop this Program we will use a 3 tier architecture for Database.Clients w
 
 [Teacher Desktop](./TeacherDesktop/) contains Source code for Desktop Application for Teachers. This is a client program.
 
+[Parent Android App](./ParentAndroidApp/) contains source code for Android Application made for parents of students.This is a Client Program
+
 [Documentation](./Documentation/) contains additional documentation for this project.
 
 ### Database

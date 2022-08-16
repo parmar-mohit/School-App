@@ -158,7 +158,7 @@ public class Client extends Thread {
                 currentWorkingThread.start();
             }
         } catch (Exception e) {
-            Log.error(e.toString());
+            Log.error(e.toString()+" (Client Addr : "+getIpAddress()+")");
             Log.info("Connection Closed with Client at " + getIpAddress());
             clientList.remove(this);
         } finally {

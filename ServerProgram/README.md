@@ -18,8 +18,8 @@ When a new Client module or thread is created it in turns creates another thread
 ### Additional Resources Used
 
 The Additional Resoruces that are required by the program are stored in Jar Files  directory.
-* MySQL JDBC Connector files help the java program to communicate with MySQl.
-* JSON Parser files help to create,parse JSON Strings.
+* [MySQL JDBC Connector](./Jar%20Files/MySQL%20JDBC%20Connector.jar) files help the java program to communicate with MySQl.
+* [JSON Parser files](./Jar%20Files/JSON%20Parser.jar) help to create,parse JSON Strings.[Download Link](https://repo1.maven.org/maven2/org/json/json/20220320/)
 
 ### Java Main Method 
 
