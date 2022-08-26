@@ -256,7 +256,7 @@ public class DatabaseCon {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             if (!resultSet.getBoolean(1)) {
-                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+                preparedStatement = db.prepareStatement("INSERT INTO parent(phone,firstname,lastname,email,gender) VALUES(?,?,?,?,?);");
                 preparedStatement.setBigDecimal(1, new BigDecimal(fatherPhone));
                 preparedStatement.setString(2, studentJsonObject.getString("father_firstname"));
                 preparedStatement.setString(3, studentJsonObject.getString("father_lastname"));
@@ -285,7 +285,7 @@ public class DatabaseCon {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             if (!resultSet.getBoolean(1)) {
-                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+                preparedStatement = db.prepareStatement("INSERT INTO parent(phone,firstname,lastname,email,gender) VALUES(?,?,?,?,?);");
                 preparedStatement.setBigDecimal(1, new BigDecimal(motherPhone));
                 preparedStatement.setString(2, studentJsonObject.getString("mother_firstname"));
                 preparedStatement.setString(3, studentJsonObject.getString("mother_lastname"));
@@ -397,7 +397,7 @@ public class DatabaseCon {
             ResultSet resulSet = preparedStatement.executeQuery();
             resulSet.next();
             if (!resulSet.getBoolean(1)) {
-                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+                preparedStatement = db.prepareStatement("INSERT INTO parent(phone,firstname,lastname,email,gender) VALUES(?,?,?,?,?);");
                 preparedStatement.setBigDecimal(1, new BigDecimal(studentJsonObject.getString("father_new_phone")));
                 preparedStatement.setString(2, studentJsonObject.getString("father_firstname"));
                 preparedStatement.setString(3, studentJsonObject.getString("father_lastname"));
@@ -430,7 +430,7 @@ public class DatabaseCon {
             ResultSet resulSet = preparedStatement.executeQuery();
             resulSet.next();
             if (!resulSet.getBoolean(1)) {
-                preparedStatement = db.prepareStatement("INSERT INTO parent VALUES(?,?,?,?,?);");
+                preparedStatement = db.prepareStatement("INSERT INTO parent(phone,firstname,lastname,email,gender) VALUES(?,?,?,?,?);");
                 preparedStatement.setBigDecimal(1, new BigDecimal(studentJsonObject.getString("mother_new_phone")));
                 preparedStatement.setString(2, studentJsonObject.getString("mother_firstname"));
                 preparedStatement.setString(3, studentJsonObject.getString("mother_lastname"));
@@ -593,5 +593,66 @@ public class DatabaseCon {
         PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM exam WHERE exam_id = ?;");
         preparedStatement.setInt(1, examId);
         preparedStatement.executeUpdate();
+    }
+
+    public boolean checkIfUserExist(String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT EXISTS(SELECT * FROM parent WHERE phone = ?);");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getBoolean(1);
+    }
+
+    public boolean isUserRegistered(String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT password FROM parent WHERE phone = ?;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        String password = resultSet.getString(1);
+        if( password == null ){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public boolean isUserDOBValid(String phone,long dob) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT sid FROM parent NATURAL JOIN parent_child WHERE phone = ?;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        Date enteredDOB = new Date(dob);
+
+        while( resultSet.next() ){
+            int sid = resultSet.getInt("sid");
+            preparedStatement = db.prepareStatement("SELECT dob FROM student WHERE sid = ?;");
+            preparedStatement.setInt(1,sid);
+            ResultSet dobResultSet = preparedStatement.executeQuery();
+            dobResultSet.next();
+            Date dbDOB = dobResultSet.getDate(1);
+            if( enteredDOB.equals(dbDOB) ){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void setPasswordNewUser(String phone,String password) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("UPDATE parent SET password = ? WHERE phone =?;");
+        preparedStatement.setString(1,password);
+        preparedStatement.setBigDecimal(2,new BigDecimal(phone));
+        preparedStatement.executeUpdate();
+    }
+
+    public String getParentPassword(String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT password FROM parent WHERE phone = ?;");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if( !resultSet.next() ){
+            return null;
+        }else {
+            return resultSet.getString("password");
+        }
     }
 }

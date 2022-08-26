@@ -154,6 +154,18 @@ public class Client extends Thread {
                     case 24:
                         currentWorkingThread = new DeleteExam(jsonObject, this);
                         break;
+
+                    case 25:
+                        currentWorkingThread = new RegisterUser(jsonObject,this);
+                        break;
+
+                    case 26:
+                        currentWorkingThread = new SetPasswordNewUser(jsonObject,this);
+                        break;
+
+                    case 27:
+                        currentWorkingThread = new GetPassword(jsonObject,this);
+                        break;
                 }
                 currentWorkingThread.start();
             }

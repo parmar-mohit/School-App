@@ -6,7 +6,11 @@ The App will be used by end user(parents).This App will let parents see marks of
 
 ### Authentication
 
-To use this app, users i.e parent will have to enter their phone no and password to login. Once logged in they will stay logged in unless they log out mannually. If any parent is using this app for the first time their password will be NULL in database as password is not asked while asking parent details in TeacherDesktop program.If this is the case then parent will be first asked thier phone no to sign in then they will be asked to provide date of birth of their child(in case if a parent has 2 or more child he/she can enter date of birth of any of their children) and once they enter correct date of birth of their child they will be prompted to create/enter a password that will be used for future login.
+To use this app, users i.e parent will have to enter their phone no and password to login. For more info refer [ParentAndroidApp Authentication](../Documentation/ParentAndroidApp%20Authentication.md)
+
+### ServerConnection
+
+[ServerConnection](./app/src/main/java/com/school/parentandroidapp/Server/ServerConnection.java) is a class/module that allows this program to connect to serverSocket and request resources.Whenever a ServerConnection object is instantiated it creates a new receiver Thread. This receiver thread continously listen for incoming messages from server.When a message from server is received it first checks if client has to execute some module, otherwise it stores the message in messagepool. Whenever the program requires some data from server it first asks the serverConnection to send a message requesting the resource and when a response message is received from server it is stored in messagepool which is an arraylist of messages of String data type.From this messagepool we can get our response message which will contain requested data.All the communication with client program is handled by ServerConnection class. As ServerConnection Object cannot be Passed between activities we have created a static reference for this Object in [MainActivity](./app/src/main/java/com/school/parentandroidapp/Activities/MainActivity.java) when a new actiivity is started it must obtain serverconnection reference from MainActivity Class
 
 ### Additional Resources Used
 

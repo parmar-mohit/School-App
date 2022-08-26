@@ -1162,3 +1162,115 @@ The Client is requesting server to update details of an exam.Info attribute of e
 **Module processing request in Server Program :** [DeleteExam](../ServerProgram/src/ServerProgram/ActionCode/DeleteExam.java)
 
 ---
+
+## Action Code 25
+
+**About :** Client is requesting server to register a user(parent).
+
+**Info Attribute of Message** contains phoneNo of parent and date of birth of student(child).
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "action_code" : 25,
+    "info" : {
+        "phone" : $phone_no_of_user(parent),
+        "dob_of_student" : $dob
+    }
+}
+```
+
+**Number of Response Messages :** Only one response message will be sent.
+
+**Info Attribute of Response Message** contains response code indicating status of request.
+* Response Code 0 : User can now register and set password.
+* Response Code 1 : No User regisetered with given mobile phone number(No Student has a parent with given number).
+* Response Code 2 : User with given phone number is already registered.
+* Response Code 3 : Wrong Date of Birth Entered
+
+**Example Response Message**
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "response_code" : $responseCode
+    }
+}
+```
+
+**Module processing request in Server Program :** [RegisterUser](../ServerProgram/src/ServerProgram/ActionCode/RegisterUser.java)
+
+---
+
+## Action Code 26
+
+**About :** Client is requesting server to set password for new user(parent)
+
+**Info Attribute of Message contains** phone no of user(parent) and new hashed password.
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "action_code" : 26,
+    "info" : {
+        "phone" : $phone_of_parent,
+        "password" : $hashed_password
+    }
+}
+```
+
+**Number of Response Messages :** Only one response message will be sent.
+
+**Info Attribute of Resposne Messsage** contains response code indicating status of request.
+* Response Code 0 : Password set successfully.
+
+**Example Response Message**
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "resposne_code" : $response_code
+    }
+}
+```
+
+**Module processing request in Server Program :** [SetPasswordNewUser](../ServerProgram/src/ServerProgram/ActionCode/SetPasswordNewUser.java)
+
+---
+
+## Action Code 27
+
+**About :** Client is requesting server to provide password of user(parent)
+
+**Info Attribute of Message** contains phone no of user whoose password is to be provided
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "action_code" : 27,
+    "info" : {
+        "phone" : $phone
+    }
+}
+```
+
+**Number of Response Messages :** Only one response message will be sent.
+
+**Info Attribute of Response Message** contains hashed password of user if the user id exist in database and is registered, it contains "not_registered" if user id is not registered, else contains null
+
+**Example Response Message**
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "password" : $hashedPassword
+    }
+}
+```
+
+**Module processing request in Server Program :** [GetPassword](../ServerProgram/src/ServerProgram/ActionCode/GetPassword.java)
+
+---

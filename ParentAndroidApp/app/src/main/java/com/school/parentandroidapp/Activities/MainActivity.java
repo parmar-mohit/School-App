@@ -16,6 +16,8 @@ import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static ServerConnection serverConnection;
+
     private static final String TAG = "MainActivity";
 
     @Override
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         new ConnectingToServer().execute();
     }
 
-    public class ConnectingToServer extends AsyncTask<Void, Void, Socket> {
+    private class ConnectingToServer extends AsyncTask<Void, Void, Socket> {
 
         @Override
         protected Socket doInBackground(Void... voids) {
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(socket);
 
             if( socket != null && socket.isConnected() ){
-                ServerConnection serverConnection = new ServerConnection(socket);
+                serverConnection = new ServerConnection(socket);
+                serverConnection.setCurrentContext(MainActivity.this);
                 Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
             }else{

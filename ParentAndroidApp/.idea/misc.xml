@@ -4,10 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1945" />
+        <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/drawable/button_shape.xml" value="0.1945" />
+        <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/drawable/edittext_shape.xml" value="0.2105" />
         <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/drawable/ic_launcher_school_logo_background.xml" value="0.1" />
+        <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_home_screen.xml" value="0.17074275362318841" />
         <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_login.xml" value="0.17074275362318841" />
         <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_no_connection.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_register_parent.xml" value="0.17074275362318841" />
+        <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_register_user.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_select_student.xml" value="0.17074275362318841" />
+        <entry key="..\:/Programming/My_Projects/School_App/ParentAndroidApp/app/src/main/res/layout/activity_set_password_new_user.xml" value="0.17074275362318841" />
       </map>
     </option>
   </component>

@@ -5,24 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_background"
-    tools:context=".Activities.LoginActivity">
+    tools:context=".Activities.RegisterUserActivity">
 
     <ImageView
-        android:id="@+id/school_logo"
+        android:id="@+id/imageView3"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="50dp"
+        android:src="@drawable/school_logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/school_logo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/loginActivity_phoneEditText"
+        android:id="@+id/registerActivity_phoneEditText"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/edittext_shape"
         android:ems="10"
         android:hint="@string/phone_no"
@@ -31,51 +30,51 @@
         android:textColor="@android:color/black"
         android:textColorHint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/school_logo" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <EditText
-        android:id="@+id/loginActivity_passwordEditText"
+    <TextView
+        android:id="@+id/dobTextView"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:background="@drawable/edittext_shape"
         android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword"
+        android:foregroundGravity="fill_vertical"
+        android:gravity="center_vertical"
+        android:hint="@string/dob"
+        android:inputType="date"
+        android:onClick="dobTextViewOnClick"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textColorHint="@android:color/darker_gray"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginActivity_phoneEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/registerActivity_phoneEditText" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="@drawable/button_shape"
-        android:onClick="loginButtonOnClick"
-        android:text="@string/login"
+        android:onClick="registerButtonOnClick"
+        android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginActivity_passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/dobTextView" />
 
     <TextView
-        android:id="@+id/registerTextView"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:fontFamily="sans-serif-medium"
-        android:onClick="registerTextViewOnClick"
-        android:text="@string/login_register"
-        android:textColor="#005CA5"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="30dp"
+        android:text="@string/register_user"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

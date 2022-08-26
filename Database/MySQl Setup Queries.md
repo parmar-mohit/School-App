@@ -22,7 +22,7 @@ CREATE TABLE parent (
 		phone BIGINT PRIMARY KEY,
 		firstname VARCHAR(50),
 		lastname VARCHAR(50),
-		password VARCHAR(50),
+		password VARCHAR(256),
 		email VARCHAR(50),
 		gender VARCHAR(6),
 		CHECK(gender IN('Male','Female','Other'))

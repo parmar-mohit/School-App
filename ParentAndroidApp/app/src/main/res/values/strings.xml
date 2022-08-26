@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Parent Android App</string>
     <string name="school_name">XYZ School</string>
+    <string name="no_connection_message">We are unable to connect to Server.Please check you internet connection an try again later</string>
+    <string name="login_register">New Here? Register</string>
+    <string name="phone_no">Phone No</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="dob">Date of Birth of your Child</string>
+    <string name="register_user">Register User</string>
+    <string name="register">Register</string>
+    <string name="set_password">Set Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="show_password">Show Password</string>
 </resources>
