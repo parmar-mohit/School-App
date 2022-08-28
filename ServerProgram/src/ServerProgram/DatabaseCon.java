@@ -655,4 +655,10 @@ public class DatabaseCon {
             return resultSet.getString("password");
         }
     }
+
+    public ResultSet getStudentListForParent(String phone) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT sid, firstname, lastname, standard, division FROM student WHERE sid IN ( SELECT sid FROM parent_child WHERE phone = ? );");
+        preparedStatement.setBigDecimal(1,new BigDecimal(phone));
+        return preparedStatement.executeQuery();
+    }
 }

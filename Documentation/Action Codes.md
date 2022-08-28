@@ -1274,3 +1274,53 @@ The Client is requesting server to update details of an exam.Info attribute of e
 **Module processing request in Server Program :** [GetPassword](../ServerProgram/src/ServerProgram/ActionCode/GetPassword.java)
 
 ---
+
+## Action Code 28
+
+**About :** Client is reuesting server to provide details of all students associated with parent
+
+**Info Attribute of Message** contains phone no of parent.
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "action_code" : 28,
+    "info" : {
+        "phone" : $phone_no_of_parent
+    }
+}
+```
+
+**Number of Response Messages** Only one response message will be sent.
+
+**Info Attribute of Response Message** contains an JSONArray details of all students such as name, standard, divison and img
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "info" : [
+        {
+            "sid" : $sid_of_student1,
+            "firstname" : $firstname_of_student1,
+            "lastname" : $lastname_of_student1,
+            "standard" : $standard_of_student1,
+            "division" : $division_of_student1
+            "img" : $img_of_student1
+        },
+        {
+            "sid" : $sid_of_student2,
+            "firstname" : $firstname_of_student2,
+            "lastname" : $lastname_of_student2,
+            "standard" : $standard_of_student2,
+            "division" : $division_of_student2
+            "img" : $img_of_student2
+        }
+    ]
+}
+```
+
+**Module processing request in Server Program :** [GetStudentListForParent](../ServerProgram/src/ServerProgram/ActionCode/GetStudentListForParent.java)
+
+---

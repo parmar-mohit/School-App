@@ -14,6 +14,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.school.parentandroidapp.Activities.NoConnectionActivity;
+import com.school.parentandroidapp.parser.json.JSONArray;
 import com.school.parentandroidapp.parser.json.JSONObject;
 
 public class ServerConnection implements Parcelable {
@@ -99,6 +100,22 @@ public class ServerConnection implements Parcelable {
         JSONObject responseJsonObject = getResponseMessage(id);
 
         return responseJsonObject.getJSONObject("info").getString("password");
+    }
+
+    public JSONArray getStudentList(String phone){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",28);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("phone",phone);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONArray("info");
     }
 
     private JSONObject getResponseMessage(long messageId) {

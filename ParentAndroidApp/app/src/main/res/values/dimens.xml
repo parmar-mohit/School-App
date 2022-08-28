@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="depth">2dp</dimen>
+    <dimen name="radius_background_constraint_layout">50dp</dimen>
+</resources>

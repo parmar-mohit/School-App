@@ -52,4 +52,12 @@ public class Validator {
     public static boolean isValidPhone(String phone){
         return phone.matches(MOBILE_PATTERN);
     }
+
+    public static String getFormattedName(String firstname,String lastname){
+        String name = Character.toUpperCase(firstname.charAt(0))+"";
+        name += firstname.substring(1)+" ";
+        name += Character.toUpperCase(lastname.charAt(0));
+        name += lastname.substring(1);
+        return name;
+    }
 }

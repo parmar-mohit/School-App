@@ -166,6 +166,10 @@ public class Client extends Thread {
                     case 27:
                         currentWorkingThread = new GetPassword(jsonObject,this);
                         break;
+
+                    case 28:
+                        currentWorkingThread = new GetStudentListForParent(jsonObject,this);
+                        break;
                 }
                 currentWorkingThread.start();
             }
