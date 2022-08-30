@@ -28,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
         new ConnectingToServer().execute();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        System.exit(0);
+    }
+
     private class ConnectingToServer extends AsyncTask<Void, Void, Socket> {
 
         @Override
@@ -54,9 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 serverConnection.setCurrentContext(MainActivity.this);
                 Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
+                finish();
             }else{
                 Intent intent = new Intent(MainActivity.this,NoConnectionActivity.class);
                 startActivity(intent);
+                finish();
             }
         }
     }

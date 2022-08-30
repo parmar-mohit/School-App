@@ -42,3 +42,7 @@ To Develop this Project efficiently IntelliJ Community Version IDE is Used.
 * Java Swing
 
 To develop GUI interface so that application is interactive Java Swing API is used.
+
+* Android Studio
+
+To Develop android app we have used Android Studio.

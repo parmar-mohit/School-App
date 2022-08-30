@@ -66,6 +66,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        System.exit(0);
+    }
+
     private class LoginUser extends AsyncTask<String, Void, String> {
         private String phone;
         private String password;
@@ -91,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Moving to SelectStudentActivity
                 Intent intent = new Intent(LoginActivity.this,SelectStudentActivity.class);
                 startActivity(intent);
+                finish();
             }else if( s.equals("not_registered") ){
                 Toast.makeText(LoginActivity.this,"User not registered",Toast.LENGTH_SHORT).show();
             }else{

@@ -70,6 +70,12 @@ public class SelectStudentActivity extends AppCompatActivity {
         }));
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        System.exit(0);
+    }
+
     private class GetStudentList extends AsyncTask<String, Void, JSONArray>{
 
         @Override

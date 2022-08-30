@@ -13,4 +13,10 @@ public class NoConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_no_connection);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        System.exit(0);
+    }
 }
