@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:height="100dp">
+        <shape>
+            <solid android:color="@color/profile_background" />
+        </shape>
+    </item>
+    <item android:top="-200dp" android:bottom="0dp" android:left="-100dp" android:right="-100dp">
+        <shape>
+            <corners android:radius="300dp" />
+            <solid android:color="@color/profile_background" />
+        </shape>
+    </item>
+</layer-list>

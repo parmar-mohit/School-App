@@ -1324,3 +1324,42 @@ The Client is requesting server to update details of an exam.Info attribute of e
 **Module processing request in Server Program :** [GetStudentListForParent](../ServerProgram/src/ServerProgram/ActionCode/GetStudentListForParent.java)
 
 ---
+
+## Action Code 29
+
+**About :** Client is requesting server to provide information about a specific student.
+
+**Info Attribute of Message** contains sid of student.
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "action_code" : 29,
+    "info" : {
+        "sid" : $sid
+    }
+}
+```
+
+**Number of Response Messages :** Only one response message will be sent.
+
+**Info Attribute of Response Message** contains name,standard,division,img, of student
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "info" : {
+        "firstname" : $firstname,
+        "lastname" : $lastname,
+        "standard" : $standard,
+        "division" : $division,
+        "img" : $img
+    }
+}
+```
+
+**Module processing request in Server Program :** [GetStudentData](../ServerProgram/src/ServerProgram/ActionCode/GetStudentData.java)
+
+---

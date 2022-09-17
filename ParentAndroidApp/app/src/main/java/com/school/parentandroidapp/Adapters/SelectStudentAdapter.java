@@ -2,8 +2,6 @@ package com.school.parentandroidapp.Adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +42,6 @@ public class SelectStudentAdapter extends RecyclerView.Adapter<SelectStudentAdap
         //Setting Image
         String imgString = currentJsonObject.getString("img");
         byte[] imgArray = Base64.getDecoder().decode(imgString);
-        ByteArrayInputStream bais = new ByteArrayInputStream(imgArray);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imgArray,0, imgArray.length);
         holder.getStudentImageView().setImageBitmap(bitmap);
 
@@ -79,10 +76,10 @@ public class SelectStudentAdapter extends RecyclerView.Adapter<SelectStudentAdap
             super(view);
 
             //Getting Views
-            studentImageView = view.findViewById(R.id.studentImageView);
-            studentNameTextView = view.findViewById(R.id.studentNameTextView);
-            standardTextView = view.findViewById(R.id.standardTextView);
-            divisionTextView = view.findViewById(R.id.divisionTextView);
+            studentImageView = view.findViewById(R.id.selectStudentLayout_studentImageView);
+            studentNameTextView = view.findViewById(R.id.selectStudentLayout_studentNameTextView);
+            standardTextView = view.findViewById(R.id.selectStudentLayout_standardTextView);
+            divisionTextView = view.findViewById(R.id.selectStudentLayout_divisionTextView);
         }
 
         public CircleImageView getStudentImageView() {

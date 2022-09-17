@@ -12,4 +12,5 @@
     <string name="set_password">Set Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="show_password">Show Password</string>
+    <string name="exam">Exam</string>
 </resources>

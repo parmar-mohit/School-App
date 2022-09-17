@@ -661,4 +661,10 @@ public class DatabaseCon {
         preparedStatement.setBigDecimal(1,new BigDecimal(phone));
         return preparedStatement.executeQuery();
     }
+
+    public ResultSet getStudentData(int sid) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT firstname,lastname,standard,division FROM student WHERE sid = ?;");
+        preparedStatement.setInt(1,sid);
+        return preparedStatement.executeQuery();
+    }
 }

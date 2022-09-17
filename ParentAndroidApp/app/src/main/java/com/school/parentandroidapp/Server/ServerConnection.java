@@ -2,7 +2,6 @@ package com.school.parentandroidapp.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,14 +9,12 @@ import java.util.Date;
 import static java.lang.Thread.sleep;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.school.parentandroidapp.Activities.NoConnectionActivity;
 import com.school.parentandroidapp.parser.json.JSONArray;
 import com.school.parentandroidapp.parser.json.JSONObject;
 
-public class ServerConnection implements Parcelable {
+public class ServerConnection {
     private Socket socket;
     private ArrayList<JSONObject> messagePool;
     private ArrayList<JSONObject> packetList;
@@ -30,21 +27,6 @@ public class ServerConnection implements Parcelable {
         packetList = new ArrayList<>();
         startReceivingMessage();
     }
-
-    protected ServerConnection(Parcel in) {
-    }
-
-    public static final Creator<ServerConnection> CREATOR = new Creator<ServerConnection>() {
-        @Override
-        public ServerConnection createFromParcel(Parcel in) {
-            return new ServerConnection(in);
-        }
-
-        @Override
-        public ServerConnection[] newArray(int size) {
-            return new ServerConnection[size];
-        }
-    };
 
     public void setCurrentContext(Context currentContext) {
         this.currentContext = currentContext;
@@ -116,6 +98,22 @@ public class ServerConnection implements Parcelable {
 
         JSONObject responseJsonObject = getResponseMessage(id);
         return responseJsonObject.getJSONArray("info");
+    }
+
+    public JSONObject getStudentData(int sid){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",29);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("sid",sid);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        return responseJsonObject.getJSONObject("info");
     }
 
     private JSONObject getResponseMessage(long messageId) {
@@ -226,26 +224,5 @@ public class ServerConnection implements Parcelable {
         }
 
         messagePool.add(new JSONObject(jsonString));
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public ArrayList<JSONObject> getMessagePool() {
-        return messagePool;
-    }
-
-    public ArrayList<JSONObject> getPacketList() {
-        return packetList;
     }
 }

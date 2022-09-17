@@ -8,7 +8,7 @@
     android:background="@drawable/background_constraint_layout_depth">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/studentImageView"
+        android:id="@+id/selectStudentLayout_studentImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="10dp"
@@ -20,7 +20,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/studentNameTextView"
+        android:id="@+id/selectStudentLayout_studentNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -28,11 +28,11 @@
         android:text="Name"
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/studentImageView"
+        app:layout_constraintStart_toEndOf="@+id/selectStudentLayout_studentImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/standardTextView"
+        android:id="@+id/selectStudentLayout_standardTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -40,11 +40,11 @@
         android:text="stnandard"
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/studentImageView"
-        app:layout_constraintTop_toBottomOf="@+id/studentNameTextView" />
+        app:layout_constraintStart_toEndOf="@+id/selectStudentLayout_studentImageView"
+        app:layout_constraintTop_toBottomOf="@+id/selectStudentLayout_studentNameTextView" />
 
     <TextView
-        android:id="@+id/divisionTextView"
+        android:id="@+id/selectStudentLayout_divisionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -52,6 +52,6 @@
         android:text="division"
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/standardTextView"
-        app:layout_constraintTop_toBottomOf="@+id/studentNameTextView" />
+        app:layout_constraintStart_toEndOf="@+id/selectStudentLayout_standardTextView"
+        app:layout_constraintTop_toBottomOf="@+id/selectStudentLayout_studentNameTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

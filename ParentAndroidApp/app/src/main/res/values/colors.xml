@@ -10,4 +10,5 @@
 
     <color name="activity_background">#11DDF0</color>
     <color name="button_background">#0C0838</color>
+    <color name="profile_background">#00237C</color>
 </resources>
