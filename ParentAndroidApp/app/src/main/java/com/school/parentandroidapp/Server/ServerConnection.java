@@ -116,6 +116,30 @@ public class ServerConnection {
         return responseJsonObject.getJSONObject("info");
     }
 
+    public JSONArray getExamDetails(int sid){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action_code",30);
+
+        JSONObject infoJsonObject = new JSONObject();
+        infoJsonObject.put("sid",sid);
+
+        jsonObject.put("info",infoJsonObject);
+
+        //Sending Message
+        long id = sendMessage(jsonObject);
+
+        JSONObject responseJsonObject = getResponseMessage(id);
+        int total_exam = responseJsonObject.getJSONObject("info").getInt("total_exam");
+
+        JSONArray examJsonArray = new JSONArray();
+        for( int i = 0; i < total_exam; i++){
+            responseJsonObject = getResponseMessage(id);
+            examJsonArray.put(responseJsonObject.getJSONObject("info"));
+        }
+
+        return examJsonArray;
+    }
+
     private JSONObject getResponseMessage(long messageId) {
         long startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() <= startTime + 60000) { // Loop for minute

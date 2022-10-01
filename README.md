@@ -2,7 +2,7 @@
 
 ### About
 
-The aim is to make use of technology for efficient functioning in a School.The goal of the project is to create an software solution where school teachers can upload progress status of a student and parents and students should be able to access this report using mobile application.Teachers should be able to upload score of each student in an exam and then parents should be able to see the score from their phones.The School App project is a combination of 4 programs,2 Desktop application and other 2 being android application.
+The aim is to make use of technology for efficient functioning in a School.The goal of the project is to create an software solution where school teachers can upload progress status of a student and parents and students should be able to access this report using mobile application.Teachers should be able to upload score of each student in an exam and then parents should be able to see the score from their phones.The School App project is a combination of 3 programs,2 Desktop application and other 1 android application.
 
 
 ### Architecture

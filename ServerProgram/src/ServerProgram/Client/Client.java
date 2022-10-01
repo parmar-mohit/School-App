@@ -174,6 +174,10 @@ public class Client extends Thread {
                     case 29:
                         currentWorkingThread = new GetStudentData(jsonObject,this);
                         break;
+
+                    case 30:
+                        currentWorkingThread = new GetMarksOfStudent(jsonObject,this);
+                        break;
                 }
                 currentWorkingThread.start();
             }

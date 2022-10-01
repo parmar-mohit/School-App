@@ -1363,3 +1363,51 @@ The Client is requesting server to update details of an exam.Info attribute of e
 **Module processing request in Server Program :** [GetStudentData](../ServerProgram/src/ServerProgram/ActionCode/GetStudentData.java)
 
 ---
+
+## Action Code 30
+
+**About :** Client is requesting server to provide information about all the exams attended by a student
+
+**Info Attribute of Message** contains SID of student
+
+**Example Message**
+```
+{
+    "id" : $messageId,
+    "action_code" : 30,
+    "info" : {
+        "sid" : $sid_of_student
+    }
+}
+```
+
+**Number of Response Messages :** n+1 response messages will be sent Where n is the number of exams attended by student.
+
+**Info Attribute of Response Message** contains total number of exams attended by student for first response message, else for other response messages it will contain score of individual exam and exam details.
+
+**Example Response Message**
+```
+First response message containing total number of students.
+{
+    "id" : $messageId,
+    "info" : {
+        "total_exam" : $total_exam_attended_by_students
+    }
+}
+
+Other Response messages containing score and details of individual student.
+{
+    "id" : $messageId,
+    "info" : {
+        "exam_name" : $exam_name,
+        "total_marks" : $total_marks,
+        "subject_name" : $subject_name,
+        "date" : $date,
+        "marks" : $marks_obtained
+    }
+}
+```
+
+**Module Processing request in Server Program :** [GetMarksOfStudents](../ServerProgram/src/ServerProgram/ActionCode/GetMarksOfStudent.java)
+
+---

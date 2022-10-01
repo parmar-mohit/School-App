@@ -2,7 +2,9 @@ package com.school.parentandroidapp.Static;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 
 public class Validator {
 
@@ -59,5 +61,25 @@ public class Validator {
         name += Character.toUpperCase(lastname.charAt(0));
         name += lastname.substring(1);
         return name;
+    }
+
+    public static String getFormattedText(String text){
+        String words[] = text.split(" ");
+        String formattedText = new String();
+
+        for( int i = 0; i < words.length; i++){
+            if( !formattedText.equals("") ){
+                formattedText += " ";
+            }
+            formattedText += Character.toUpperCase(words[i].charAt(0)) + words[i].substring(1);
+        }
+
+        return formattedText;
+    }
+
+    public static String getFormattedDate(long time){
+        Date date = new Date(time);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return simpleDateFormat.format(date);
     }
 }

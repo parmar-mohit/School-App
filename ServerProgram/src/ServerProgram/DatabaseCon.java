@@ -667,4 +667,18 @@ public class DatabaseCon {
         preparedStatement.setInt(1,sid);
         return preparedStatement.executeQuery();
     }
+
+    public int getTotalExamCount(int sid) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT COUNT(*) FROM score WHERE sid = ?;");
+        preparedStatement.setInt(1,sid);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    public ResultSet getExamDetails(int sid) throws Exception {
+        PreparedStatement preparedStatement = db.prepareStatement("SELECT exam.*,subject.subject_name,score.marks_obtained FROM exam INNER JOIN subject on exam.sub_id = subject.sub_id INNER JOIN score on exam.exam_id = score.exam_id WHERE score.sid = ?");
+        preparedStatement.setInt(1,sid);
+        return preparedStatement.executeQuery();
+    }
 }

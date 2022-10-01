@@ -12,7 +12,7 @@ public class Application {
         Log.info("Program Started");
 
         try {
-            InetAddress serverAddr = InetAddress.getByName("192.168.1.6");
+            InetAddress serverAddr = InetAddress.getByName("192.168.1.3");
             ServerSocket serverSocket = new ServerSocket(6678,50,serverAddr);
             Log.info("Socket Created");
 
