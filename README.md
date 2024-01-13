@@ -49,9 +49,9 @@ To Develop android app we have used Android Studio.
 
 ### Interfaces
 
-![](images/school-app-image1.png)
-![](images/school-app-image2.png)
-![](images/school-app-image3.png)
-![](images/school-app-image4.png)
-![](images/school-app-image5.png)
-![](images/school-app-image6.png)
+![](Images/school-app-image1.png)
+![](Images/school-app-image2.png)
+![](Images/school-app-image3.png)
+![](Images/school-app-image4.png)
+![](Images/school-app-image5.png)
+![](Images/school-app-image6.png)
